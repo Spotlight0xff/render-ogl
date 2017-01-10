@@ -34,7 +34,7 @@ endif
 
 ifneq ($(DEBUG),)
 	SANITIZER    = -fsanitize=address -fno-omit-frame-pointer
-	CXXFLAGS    += $(SANITIZER)
+	CXXFLAGS    += $(SANITIZER) -ggdb
 	LDFLAGS     += $(SANITIZER)
 endif
 
