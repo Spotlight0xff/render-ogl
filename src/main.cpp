@@ -1,3 +1,4 @@
+#include "main.h"
 #include "ShaderCompiler.h"
 #include "FontRender.h"
 
@@ -11,18 +12,21 @@
 #include <glm/glm.hpp>
 
 
-#define WINDOW_WIDTH  1024
-#define WINDOW_HEIGHT 768
 bool loadObj(const char* path,
     std::vector<glm::vec3>& out_vertices,
     std::vector<glm::vec2>& out_uvs,
     std::vector<glm::vec3>& out_normals) {
+  (void) out_vertices,
+  (void) out_uvs,
+  (void) out_normals;
   std::cout << "Loading file: " << path << "\n";
   return true;
 }
 
 // callback function for key events
 void cbKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mode) {
+  (void) scancode,
+  (void) mode;
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, GL_TRUE);
   }
@@ -77,7 +81,7 @@ int main() {
          0.5f,  0.5f, 0.0f,  // Top Right
          0.5f, -0.5f, 0.0f,  // Bottom Right
         -0.5f, -0.5f, 0.0f,  // Bottom Left
-        //-0.5f,  0.5f, 0.0f   // Top Left 
+        //-0.5f,  0.5f, 0.0f   // Top Left
     };
 
   //GLuint indices[] = {
@@ -118,7 +122,7 @@ int main() {
 
 
 
-   glfwSwapInterval(0); 
+  glfwSwapInterval(0);
 
   //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);

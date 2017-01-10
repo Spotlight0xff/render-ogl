@@ -89,8 +89,8 @@ bool FontRenderer::load(const char* path, FT_UInt height) {
         GL_TEXTURE_2D,
         0,
         GL_RED, // red is first byte of color vector
-        face->glyph->bitmap.width,
-        face->glyph->bitmap.rows,
+        static_cast<GLsizei>(face->glyph->bitmap.width),
+        static_cast<GLsizei>(face->glyph->bitmap.rows),
         0,
         GL_RED,
         GL_UNSIGNED_BYTE, // TODO for unicode?
@@ -158,21 +158,4 @@ void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 colo
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);
 
-}
-
-void prepareTextures() {
-  //GLuint tex;
-  //glActiveTexture(GL_TEXTURE0);
-  //glGenTextures(1, &tex);
-  //glBindTexture(GL_TEXTURE_2D, tex);
-  //glUniform1i(uniform_tex, 0);
-}
-
-// Renders 2D at the given position
-// Arguments:
-//  text: text to render
-//  x:    x position of top-left corner of text
-//  y:    y pos...
-//  sx:   TODO
-void renderText(const char* text, float x, float y, float sx, float sy) {
 }
