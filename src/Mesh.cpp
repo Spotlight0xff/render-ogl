@@ -67,19 +67,6 @@ Mesh::Mesh(const char* path, Shader const& s)
 }
 
 bool Mesh::setup() {
-
-  int i =0 ;
-  for(auto const& vertex: vertices) {
-    glm::vec3 const& v = vertex.position;
-      std::cout << "vertex[" << i << "]: " << v.x << " " << v.y << " " << v.z << "\n";
-      i++;
-  }
-
-  i = 0;
-  for(auto const& index: indices) {
-      std::cout << "index[" << i << "]: " << index << "\n";
-      i++;
-  }
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo_vertices);
   glGenBuffers(1, &ebo_indices);
@@ -94,8 +81,8 @@ bool Mesh::setup() {
   // handle indices
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_indices);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()  * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
-  std::cout << sizeof(Vertex) << "\n";
 
+  // Tell OpenGL how to interpret our data
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), static_cast<GLvoid*>(0));
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(offsetof(Vertex, normal)));
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(offsetof(Vertex, tex_coord)));
