@@ -71,26 +71,6 @@ int main() {
 
   glfwSetKeyCallback(window, cbKeyEvents);
 
-  //GLfloat vertices[] = {
-    //-0.5f, -0.5f,  0.0f,  // Top right
-    //0.5f,  -0.5f,  0.0f,  // Bottom right
-    //-0.5f, -0.5f,  0.0f,  // Bottom left
-    //0.0f,   0.5f,  0.0f,  // Top left
-  //};
-
-    //GLfloat vertices[] = {
-         //0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,// Top Right
-         //0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,// Bottom Right
-        //-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,// Bottom Left
-    //};
-
-  //GLuint indices[] = {
-    //0, 1, 3,
-    //1, 2, 3,
-  //};
-
-
-
 
   Shader shader("shaders/default_vertex.glsl", "shaders/default_fragment.glsl");
 

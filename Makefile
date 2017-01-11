@@ -16,7 +16,6 @@ CXX            = clang++
 INCLUDEPATHS   = -I/usr/include/freetype2
 WARNINGS       = -Weverything -Wno-c++98-compat
 CXXFLAGS       = -std=c++14 -O2 -c $(WARNINGS) $(INCLUDEPATHS)
-#CXX_FLAGS   += -Weverything -Wno-missing-prototypes -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wdocumentation-unknown-command
 
 
 
