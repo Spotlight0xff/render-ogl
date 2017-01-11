@@ -15,7 +15,7 @@ FontRenderer::FontRenderer()
     std::cerr << "Failed to initialize freetype2 library\n";
     return;
   }
-  shader = Shader ("shaders/font_vertex.glsl", "shaders/font_fragment.glsl");
+  shader = Shader ("resources/shaders/font_vertex.glsl", "resources/shaders/font_fragment.glsl");
 
 #define WINDOW_WIDTH  1024
 #define WINDOW_HEIGHT 768

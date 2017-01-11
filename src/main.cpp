@@ -72,13 +72,13 @@ int main() {
   }
 
   FontRenderer fontRenderer;
-  fontRenderer.load("fonts/OpenSans-Regular.ttf");
+  fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
 
   std::vector<glm::vec3> vertices_;
   std::vector<GLushort> elements;
   std::vector<glm::vec3> out_normals;
 
-  loader::parseObj("models/cube.obj", vertices_, out_normals, elements, loader::FaceFormat::SLASH);
+  loader::parseObj("resources/models/cube.obj", vertices_, out_normals, elements, loader::FaceFormat::SLASH);
   GLfloat* flat_vertices = &vertices_[0].x;
   GLushort* flat_elements = &elements[0];
   std::cout << "Hello World, Cube :)\n";
@@ -89,7 +89,7 @@ int main() {
   glfwSetKeyCallback(window, cbKeyEvents);
 
 
-  Shader shader("shaders/default_vertex.glsl", "shaders/default_fragment.glsl");
+  Shader shader("resources/shaders/default_vertex.glsl", "resources/shaders/default_fragment.glsl");
 
 
 
