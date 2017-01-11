@@ -1,6 +1,7 @@
 #include "main.h"
 #include "ShaderCompiler.h"
 #include "FontRender.h"
+#include "Util.h"
 
 #include <iostream>
 #include <vector>
@@ -17,14 +18,7 @@
 
 
 
-static size_t split(const std::string& s, char delimiter, std::vector<std::string>& splits) {
-  std::string item;
-  std::stringstream ss(s);
-  while (std::getline(ss, item, delimiter)) {
-    splits.push_back(item);
-  }
-  return splits.size();
-}
+
 
 bool loadObj(const char* path,
     std::vector<glm::vec3>& out_vertices,
@@ -64,13 +58,13 @@ bool loadObj(const char* path,
         std::string sa, sb, sc;
         ss >> sa; ss >> sb; ss >> sc;
         std::vector<std::string> split_a, split_b, split_c;
-        split(sa, '/', split_a);
-        split(sb, '/', split_b);
-        split(sc, '/', split_c);
+        util::split(sa, '/', split_a);
+        util::split(sb, '/', split_b);
+        util::split(sc, '/', split_c);
         GLushort a, b, c;
-        a = static_cast<unsigned short>(std::stoi(split_a[0]));
-        b = static_cast<unsigned short>(std::stoi(split_b[0]));
-        c = static_cast<unsigned short>(std::stoi(split_c[0]));
+        a = static_cast<unsigned short>(std::stoul(split_a[0]));
+        b = static_cast<unsigned short>(std::stoul(split_b[0]));
+        c = static_cast<unsigned short>(std::stoul(split_c[0]));
         a --; b --; c --;
         out_elements.insert(out_elements.end(), {a, b, c});
 
@@ -92,6 +86,7 @@ bool loadObj(const char* path,
       in.get();
   }
 
+  // Compute normals
   out_normals.resize(out_vertices.size(), glm::vec3(0.0, 0.0, 0.0));
   for (size_t i=0; i < out_elements.size(); i += 3) {
     GLushort a = out_elements[i];
