@@ -79,6 +79,8 @@ int main() {
   std::vector<glm::vec3> out_normals;
 
   loader::parseObj("models/cube.obj", vertices_, out_normals, elements, loader::FaceFormat::SLASH);
+  GLfloat* flat_vertices = &vertices_[0].x;
+  GLushort* flat_elements = &elements[0];
   std::cout << "Hello World, Cube :)\n";
   std::cout << "\tVertices: " << vertices_.size() << "\n";
   std::cout << "\tElements: " << elements.size() << "\n";
@@ -90,51 +92,34 @@ int main() {
   Shader shader("shaders/default_vertex.glsl", "shaders/default_fragment.glsl");
 
 
-		GLfloat flat_vertices[] = {
-				 0.5f,  0.5f, 0.5f,  // Top Right
-				 0.5f, -0.5f, 0.0f,  // Bottom Right
-				-0.5f, -0.5f, 0.0f,  // Bottom Left
-				-0.5f,  0.5f, 0.0f   // Top Left 
-		};
-		GLushort flat_elements[] = {  // Note that we start from 0!
-				0, 1, 3,  // First Triangle
-				1, 2, 3   // Second Triangle
-		};
 
 
   // generate VBO and VAO
-  //GLuint [>VAO[2],<] vbo_vertices;
-  GLuint vao = 0;
-	int count = 6;
+  GLuint vao_obj = 0;
+  size_t count_elements = elements.size();
+  size_t count_coords = vertices_.size() *3;
+  size_t count_faces = count_elements/3;
+  std::cout << count_elements << " Elements\n"
+            << count_coords << " Coordinates\n"
+            << count_faces << " Faces\n";
+
   GLuint vbo_vertices = 0;
   GLuint ebo_elements = 0;
-  glGenVertexArrays(1, &vao);
+  glGenVertexArrays(1, &vao_obj);
   glGenBuffers(1, &vbo_vertices);
   glGenBuffers(1, &ebo_elements);
-  //const GLfloat* flat_vertices = &vertices_[0].x;
-	//const GLushort* flat_elements = &elements[0];
-	//const GLfloat* flat_vertices = &vertices_[0].x;
-//for(auto v : vertices_) {
-			//std::cout << v.x << " "<<v.y<<" "<<v.z << std::endl;
-//}
-  //GLfloat* flat_array = static_cast<GLfloat*>(glm::value_ptr(vertices_.front()));
-
-	//for (size_t i=0; i < elements.size(); i++) {
-		//std::cout << "vertex[" << i << "]= " << flat_elements[i] << std::endl;
-	//}
 
   // bind vertex array object first
-  glBindVertexArray(vao);
+  glBindVertexArray(vao_obj);
 
   // handle vertices
   glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(flat_vertices), flat_vertices, GL_STATIC_DRAW);
-  
+  glBufferData(GL_ARRAY_BUFFER, count_coords * sizeof(GLfloat), flat_vertices, GL_STATIC_DRAW);
   // handle elements data
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_elements);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(flat_elements), flat_elements, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count_elements  * sizeof(GLushort), flat_elements, GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), static_cast<GLvoid*>(0));
   glEnableVertexAttribArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -142,73 +127,25 @@ int main() {
   glBindVertexArray(0);
 
 
-  // Triangle setup
-  //glBindVertexArray(VAO[0]); // bind the vertex array object first
-  //glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  
-  // vertices:
-  /*glVertexAttribPointer(*/
-      //0, // attribute index
-      //3, // number of elements per vertex
-      //GL_FLOAT, // type
-      //GL_FALSE, // normalized
-      //6*sizeof(GLfloat), // stride
-      //static_cast<GLvoid*>(0) // offset to first elem
-      //);
-  //glEnableVertexAttribArray(0);
-
-  //// colors:
-  //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat) [> stride <], reinterpret_cast<GLvoid*>(sizeof(GLfloat)*3));
-  //glEnableVertexAttribArray(1);
-  //glBindVertexArray(0); // unbind VAO
-  //
-  //
-  
-  /*
-   * .obj file
-   */
-  // upload vertices into gpu (VBO)
-  
-  //glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-  //const GLfloat* flat_vertices = &vertices_[0].x;
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(flat_vertices), flat_vertices, GL_STATIC_DRAW);
-  //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-  //glEnableVertexAttribArray(0);
-
-  // upload indices
-  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-  //const GLushort* flat_elements = &elements[0];
-  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(flat_elements), flat_elements, GL_STATIC_DRAW);
-  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
   // Text rendering setup
-  //glBindVertexArray(VAO[1]);
-  //glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
-  //glEnableVertexAttribArray(0);
-  //glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4* sizeof(GLfloat), 0);
-  //glBindVertexArray(0);
+  GLuint vao_font = 0;
+  GLuint vbo_font = 0;
+  glGenVertexArrays(1, &vao_font);
+  glGenBuffers(1, &vbo_font);
 
+  glBindVertexArray(vao_font);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_font);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4* sizeof(GLfloat), 0);
+  glBindVertexArray(0);
+
+  // Setup model-view-projection
   glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
   glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 projection = glm::perspective(45.0f, 1.0f*WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 10.0f);
 
-    glm::mat4 mvp = projection * view * model;
-
-
-  glfwSwapInterval(0);
-
-  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-  // Lets tell OpenGL how to use our vertex data
-  //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
-  //glEnableVertexAttribArray(0);
-
-  //glBindVertexArray(0); // Unbind VAO
-
+  glm::mat4 mvp = projection * view * model;
   GLint uniform_mvp = glGetUniformLocation(shader.getId(), "mvp");
   if (uniform_mvp == -1) {
     std::cerr << "Failed to bind uniform \"mvp\"\n";
@@ -216,13 +153,18 @@ int main() {
     std::cout << "Located uniform \"mvp\", sir!\n";
   }
 
+
+  // disable vsync
+  glfwSwapInterval(0);
+
+
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  // Blending needed for text rendering
-  glEnable(GL_BLEND);
+  glEnable(GL_BLEND); // needed for text rendering
   glEnable(GL_DEPTH_TEST);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
   double lastTime = glfwGetTime();
   std::string performance_str;
   std::string fps_str;
@@ -249,51 +191,28 @@ int main() {
       performance_str = std::to_string(frame_ms) + " ms/frame";
       fps_str = std::to_string(fps) + " FPS";
     }
-    //fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f), VAO[1], VBO[1]);
-    //fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f), VAO[1], VBO[1]);
+    fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
+    fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
 
     // Rendering here
     {
-
-  //glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-  //glBufferData(GL_ARRAY_BUFFER, sizeof(flat_vertices), flat_vertices, GL_STATIC_DRAW);
-  //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-  //glEnableVertexAttribArray(0);
-
-    //shader.use();
-
-  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-  //glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_SHORT, 0);
-    }
-
-    {
       shader.use();
       glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
-      glBindVertexArray(vao);
-      glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, 0);
+      glBindVertexArray(vao_obj);
+      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count_elements), GL_UNSIGNED_SHORT, 0);
       glBindVertexArray(0);
     }
-
-    //glUniform3f(offset_loc, shift_x, shift_y, 0.0f);
-    //glBindVertexArray(VAO[0]);
-    //// draw triangle
-    ////glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
-    //glBindVertexArray(0); // unbind VAO
-
-
-    //fontRenderer.render("hello world!", 20.0f, 20.0f, glm::vec3(0.5,0.8f, 0.2f), VAO[1], VBO[1]);
-
-
 
 
     glfwSwapBuffers(window);
     glfwPollEvents();
   } while(glfwWindowShouldClose(window) == 0);
 
-  //glDeleteVertexArrays(2, VAO);
-  //glDeleteBuffers(1, &EBO);
+  glDeleteBuffers(1, &ebo_elements);
   glDeleteBuffers(1, &vbo_vertices);
+  glDeleteBuffers(1, &vbo_font);
+  glDeleteVertexArrays(1, &vao_obj);
+  glDeleteVertexArrays(1, &vao_font);
   glfwTerminate();
 
   return EXIT_SUCCESS;
