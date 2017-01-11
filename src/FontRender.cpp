@@ -117,7 +117,7 @@ bool FontRenderer::load(const char* path, FT_UInt height) {
 }
 
 void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 color, GLuint const VAO, GLuint const VBO) {
-  std::string default_font("fonts/OpenSans-Regular.ttf");
+  std::string default_font("resources/fonts/OpenSans-Regular.ttf");
   GLfloat scale = 1.0f;
   // use shader
   shader.use();
