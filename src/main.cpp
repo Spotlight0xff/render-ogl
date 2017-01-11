@@ -38,10 +38,13 @@ int main() {
   }
 
   glfwWindowHint(GLFW_SAMPLES, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL 3.3
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // OpenGL 3.3
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+  glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+
 
   GLFWwindow* window;
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
@@ -56,8 +59,20 @@ int main() {
     return EXIT_FAILURE;
   }
 
-  //FontRenderer fontRenderer;
-  //fontRenderer.load("fonts/OpenSans-Regular.ttf");
+  GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+  if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+  {
+      glEnable(GL_DEBUG_OUTPUT);
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+      glDebugMessageCallback(util::glDebugOutput, nullptr);
+      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+      // initialize debug output
+  }else {
+    std::cout << "no debug output :(\n";
+  }
+
+  FontRenderer fontRenderer;
+  fontRenderer.load("fonts/OpenSans-Regular.ttf");
 
   std::vector<glm::vec3> vertices_;
   std::vector<GLushort> elements;
