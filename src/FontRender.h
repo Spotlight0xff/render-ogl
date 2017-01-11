@@ -6,15 +6,14 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wold-style-cast"
-#pragma clang diagnostic ignored "-Wdocumentation-unknown-command"
-#pragma clang diagnostic ignored "-Wdocumentation"
-#pragma clang diagnostic ignored "-Wreserved-id-macro"
-#pragma clang diagnostic ignored "-Wpadded"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma GCC diagnostic ignored "-Wdocumentation"
+#pragma GCC diagnostic ignored "-Wreserved-id-macro"
+#pragma GCC diagnostic ignored "-Wpadded"
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 #include <unordered_map>
 #include <string>
