@@ -2,7 +2,7 @@
 #include "Util.h"
 #include "ShaderCompiler.h"
 #include "FontRender.h"
-#include "Loader.h"
+#include "Mesh.h"
 
 #include <iostream>
 #include <vector>
@@ -71,60 +71,16 @@ int main() {
     std::cout << "no debug output :(\n";
   }
 
+  glfwSetKeyCallback(window, cbKeyEvents);
+
   FontRenderer fontRenderer;
   fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
 
-  std::vector<glm::vec3> vertices_;
-  std::vector<GLuint> elements;
-  std::vector<glm::vec3> out_normals;
-
-  loader::parseObj("resources/models/cube.obj", vertices_, out_normals, elements, loader::FaceFormat::SLASH);
-  GLfloat* flat_vertices = &vertices_[0].x;
-  GLuint* flat_elements = &elements[0];
-  std::cout << "Hello World, Cube :)\n";
-  std::cout << "\tVertices: " << vertices_.size() << "\n";
-  std::cout << "\tElements: " << elements.size() << "\n";
-  std::cout << "\tNormals : " << out_normals.size() << "\n";
-
-  glfwSetKeyCallback(window, cbKeyEvents);
-
-
-  Shader shader("resources/shaders/default_vertex.glsl", "resources/shaders/default_fragment.glsl");
 
 
 
-
-  // generate VBO and VAO
-  GLuint vao_obj = 0;
-  size_t count_elements = elements.size();
-  size_t count_coords = vertices_.size() *3;
-  size_t count_faces = count_elements/3;
-  std::cout << count_elements << " Elements\n"
-            << count_coords << " Coordinates\n"
-            << count_faces << " Faces\n";
-
-  GLuint vbo_vertices = 0;
-  GLuint ebo_elements = 0;
-  glGenVertexArrays(1, &vao_obj);
-  glGenBuffers(1, &vbo_vertices);
-  glGenBuffers(1, &ebo_elements);
-
-  // bind vertex array object first
-  glBindVertexArray(vao_obj);
-
-  // handle vertices
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-  glBufferData(GL_ARRAY_BUFFER, count_coords * sizeof(GLfloat), flat_vertices, GL_STATIC_DRAW);
-  // handle elements data
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_elements);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count_elements  * sizeof(GLuint), flat_elements, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), static_cast<GLvoid*>(0));
-  glEnableVertexAttribArray(0);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  // unbind VAO
-  glBindVertexArray(0);
+  Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/default_fragment.glsl");
+  Mesh mesh("resources/models/cube.obj", shader);
 
 
   // Text rendering setup
@@ -146,13 +102,6 @@ int main() {
   glm::mat4 projection = glm::perspective(45.0f, 1.0f*WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 10.0f);
 
   glm::mat4 mvp = projection * view * model;
-  GLint uniform_mvp = glGetUniformLocation(shader.getId(), "mvp");
-  if (uniform_mvp == -1) {
-    std::cerr << "Failed to bind uniform \"mvp\"\n";
-  } else {
-    std::cout << "Located uniform \"mvp\", sir!\n";
-  }
-
 
   // disable vsync
   glfwSwapInterval(0);
@@ -191,27 +140,21 @@ int main() {
       performance_str = std::to_string(frame_ms) + " ms/frame";
       fps_str = std::to_string(fps) + " FPS";
     }
+
     fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
     fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
 
     // Rendering here
-    {
-      shader.use();
-      glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
-      glBindVertexArray(vao_obj);
-      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count_elements), GL_UNSIGNED_INT, 0);
-      glBindVertexArray(0);
-    }
+    shader.use();
+    glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "mvp"), 1, GL_FALSE, glm::value_ptr(mvp));
+    mesh.draw();
 
 
     glfwSwapBuffers(window);
     glfwPollEvents();
   } while(glfwWindowShouldClose(window) == 0);
 
-  glDeleteBuffers(1, &ebo_elements);
-  glDeleteBuffers(1, &vbo_vertices);
   glDeleteBuffers(1, &vbo_font);
-  glDeleteVertexArrays(1, &vao_obj);
   glDeleteVertexArrays(1, &vao_font);
   glfwTerminate();
 
