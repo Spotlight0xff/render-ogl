@@ -75,12 +75,12 @@ int main() {
   fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
 
   std::vector<glm::vec3> vertices_;
-  std::vector<GLushort> elements;
+  std::vector<GLuint> elements;
   std::vector<glm::vec3> out_normals;
 
   loader::parseObj("resources/models/cube.obj", vertices_, out_normals, elements, loader::FaceFormat::SLASH);
   GLfloat* flat_vertices = &vertices_[0].x;
-  GLushort* flat_elements = &elements[0];
+  GLuint* flat_elements = &elements[0];
   std::cout << "Hello World, Cube :)\n";
   std::cout << "\tVertices: " << vertices_.size() << "\n";
   std::cout << "\tElements: " << elements.size() << "\n";
@@ -117,7 +117,7 @@ int main() {
   glBufferData(GL_ARRAY_BUFFER, count_coords * sizeof(GLfloat), flat_vertices, GL_STATIC_DRAW);
   // handle elements data
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_elements);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count_elements  * sizeof(GLushort), flat_elements, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, count_elements  * sizeof(GLuint), flat_elements, GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), static_cast<GLvoid*>(0));
   glEnableVertexAttribArray(0);
@@ -199,7 +199,7 @@ int main() {
       shader.use();
       glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
       glBindVertexArray(vao_obj);
-      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count_elements), GL_UNSIGNED_SHORT, 0);
+      glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(count_elements), GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
     }
 

@@ -16,7 +16,7 @@ enum class FaceFormat {
 bool parseObj(const char* path,
     std::vector<glm::vec3>& out_vertices,
     std::vector<glm::vec3>& out_normals,
-    std::vector<unsigned short>& out_elements,
+    std::vector<unsigned int>& out_elements,
     FaceFormat face_format);
 }
 #endif

@@ -10,6 +10,7 @@ find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(Assimp REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
 add_executable(render ${sources})
@@ -30,6 +31,7 @@ target_link_libraries(render PUBLIC
   ${GLFW_LIBRARIES}
   ${GLEW_LIBRARIES}
   ${FREETYPE_LIBRARIES}
+  ${ASSIMP_LIBRARIES}
   )
 
 # For the unit tests
