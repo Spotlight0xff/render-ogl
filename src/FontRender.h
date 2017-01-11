@@ -31,18 +31,17 @@ class FontRenderer {
   ~FontRenderer();
 
   bool load(const char* path, FT_UInt height = 48);
-  void render(std::string text, GLfloat x, GLfloat y, glm::vec3 color, GLuint const VAO,
-      GLuint const VBO);
+  void render(std::string text, GLfloat x, GLfloat y, glm::vec3 color);
 
 private:
   FT_Library ft;
   Shader shader;
+  GLuint vao_font = 0, vbo_font = 0;
 
-  // Font -> char -> glyph struct
-  std::unordered_map<std::string, std::unordered_map<GLchar, struct CharGlyph> > cached_fonts;
-  struct CharGlyph getCached(std::string const& font, GLchar character);
-  bool isCached(std::string const& font, GLchar character);
-  //FT_Face loadFont(FT_Library ft, const char* path, int height = 48);
+  // char -> glyph struct
+  std::unordered_map<GLchar, struct CharGlyph> cached_font;
+  struct CharGlyph getCached(GLchar character);
+  bool isCached(GLchar character);
 };
 
 

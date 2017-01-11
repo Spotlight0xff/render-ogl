@@ -83,18 +83,6 @@ int main() {
   Mesh mesh("resources/models/cube.obj", shader);
 
 
-  // Text rendering setup
-  GLuint vao_font = 0;
-  GLuint vbo_font = 0;
-  glGenVertexArrays(1, &vao_font);
-  glGenBuffers(1, &vbo_font);
-
-  glBindVertexArray(vao_font);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_font);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4* sizeof(GLfloat), 0);
-  glBindVertexArray(0);
 
   // Setup model-view-projection
   glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
@@ -141,8 +129,8 @@ int main() {
       fps_str = std::to_string(fps) + " FPS";
     }
 
-    fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
-    fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f), vao_font, vbo_font);
+    fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f));
+    fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f));
 
     // Rendering here
     shader.use();
@@ -154,8 +142,6 @@ int main() {
     glfwPollEvents();
   } while(glfwWindowShouldClose(window) == 0);
 
-  glDeleteBuffers(1, &vbo_font);
-  glDeleteVertexArrays(1, &vao_font);
   glfwTerminate();
 
   return EXIT_SUCCESS;

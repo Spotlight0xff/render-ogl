@@ -22,44 +22,35 @@ FontRenderer::FontRenderer()
   glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f, static_cast<GLfloat>(WINDOW_HEIGHT));
   shader.use();
   glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+
+  // Text rendering setup for OpenGL
+  glGenVertexArrays(1, &vao_font);
+  glGenBuffers(1, &vbo_font);
+
+  glBindVertexArray(vao_font);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_font);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4* sizeof(GLfloat), 0);
+  glBindVertexArray(0);
   return;
 }
 
 FontRenderer::~FontRenderer() {
-  for (auto& fonts : cached_fonts) {
-    auto map_chars = fonts.second; // std::map char -> struct*
-    // TODO
-  }
+  glDeleteBuffers(1, &vbo_font);
+  glDeleteVertexArrays(1, &vao_font);
   FT_Done_FreeType(ft);
 }
 
 
-bool FontRenderer::isCached(std::string const& font, GLchar character) {
-  auto it = cached_fonts.find(font);
-  if (it != cached_fonts.end()) {
-    // found the font
-    auto map_chars = it->second;
-    auto it_char = map_chars.find(character);
-    if (it_char != map_chars.end()) {
-      return true;
-    }
+bool FontRenderer::isCached(GLchar character) {
+  auto it_char = cached_font.find(character);
+  if (it_char != cached_font.end()) {
+    return true;
   }
   return false;
 }
-
-struct CharGlyph FontRenderer::getCached(std::string const& font, GLchar character) {
-  auto it = cached_fonts.find(font);
-  if (it != cached_fonts.end()) {
-    // found the font
-    auto map_chars = it->second;
-    auto it_char = map_chars.find(character);
-    if (it_char != map_chars.end()) {
-      return it_char->second;
-    }
-  }
-  return {};
-}
-
 
 bool FontRenderer::load(const char* path, FT_UInt height) {
   FT_Face face;
@@ -75,7 +66,6 @@ bool FontRenderer::load(const char* path, FT_UInt height) {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   // cache ASCII table
-  std::unordered_map<GLchar, struct CharGlyph> cached_font;
   for (GLubyte c = 0; c < 128; c++) {
     if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
       std::cerr << "Error:Freetype: Failed to load character '"<< c << "'" << std::endl;
@@ -111,22 +101,20 @@ bool FontRenderer::load(const char* path, FT_UInt height) {
     cached_font.insert(std::pair<GLchar, struct CharGlyph>(c, glyph));
   }
   std::string font(path);
-  cached_fonts.insert(std::pair<std::string, std::unordered_map<GLchar, struct CharGlyph>>(font, cached_font));
   FT_Done_Face(face);
   return true;
 }
 
-void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 color, GLuint const VAO, GLuint const VBO) {
-  std::string default_font("resources/fonts/OpenSans-Regular.ttf");
+void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 color) {
   GLfloat scale = 1.0f;
   // use shader
   shader.use();
   glUniform3f(glGetUniformLocation(shader.getId(), "textColor"),
       color.x, color.y, color.z);
   glActiveTexture(GL_TEXTURE0);
-  glBindVertexArray(VAO);
+  glBindVertexArray(vao_font);
   for (auto const& c : text) {
-    struct CharGlyph glyph = getCached(default_font, c);
+    struct CharGlyph glyph = cached_font[c];
     GLfloat x_pos = x + glyph.bearing.x * scale;
     GLfloat y_pos = y - (glyph.size.y - glyph.bearing.y) * scale;
 
@@ -147,7 +135,7 @@ void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 colo
     glBindTexture(GL_TEXTURE_2D, glyph.texture_id);
 
     // copy that shit onto the GPU
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_font);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -157,5 +145,4 @@ void FontRenderer::render(std::string text, GLfloat x, GLfloat y, glm::vec3 colo
   }
   glBindVertexArray(0);
   glBindTexture(GL_TEXTURE_2D, 0);
-
 }
