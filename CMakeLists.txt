@@ -28,7 +28,6 @@ target_include_directories(render PUBLIC
   )
 
 # copy recourses into build dir
-file(COPY ${data} DESTINATION resources)
 add_custom_target(copy-runtime-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     DEPENDS render)
