@@ -1,4 +1,5 @@
 #include <SOIL.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
 #include <iostream>
@@ -24,6 +25,19 @@ void Model::draw(Shader const& shader) const{
     m.draw(shader);
   }
 }
+
+void Model::setPosition(glm::vec3 pos) {
+  position = pos;
+}
+
+glm::vec3 Model::getPositon() {
+  return position;
+}
+
+glm::mat4 Model::getModelMatrix() {
+  return glm::translate(glm::mat4(1.0f), position);
+}
+
 
 
 void Model::loadModel() {

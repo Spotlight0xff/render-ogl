@@ -17,11 +17,19 @@ class Model {
 
   void draw(Shader const& shader) const;
 
+  void setPosition(glm::vec3 pos);
+  glm::vec3 getPositon();
+  glm::mat4 getModelMatrix();
+
+  // TODO: move(delta_vec)
+
  private:
   std::string directory;
   std::string path;
   std::vector<Mesh> meshes;
   std::vector<Texture> loaded_textures;
+
+  glm::vec3 position;
 
   void loadModel();
   void processNode(aiNode const* node, const aiScene* scene);

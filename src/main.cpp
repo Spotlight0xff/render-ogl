@@ -71,6 +71,8 @@ int main() {
   Model model("resources/models/nanosuit2/nanosuit.obj");
   Model light("resources/models/cube.obj");
 
+  model.setPosition({0.0, -7.0, -20.0});
+
 
 
   // disable vsync
@@ -135,14 +137,16 @@ int main() {
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // Rendering here
     shader_model.use();
-    glm::mat4 mat_model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, -7.0, -20.0));
+    glm::mat4 mat_model = model.getModelMatrix();
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(45.0f, 1.0f*width/GLfloat(height), 0.1f, 100.0f);
 
     GLfloat r = 10.0f;
     GLfloat pos_x = sin(glfwGetTime()) * r;
     GLfloat pos_z = cos(glfwGetTime()) * r;
-    glm::mat4 mat_model_light = glm::translate(mat_model, glm::vec3(pos_x, 10.0, pos_z));
+
+    light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + model.getPositon());
+    glm::mat4 mat_model_light = light.getModelMatrix();
     glm::mat4 view_light = camera.getViewMatrix();
     glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 100.0f);
 
