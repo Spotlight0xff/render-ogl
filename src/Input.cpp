@@ -12,6 +12,14 @@ void Input::cbKeyEventsDispatch(
   }
 }
 
+void Input::cbWindowSizeDispatch(
+    GLFWwindow* window, int width, int height) {
+  if (glfwGetWindowUserPointer(window)) {
+    static_cast<Input*>(glfwGetWindowUserPointer(window))->windowCallback(
+        window, width, height);
+  }
+}
+
 
 void Input::cbMouseEventsDispatch(
     GLFWwindow* window, double x, double y) {
@@ -47,4 +55,10 @@ void Input::mouseCallback(
   if (mouse_callback) {
     mouse_callback(x,y);
   }
+}
+
+void Input::windowCallback(GLFWwindow* window, int w, int h)
+{
+  width = w;
+  height = h;
 }

@@ -39,9 +39,7 @@ int main() {
 
 
   GLFWwindow* window;
-  int width = WINDOW_WIDTH;
-  int height = WINDOW_HEIGHT;
-  window = glfwCreateWindow(width, height, "Rendering", nullptr, nullptr);
+  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
   if (window == nullptr) {
     std::cerr << "Failed to open GLFW window. Maybe not OpenGL 3.3 compatible?\n";
     return EXIT_FAILURE;
@@ -52,8 +50,6 @@ int main() {
     std::cerr << "Failed to init GLEW\n";
     return EXIT_FAILURE;
   }
-
-  glfwGetFramebufferSize(window, &width, &height);
 
   util::enableDebugOutput();
 
@@ -91,8 +87,8 @@ int main() {
   camera.setMovementSpeed(5.0f);
   camera.look(0.0f, 0.0f);
 
-  GLfloat last_x = width;
-  GLfloat last_y = height;
+  GLfloat last_x = input.width;
+  GLfloat last_y = input.height;
 
   input.addMouseCallback([&last_x, &last_y,
                          &camera]
@@ -131,15 +127,15 @@ int main() {
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f));
-    fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f));
+    //fontRenderer.render(performance_str, 20.0f, height - 300.0f, glm::vec3(0.5,0.8f, 0.2f));
+    fontRenderer.render(fps_str, 20.0f, input.height - 200.0f, glm::vec3(0.5,0.8f, 0.2f));
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // Rendering here
     shader_model.use();
     glm::mat4 mat_model = model.getModelMatrix();
     glm::mat4 view = camera.getViewMatrix();
-    glm::mat4 projection = glm::perspective(45.0f, 1.0f*width/GLfloat(height), 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(45.0f, 1.0f*input.width/GLfloat(input.height), 0.1f, 100.0f);
 
     GLfloat r = 10.0f;
     GLfloat pos_x = sin(glfwGetTime()) * r;
@@ -148,7 +144,7 @@ int main() {
     light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + model.getPositon());
     glm::mat4 mat_model_light = light.getModelMatrix();
     glm::mat4 view_light = camera.getViewMatrix();
-    glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 100.0f);
+    //glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 100.0f);
 
     //glm::mat4 mvp = projection * view * mat_model;
     glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model));

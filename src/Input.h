@@ -7,6 +7,9 @@
 #include <iostream>
 #include <functional>
 
+#define WINDOW_WIDTH  1024
+#define WINDOW_HEIGHT 768
+
 class Input {
  public:
   Input(GLFWwindow* window) {
@@ -14,7 +17,12 @@ class Input {
 
     glfwSetKeyCallback(window, Input::cbKeyEventsDispatch);
     glfwSetCursorPosCallback(window, Input::cbMouseEventsDispatch);
+    glfwSetWindowSizeCallback(window, Input::cbWindowSizeDispatch);
+    glfwGetWindowSize(window, &width, &height);
   }
+
+  static void cbWindowSizeDispatch(
+      GLFWwindow* window, int width, int height);
 
   static void cbKeyEventsDispatch(
       GLFWwindow* window, int key, int scancode,
@@ -33,10 +41,15 @@ class Input {
       GLFWwindow* window,
       double x, double y);
 
+  void windowCallback(GLFWwindow* window, int w, int h);
+
   void addMouseCallback(
       std::function<void(double, double)> cb) {
     mouse_callback = cb;
   }
+
+  int height = 0;
+  int width = 0;
 
 
  private:

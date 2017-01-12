@@ -17,8 +17,9 @@ FontRenderer::FontRenderer()
   }
   shader = Shader ("resources/shaders/font_vertex.glsl", "resources/shaders/font_fragment.glsl");
 
-#define WINDOW_WIDTH  1024
-#define WINDOW_HEIGHT 768
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 1024
+
   glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f, static_cast<GLfloat>(WINDOW_HEIGHT));
   shader.use();
   glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
