@@ -56,6 +56,7 @@ int main() {
   fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
 
   Input input(window);
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
   Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
@@ -87,17 +88,37 @@ int main() {
   glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
   GLfloat pre_camera_speed = 5.0f;
 
-  GLfloat last_x = 0.0;
-  GLfloat last_y = 0.0;
-  GLfloat delta_x = 0.0;
-  GLfloat delta_y = 0.0;
+  GLfloat last_x = WINDOW_WIDTH / 2.0;
+  GLfloat last_y = WINDOW_HEIGHT / 2.0;
+  GLfloat camera_yaw = -90.0f;
+  GLfloat camera_pitch = 0.0;
 
   input.addMouseCallback([&last_x, &last_y,
-                         &delta_x, &delta_y](double x, double y) {
-    delta_x = last_x - GLfloat(x);
-    delta_y = last_y - GLfloat(y);
+                         &camera_yaw, &camera_pitch,
+                         &camera_front]
+                         (double x, double y) {
+    GLfloat delta_x = GLfloat(x) - last_x;
+    GLfloat delta_y = last_y - GLfloat(y);
     last_x = GLfloat(x);
     last_y = GLfloat(y);
+
+    GLfloat mouse_sensitivity = 0.01f;
+    delta_x *= mouse_sensitivity;
+    delta_y *= mouse_sensitivity;
+
+    camera_yaw += delta_x;
+    camera_pitch += delta_y;
+
+    if (camera_pitch > 89.0f) {
+      camera_pitch = 89.0f;
+    } else if (camera_pitch < -89.0f) {
+      camera_pitch = -89.0f;
+    }
+    glm::vec3 front;
+    front.x = cos(glm::radians(camera_pitch)) * cos(glm::radians(camera_yaw));
+    front.y = sin(glm::radians(camera_pitch));
+    front.z = cos(glm::radians(camera_pitch)) * sin(glm::radians(camera_yaw));
+    camera_front = glm::normalize(front);
   });
   GLfloat delta_frame = 0.0;
   GLfloat last_frame = 0.0;
