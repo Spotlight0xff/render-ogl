@@ -59,17 +59,7 @@ int main() {
     return EXIT_FAILURE;
   }
 
-  GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-  if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-  {
-      glEnable(GL_DEBUG_OUTPUT);
-      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-      glDebugMessageCallback(util::glDebugOutput, nullptr);
-      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-      // initialize debug output
-  }else {
-    std::cout << "no debug output :(\n";
-  }
+  util::enableDebugOutput();
 
   glfwSetKeyCallback(window, cbKeyEvents);
 

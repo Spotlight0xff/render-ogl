@@ -66,6 +66,20 @@ void APIENTRY glDebugOutput(GLenum source,
     std::cout << std::endl;
 }
 
+bool enableDebugOutput() {
+  GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+  if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+  {
+      glEnable(GL_DEBUG_OUTPUT);
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+      glDebugMessageCallback(util::glDebugOutput, nullptr);
+      glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+      return true;
+  }
+  return false;
+}
+
+
 void printVertices(size_t count_elements, size_t count_vertices, GLfloat const* flat_vertices, GLushort const* flat_elements) {
   size_t count_triangles = count_elements / 3;
   std::cout << count_vertices << " Vertices:\n";

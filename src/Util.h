@@ -19,6 +19,10 @@ void APIENTRY glDebugOutput(GLenum source,
                             GLsizei /*length*/,
                             const GLchar *message,
                             const void * /*userParam*/);
-}
+
+bool enableDebugOutput();
+
+}  // end namespace util
+
 
 #endif
