@@ -3,6 +3,7 @@
 #include "ShaderCompiler.h"
 #include "FontRender.h"
 #include "Mesh.h"
+#include "Input.h"
 
 #include <iostream>
 #include <vector>
@@ -18,17 +19,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-
-
-
-// callback function for key events
-void cbKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mode) {
-  (void) scancode,
-  (void) mode;
-  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, GL_TRUE);
-  }
-}
 
 
 int main() {
@@ -61,11 +51,11 @@ int main() {
 
   util::enableDebugOutput();
 
-  glfwSetKeyCallback(window, cbKeyEvents);
 
   FontRenderer fontRenderer;
   fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
 
+  Input input(window);
 
 
 
@@ -129,6 +119,11 @@ int main() {
 
     glfwSwapBuffers(window);
     glfwPollEvents();
+    input.handle([](bool keys[]) {
+        if (keys[GLFW_KEY_W]) {
+          std::cout << ".";
+        }
+        });
   } while(glfwWindowShouldClose(window) == 0);
 
   glfwTerminate();
