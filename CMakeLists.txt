@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.7)
 project(render-ogl)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
+
 file(GLOB_RECURSE sources src/*.cpp src/*.h src/*.vs)
 file(GLOB_RECURSE sources_test tests/*.cpp tests/*.h)
 file(GLOB_RECURSE data resources/*)
@@ -11,14 +14,18 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(Assimp REQUIRED)
+find_package(SOIL REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
 add_executable(render ${sources})
 
 target_compile_options(render PUBLIC -std=c++1y -Wall)
 
-target_include_directories(render PUBLIC src)
-target_include_directories(render PUBLIC ${FREETYPE_INCLUDE_DIRS})
+target_include_directories(render PUBLIC
+  src
+  ${FREETYPE_INCLUDE_DIRS}
+  ${SOIL_INCLUDE_DIR}
+  )
 
 # copy recourses into build dir
 file(COPY ${data} DESTINATION resources)
@@ -32,6 +39,7 @@ target_link_libraries(render PUBLIC
   ${GLEW_LIBRARIES}
   ${FREETYPE_LIBRARIES}
   ${ASSIMP_LIBRARIES}
+  ${SOIL_LIBRARIES}
   )
 
 # For the unit tests

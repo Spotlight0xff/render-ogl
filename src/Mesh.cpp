@@ -5,6 +5,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <SOIL.h>
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
