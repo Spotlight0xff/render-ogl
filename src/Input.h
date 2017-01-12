@@ -16,39 +16,17 @@ class Input {
   }
 
   static void cbKeyEventsDispatch(
-      GLFWwindow* window,
-      int key,
-      int scancode,
-      int action,
-      int mods) {
-    if (glfwGetWindowUserPointer(window)) {
-      static_cast<Input*>(glfwGetWindowUserPointer(window))->keyCallback(
-        window, key, scancode, action, mods);
-    }
-  }
+      GLFWwindow* window, int key, int scancode,
+      int action, int mods);
 
-  void handle(std::function<void(bool[])> func) {
-    func(keys);
-  }
+  void handleKeys(std::function<void(bool[])> func);
 
-    void keyCallback(
-        GLFWwindow* window,
-        int key,
-        int scancode,
-        int action,
-        int mods) {
-      if (action == GLFW_PRESS) {
-        keys[key] = true;
-      } else if (action == GLFW_RELEASE) {
-        keys[key] = false;
-      }
-      if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-      }
-    }
+  void keyCallback(
+      GLFWwindow* window, int key,
+      int scancode, int action, int mods);
  private:
   static Input* instance;
-  bool keys[1024];
+  bool keys[1024] = {0};
 };
 
 #endif
