@@ -9,10 +9,13 @@ uniform mat4 view;
 uniform mat4 projection;
 
 out vec2 TexCoord;
+out vec3 Normal;
+out vec3 FragPos; // Fragment position
 
 void main()
 {
-  mat4 mvp = projection * view * model;
-  gl_Position = mvp * vec4(position, 1.0);
+  gl_Position = projection * view * model * vec4(position, 1.0);
   TexCoord = tex_coord;
+  FragPos = vec3(model * vec4(position, 1.0));
+  Normal = normal;
 }

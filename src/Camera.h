@@ -18,6 +18,7 @@ class Camera {
   virtual void moveBackward(GLfloat delta_frame) = 0;
 
   virtual glm::mat4 getViewMatrix() = 0;
+  virtual glm::vec3 getPosition() = 0;
 
   void setMouseSensitivity(GLfloat sensitivity) {
     mouse_sens = sensitivity;
@@ -54,6 +55,9 @@ class EulerCamera : public Camera {
 
 
   glm::mat4 getViewMatrix();
+  glm::vec3 getPosition() {
+    return pos;
+  }
 
  public: // debug
   GLfloat pitch = 0.0f;

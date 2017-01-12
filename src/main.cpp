@@ -61,8 +61,11 @@ int main() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
-  Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
+  //Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
+  Shader shader_model("resources/shaders/model_ambient_v.glsl", "resources/shaders/model_ambient_f.glsl");
+  Shader shader_light("resources/shaders/light_vertex.glsl", "resources/shaders/light_fragment.glsl");
   Model model("resources/models/nanosuit2/nanosuit.obj");
+  Model light("resources/models/cube.obj");
 
 
 
@@ -82,8 +85,8 @@ int main() {
   camera.setMovementSpeed(5.0f);
   camera.look(0.0f, 0.0f);
 
-  GLfloat last_x = WINDOW_WIDTH / 2.0;
-  GLfloat last_y = WINDOW_HEIGHT / 2.0;
+  GLfloat last_x = width;
+  GLfloat last_y = height;
 
   input.addMouseCallback([&last_x, &last_y,
                          &camera]
@@ -127,15 +130,36 @@ int main() {
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // Rendering here
-    model.draw(shader);
-
-
-    glm::mat4 mat_model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -20.0));
+    shader_model.use();
+    glm::mat4 mat_model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, -7.0, -20.0));
     glm::mat4 view = camera.getViewMatrix();
-    glm::mat4 projection = glm::perspective(45.0f, 1.0f*WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(45.0f, 1.0f*width/GLfloat(height), 0.1f, 100.0f);
 
-    glm::mat4 mvp = projection * view * mat_model;
-    glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "mvp"), 1, GL_FALSE, glm::value_ptr(mvp));
+    GLfloat r = 10.0f;
+    GLfloat pos_x = sin(glfwGetTime()) * r;
+    GLfloat pos_z = cos(glfwGetTime()) * r;
+    glm::mat4 mat_model_light = glm::translate(mat_model, glm::vec3(pos_x, 10.0, pos_z));
+    glm::mat4 view_light = camera.getViewMatrix();
+    glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 100.0f);
+
+    //glm::mat4 mvp = projection * view * mat_model;
+    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model));
+    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniform3f(glGetUniformLocation(shader_model.getId(), "lightColor"), 1.0, 1.0, 1.0);
+    glm::vec3 light_pos = glm::vec3(0.0, -7.0, -20.0) + glm::vec3(pos_x, 10.0, pos_z);
+    glUniform3fv(glGetUniformLocation(shader_model.getId(), "lightPos"), 1, glm::value_ptr(light_pos));
+    glUniform3fv(glGetUniformLocation(shader_model.getId(), "cameraPos"), 1, glm::value_ptr(camera.getPosition()));
+    glUniform1f(glGetUniformLocation(shader_model.getId(), "ambientStrength"), 0.1);
+    model.draw(shader_model);
+
+
+    shader_light.use();
+
+    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model_light));
+    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection_light));
+    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view_light));
+    light.draw(shader_light);
 
 
     glfwSwapBuffers(window);
