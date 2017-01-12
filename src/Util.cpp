@@ -19,6 +19,39 @@ size_t split(const std::string& s, char delimiter, std::vector<std::string>& spl
   return splits.size();
 }
 
+// Return some paths for two different paths
+std::vector<std::string> getEligiblePaths(const std::string& path1, const std::string& path2) {
+  std::vector<std::string> paths;
+  std::vector<std::string> split_path1;
+  std::vector<std::string> split_path2;
+
+  // TODO: platform independent
+  split(path1, '/', split_path1);
+  split(path2, '/', split_path2);
+
+  for(size_t i=split_path1.size()-1; i > 0; i--) {
+    std::stringstream path;
+    for (size_t j=0; j < i; j++) {
+      path << split_path1[j] << "/";
+    }
+    paths.push_back(path.str());
+  }
+
+  for(size_t i=split_path2.size()-1; i > 0; i--) {
+    std::stringstream path;
+    for (size_t j=0; j < i; j++) {
+      path << split_path2[j] << "/";
+    }
+    paths.push_back(path.str());
+  }
+
+  paths.push_back("");
+  //for(auto const& s: paths) {
+    //std::cout << s << std::endl;
+  //}
+  return paths;
+}
+
 void APIENTRY glDebugOutput(GLenum source,
                             GLenum type,
                             GLuint id,

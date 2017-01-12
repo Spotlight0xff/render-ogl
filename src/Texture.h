@@ -3,6 +3,8 @@
 
 #include <GL/glew.h>
 
+#include <string>
+
 enum class TextureType {
   DIFFUSE,
   SPECULAR
@@ -11,5 +13,6 @@ enum class TextureType {
 struct Texture {
   GLuint id;
   TextureType type;
+  std::string path;
 };
 #endif

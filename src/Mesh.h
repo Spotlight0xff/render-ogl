@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include <assimp/scene.h>
+
 #include <vector>
 
 #include "Vertex.h"
@@ -18,16 +20,24 @@ enum class FaceFormat {
 
 class Mesh {
  public:
-  Mesh(const char* path, Shader const& shader);
+  Mesh(aiMesh const* mesh, aiScene const* scene,
+    std::string const& path);
+
+  Mesh(std::vector<Vertex> vertices,
+       std::vector<GLuint> indices,
+       std::vector<Texture> textures);
   bool setup();
-  void draw();
+  void draw(Shader const& shader) const;
+
+  std::vector<GLuint> getIndices() const{
+    return indices;
+  }
 
  private:
-  Shader shader;
   std::vector<Vertex> vertices;
   std::vector<GLuint> indices;
   std::vector<Texture> textures;
-  
+
   GLuint vao = 0;
   GLuint vbo_vertices = 0;
   GLuint ebo_indices = 0;

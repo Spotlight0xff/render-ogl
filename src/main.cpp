@@ -2,7 +2,7 @@
 #include "Util.h"
 #include "ShaderCompiler.h"
 #include "FontRender.h"
-#include "Mesh.h"
+#include "Model.h"
 #include "Input.h"
 #include "Camera.h"
 
@@ -18,6 +18,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/norm.hpp>
 
 
 
@@ -61,16 +62,9 @@ int main() {
 
 
   Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
-  Mesh mesh("resources/models/dragon.obj", shader);
+  Model model("resources/models/nanosuit2/nanosuit.obj");
 
 
-
-  // Setup model-view-projection
-  //glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
-  //glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
-  //glm::mat4 projection = glm::perspective(45.0f, 1.0f*WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 10.0f);
-
-  //glm::mat4 mvp = projection * view * model;
 
   // disable vsync
   glfwSwapInterval(0);
@@ -131,16 +125,16 @@ int main() {
     fontRenderer.render(performance_str, 20.0f,WINDOW_HEIGHT - 50.0f, glm::vec3(0.5,0.8f, 0.2f));
     fontRenderer.render(fps_str, 20.0f,WINDOW_HEIGHT - 120.0f, glm::vec3(0.5,0.8f, 0.2f));
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // Rendering here
-    mesh.draw();
+    model.draw(shader);
 
 
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -20.0));
+    glm::mat4 mat_model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -20.0));
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(45.0f, 1.0f*WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
 
-    glm::mat4 mvp = projection * view * model;
+    glm::mat4 mvp = projection * view * mat_model;
     glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "mvp"), 1, GL_FALSE, glm::value_ptr(mvp));
 
 

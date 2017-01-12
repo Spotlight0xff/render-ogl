@@ -11,7 +11,7 @@ class Shader {
   Shader()  {}
   Shader(std::string const& path_vertex, std::string const& path_fragment);
 
-void use();
+void use() const;
 bool compileShader(const char* path, GLuint type, GLuint& shader, std::string& error);
 bool linkShaders(std::vector<GLuint> const& shaders, GLuint& shaderProg, std::string& error);
 GLuint getId() { return shader_prog;}

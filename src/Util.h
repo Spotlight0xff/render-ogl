@@ -22,6 +22,8 @@ void APIENTRY glDebugOutput(GLenum source,
 
 bool enableDebugOutput();
 
+std::vector<std::string> getEligiblePaths(const std::string& path1, const std::string& path2);
+
 }  // end namespace util
 
 

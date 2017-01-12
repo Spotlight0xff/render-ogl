@@ -31,7 +31,7 @@ Shader::Shader(std::string const& path_vertex, std::string const& path_fragment)
   }
 }
 
-void Shader::use() {
+void Shader::use() const{
   glUseProgram(shader_prog);
 }
 
