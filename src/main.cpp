@@ -39,7 +39,9 @@ int main() {
 
 
   GLFWwindow* window;
-  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
+  int width = WINDOW_WIDTH;
+  int height = WINDOW_HEIGHT;
+  window = glfwCreateWindow(width, height, "Rendering", nullptr, nullptr);
   if (window == nullptr) {
     std::cerr << "Failed to open GLFW window. Maybe not OpenGL 3.3 compatible?\n";
     return EXIT_FAILURE;
@@ -50,6 +52,8 @@ int main() {
     std::cerr << "Failed to init GLEW\n";
     return EXIT_FAILURE;
   }
+
+  glfwGetFramebufferSize(window, &width, &height);
 
   util::enableDebugOutput();
 
