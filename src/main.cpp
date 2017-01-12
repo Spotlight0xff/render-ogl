@@ -87,6 +87,18 @@ int main() {
   glm::vec3 camera_up = glm::vec3(0.0f, 1.0f, 0.0f);
   GLfloat pre_camera_speed = 5.0f;
 
+  GLfloat last_x = 0.0;
+  GLfloat last_y = 0.0;
+  GLfloat delta_x = 0.0;
+  GLfloat delta_y = 0.0;
+
+  input.addMouseCallback([&last_x, &last_y,
+                         &delta_x, &delta_y](double x, double y) {
+    delta_x = last_x - GLfloat(x);
+    delta_y = last_y - GLfloat(y);
+    last_x = GLfloat(x);
+    last_y = GLfloat(y);
+  });
   GLfloat delta_frame = 0.0;
   GLfloat last_frame = 0.0;
   GLfloat current_time = GLfloat(glfwGetTime());

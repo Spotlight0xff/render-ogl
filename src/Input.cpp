@@ -12,6 +12,15 @@ void Input::cbKeyEventsDispatch(
   }
 }
 
+
+void Input::cbMouseEventsDispatch(
+    GLFWwindow* window, double x, double y) {
+  if (glfwGetWindowUserPointer(window)) {
+    static_cast<Input*>(glfwGetWindowUserPointer(window))->mouseCallback(
+        window, x, y);
+  }
+}
+
 void Input::handleKeys(std::function<void(bool[])> func) {
   func(keys);
 }
@@ -29,5 +38,13 @@ void Input::keyCallback(
   }
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, GL_TRUE);
+  }
+}
+
+void Input::mouseCallback(
+    GLFWwindow* window,
+    double x, double y) {
+  if (mouse_callback) {
+    mouse_callback(x,y);
   }
 }
