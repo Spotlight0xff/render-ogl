@@ -1,14 +1,11 @@
 #include "Scene.h"
 
+void Scene::draw() {
+  if (enabled_fps) {
+    fps_counter.draw();
+  }
 
-//void Scene::useCamera(Camera) {
-  //input.addMouseCallback([&last_x, &last_y,
-                         //&camera]
-                         //(double x, double y) {
-    //GLfloat delta_x = GLfloat(x) - last_x;
-    //GLfloat delta_y = last_y - GLfloat(y);
-    //last_x = GLfloat(x);
-    //last_y = GLfloat(y);
-    //camera.look(delta_x, delta_y);
-  //});
-//}
+  for (auto o : objects) {
+    o->draw();
+  }
+}

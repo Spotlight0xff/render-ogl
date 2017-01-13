@@ -94,7 +94,7 @@ int main() {
   FpsMovement movement(&camera);
   movement.setEyelevel(7.0);
   movement.setSensitivity(0.1f);
-  movement.setSpeed(7.0f);
+  movement.setSpeed(20.0f);
   camera.setMovement(movement);
 
   // Scene initialization
@@ -105,16 +105,14 @@ int main() {
 
   // light source
   LightObject light(&scene);
-  scene.setLight(light);
-
 
 
   // Nanosuit object
-  ModelObject obj_nanosuit(&model_nanosuit, scene.getLightRef(), &scene);
+  ModelObject obj_nanosuit(&model_nanosuit, light, &scene);
   obj_nanosuit.setPosition({0.0, 0.0, -20.0});
 
   // Ground object
-  ModelObject obj_ground(&model_ground, scene.getLightRef(), &scene);
+  ModelObject obj_ground(&model_ground, light, &scene);
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
   // set custom shader for checkerboard
@@ -129,6 +127,7 @@ int main() {
       });
 
   // Add our models to the scene
+  scene.addObjectRef(&light);
   scene.addObjectRef(&obj_nanosuit);
   scene.addObjectRef(&obj_ground);
 
