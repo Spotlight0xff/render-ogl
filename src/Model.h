@@ -9,6 +9,8 @@
 #include "Texture.h"
 #include "ShaderCompiler.h"
 
+#include "SceneObject.h"
+
 #include <vector>
 
 class Model {
@@ -17,11 +19,7 @@ class Model {
 
   void draw(Shader const& shader) const;
 
-  void setPosition(glm::vec3 pos);
-  glm::vec3 getPositon();
-  glm::mat4 getModelMatrix();
 
-  // TODO: move(delta_vec)
 
  private:
   std::string directory;
@@ -29,7 +27,6 @@ class Model {
   std::vector<Mesh> meshes;
   std::vector<Texture> loaded_textures;
 
-  glm::vec3 position;
 
   void loadModel();
   void processNode(aiNode const* node, const aiScene* scene);

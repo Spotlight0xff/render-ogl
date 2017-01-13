@@ -26,18 +26,6 @@ void Model::draw(Shader const& shader) const{
   }
 }
 
-void Model::setPosition(glm::vec3 pos) {
-  position = pos;
-}
-
-glm::vec3 Model::getPositon() {
-  return position;
-}
-
-glm::mat4 Model::getModelMatrix() {
-  return glm::translate(glm::mat4(1.0f), position);
-}
-
 
 
 void Model::loadModel() {

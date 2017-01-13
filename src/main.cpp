@@ -5,6 +5,9 @@
 #include "Model.h"
 #include "Input.h"
 #include "Camera.h"
+#include "Scene.h"
+#include "LightObject.h"
+#include "ModelObject.h"
 
 #include <iostream>
 #include <vector>
@@ -21,12 +24,12 @@
 #include <glm/gtx/norm.hpp>
 
 
+namespace {
 
-
-int main() {
+GLFWwindow* initGL() {
   if (!glfwInit()) {
     std::cerr << "Failed to initialize GLFW!\n";
-    return EXIT_FAILURE;
+    return nullptr;
   }
 
   glfwWindowHint(GLFW_SAMPLES, 4);
@@ -41,58 +44,93 @@ int main() {
   GLFWwindow* window;
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
   if (window == nullptr) {
-    std::cerr << "Failed to open GLFW window. Maybe not OpenGL 3.3 compatible?\n";
-    return EXIT_FAILURE;
+    std::cerr << "Failed to open GLFW window. Maybe not OpenGL 4.3 compatible?\n";
+    return nullptr;
   }
   glfwMakeContextCurrent(window);
   glewExperimental = true; // for core profile
   if (glewInit() != GLEW_OK) {
     std::cerr << "Failed to init GLEW\n";
-    return EXIT_FAILURE;
+    return nullptr;
   }
 
   util::enableDebugOutput();
-
-
-  FontRenderer fontRenderer;
-  fontRenderer.load("resources/fonts/OpenSans-Regular.ttf");
-
-  Input input(window);
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-
-  //Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
-  Shader shader_model("resources/shaders/model_phong_v.glsl", "resources/shaders/model_phong_f.glsl");
-  Shader shader_light("resources/shaders/light_vertex.glsl", "resources/shaders/light_fragment.glsl");
-  Shader shader_ground("resources/shaders/ground.vs", "resources/shaders/ground.fs");
-  Model model("resources/models/nanosuit2/nanosuit.obj");
-  Model ground("resources/models/ground.obj");
-  Model light("resources/models/cube.obj");
-
-  model.setPosition({0.0, -7.0, -20.0});
-
-
 
   // disable vsync
   glfwSwapInterval(0);
 
 
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glEnable(GL_BLEND); // needed for text rendering
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_MULTISAMPLE);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
+
+  return window;
+}
+}
+
+
+int main() {
+  GLFWwindow* window = initGL();
+  if (window == nullptr) {
+    return EXIT_FAILURE;
+  }
+
+  Model model_nanosuit("resources/models/nanosuit2/nanosuit.obj");
+  Model model_ground("resources/models/ground.obj");
+
+
+
+
+
   EulerCamera camera;
+  //FpsMovement movement;
+  //movement.setEyelevel(7.0);
+  //camera.useMovement(movement);
   camera.setMouseSensitivity(0.1f);
   camera.setMovementSpeed(5.0f);
   camera.look(0.0f, 0.0f);
+  camera.setPosition({0.0, 7.0, 0.0});
 
-  GLfloat last_x = input.width;
-  GLfloat last_y = input.height;
+  // Scene initialization
+  Scene scene(window);
+  scene.useFont("resources/fonts/OpenSans-Regular.ttf");
+  scene.enableFpsCounter();
+  scene.useCamera(&camera);
 
-  input.addMouseCallback([&last_x, &last_y,
+  LightObject light(&scene);
+  scene.setLight(light);
+
+
+
+  ModelObject obj_nanosuit(&model_nanosuit, scene.getLightRef(), &scene);
+  obj_nanosuit.setPosition({0.0, 0.0, -20.0});
+
+  ModelObject obj_ground(&model_ground, scene.getLightRef(), &scene);
+  obj_ground.setPosition({0.0, 0.0, 0.0});
+  obj_ground.setScale({50.0, 1.0, 50.0});
+  // set custom shader for checkerboard
+  obj_ground.setShader("resources/shaders/ground.vs", "resources/shaders/ground.fs",
+      [](Scene& s, ModelObject& obj, Shader& shader) {
+        glm::mat4 model = obj.getModelMatrix();
+        glm::mat4 view = s.getCameraRef().getViewMatrix();
+        glm::mat4 projection = s.getProjectionMatrix();
+        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+      });
+
+  // Add our models to the scene
+  scene.addObjectRef(&obj_nanosuit);
+  scene.addObjectRef(&obj_ground);
+
+  GLfloat last_x = 0.0;
+  GLfloat last_y = 0.0;
+  scene.getInputRef().addMouseCallback([&last_x, &last_y,
                          &camera]
                          (double x, double y) {
     GLfloat delta_x = GLfloat(x) - last_x;
@@ -101,87 +139,37 @@ int main() {
     last_y = GLfloat(y);
     camera.look(delta_x, delta_y);
   });
+
+  //GLfloat last_x = input.width;
+  //GLfloat last_y = input.height;
+
   GLfloat delta_frame = 0.0;
   GLfloat last_frame = 0.0;
   GLfloat current_time = GLfloat(glfwGetTime());
-  GLfloat last_time = GLfloat(glfwGetTime());
   GLfloat jump_force = 0.0f;
   GLfloat gravity = 0.000981f;
-  std::string performance_str;
-  std::string fps_str("1337.0 FPS");
-  int n_frames = 0;
   do {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // Measure speed
-    current_time = GLfloat(glfwGetTime());
+
+    scene.draw();
+    current_time = glfwGetTime();
     delta_frame = current_time - last_frame;
     last_frame = current_time;
-    n_frames ++;
-
-    if (current_time - last_time >= 1.0f) {
-      GLfloat frame_ms = 1000.0f/GLfloat(n_frames);
-      GLfloat fps = n_frames;
-      std::cout << frame_ms << " ms/frame\n";
-
-      n_frames = 0;
-      last_time += 1.0;
-      performance_str = std::to_string(frame_ms) + " ms/frame";
-      fps_str = std::to_string(fps) + " FPS";
-    }
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    //fontRenderer.render(performance_str, 20.0f, height - 300.0f, glm::vec3(0.5,0.8f, 0.2f));
-    fontRenderer.render(fps_str, 20.0f, input.height - 200.0f, glm::vec3(0.5,0.8f, 0.2f));
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // Rendering here
-    shader_model.use();
-    glm::mat4 mat_model = model.getModelMatrix();
-    glm::mat4 view = camera.getViewMatrix();
-    glm::mat4 projection = glm::perspective(45.0f, 1.0f*input.width/GLfloat(input.height), 0.1f, 100.0f);
-
-    GLfloat r = 10.0f;
-    GLfloat pos_x = sin(glfwGetTime()) * r;
-    GLfloat pos_z = cos(glfwGetTime()) * r;
-
-    light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + model.getPositon());
-    glm::mat4 mat_model_light = light.getModelMatrix();
-    glm::mat4 view_light = camera.getViewMatrix();
-    glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 100.0f);
-
-    //glm::mat4 mvp = projection * view * mat_model;
-    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model));
-    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection_light));
-    glUniform3f(glGetUniformLocation(shader_model.getId(), "lightColor"), 1.0, 1.0, 1.0);
-    glm::vec3 light_pos = glm::vec3(0.0, -7.0, -20.0) + glm::vec3(pos_x, 10.0, pos_z);
-    glUniform3fv(glGetUniformLocation(shader_model.getId(), "lightPos"), 1, glm::value_ptr(light_pos));
-    glUniform3fv(glGetUniformLocation(shader_model.getId(), "cameraPos"), 1, glm::value_ptr(camera.getPosition()));
-    glUniform1f(glGetUniformLocation(shader_model.getId(), "ambientStrength"), 0.1);
-    model.draw(shader_model);
 
 
-    //glm::mat4 mat_ground = glm::scale(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 5.0f));
-    shader_ground.use();
-    glm::mat4 mat_ground = glm::scale(model.getModelMatrix(), glm::vec3(20.0f, 1.0f, 20.0f));
-    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_ground));
-    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    ground.draw(shader_ground);
+    GLfloat r = 6.0f;
+    GLfloat speed = 1.0f;
+    GLfloat pos_x = sin(glfwGetTime() * speed) * r;
+    GLfloat pos_z = cos(glfwGetTime() * speed) * r;
 
-
-    shader_light.use();
-
-    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model_light));
-    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view_light));
-    light.draw(shader_light);
+    light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit.getPosition());
 
 
     glfwSwapBuffers(window);
     glfwPollEvents();
-    input.handleKeys([&camera, &delta_frame,
+
+    scene.getInputRef().handleKeys([&camera, &delta_frame,
                       &jump_force, &gravity](bool keys[]) {
      if (keys[GLFW_KEY_W]) {
        camera.moveForward(delta_frame);
@@ -196,33 +184,27 @@ int main() {
        camera.moveRight(delta_frame);
      }
      if (keys[GLFW_KEY_LEFT_SHIFT]) {
-     // just apply the modifier
+     // TODO: just apply the modifier
       camera.moveForward(2*delta_frame);
      }
      if (keys[GLFW_KEY_SPACE]) {
        if (jump_force == 0.0f) {
            jump_force = 0.05f;
-           camera.moveY0();
+           camera.setY(7.0);
         }
      }
      if (keys[GLFW_KEY_H]) {
        camera.moveDown(delta_frame);
      }
-     if (camera.getPosition().y >= 0) {
+     if (camera.getPosition().y >= 7.0) {
        GLfloat net_force = jump_force - gravity;
        camera.moveUp(net_force);
        jump_force -= gravity;
      }
-       if (camera.getPosition().y < 0) {
+       if (camera.getPosition().y < 7.0) {
          jump_force = 0.0f;
-         camera.moveY0();
+         camera.setY(7.0);
        }
-     //if (jump_force < 0) {
-
-     //} else {
-       //jump_force = 0.0f;
-       ////camera_pos.y = 0.0; // keep at ground
-     //}
    });
   } while(glfwWindowShouldClose(window) == 0);
 
