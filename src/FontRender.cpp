@@ -44,7 +44,6 @@ FontRenderer::~FontRenderer() {
   FT_Done_FreeType(ft);
 }
 
-
 bool FontRenderer::isCached(GLchar character) {
   auto it_char = cached_font.find(character);
   if (it_char != cached_font.end()) {

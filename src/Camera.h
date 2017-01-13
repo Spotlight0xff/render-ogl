@@ -53,6 +53,10 @@ class EulerCamera : public Camera {
   void moveUp(GLfloat delta_frame);
   void moveDown(GLfloat delta_frame);
 
+  void moveY0() {
+    pos.y = 0;
+  }
+
 
   glm::mat4 getViewMatrix();
   glm::vec3 getPosition() {

@@ -103,6 +103,8 @@ int main() {
   GLfloat last_frame = 0.0;
   GLfloat current_time = GLfloat(glfwGetTime());
   GLfloat last_time = GLfloat(glfwGetTime());
+  GLfloat jump_force = 0.0f;
+  GLfloat gravity = 0.000981f;
   std::string performance_str;
   std::string fps_str("1337.0 FPS");
   int n_frames = 0;
@@ -158,17 +160,27 @@ int main() {
     model.draw(shader_model);
 
 
+    //glm::mat4 mat_ground = glm::scale(glm::mat4(1.0f), glm::vec3(5.0f, 1.0f, 5.0f));
+    shader_ground.use();
+    glm::mat4 mat_ground = glm::scale(model.getModelMatrix(), glm::vec3(20.0f, 1.0f, 20.0f));
+    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_ground));
+    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shader_ground.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    ground.draw(shader_ground);
+
+
     shader_light.use();
 
     glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model_light));
-    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection_light));
+    glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(shader_light.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view_light));
     light.draw(shader_light);
 
 
     glfwSwapBuffers(window);
     glfwPollEvents();
-    input.handleKeys([&camera, &delta_frame](bool keys[]) {
+    input.handleKeys([&camera, &delta_frame,
+                      &jump_force, &gravity](bool keys[]) {
      if (keys[GLFW_KEY_W]) {
        camera.moveForward(delta_frame);
      }
@@ -181,13 +193,34 @@ int main() {
      if (keys[GLFW_KEY_D]) {
        camera.moveRight(delta_frame);
      }
+     if (keys[GLFW_KEY_LEFT_SHIFT]) {
+     // just apply the modifier
+      camera.moveForward(2*delta_frame);
+     }
      if (keys[GLFW_KEY_SPACE]) {
-       camera.moveUp(delta_frame);
+       if (jump_force == 0.0f) {
+           jump_force = 0.05f;
+           camera.moveY0();
+        }
      }
      if (keys[GLFW_KEY_H]) {
        camera.moveDown(delta_frame);
      }
-     //camera_pos.y = 0.0; // keep at ground
+     if (camera.getPosition().y >= 0) {
+       GLfloat net_force = jump_force - gravity;
+       camera.moveUp(net_force);
+       jump_force -= gravity;
+     }
+       if (camera.getPosition().y < 0) {
+         jump_force = 0.0f;
+         camera.moveY0();
+       }
+     //if (jump_force < 0) {
+
+     //} else {
+       //jump_force = 0.0f;
+       ////camera_pos.y = 0.0; // keep at ground
+     //}
    });
   } while(glfwWindowShouldClose(window) == 0);
 
