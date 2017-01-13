@@ -18,7 +18,7 @@ class FpsMovement {
   void handleMouse(GLfloat x, GLfloat y);
   void handleDelta();
 
-  void setEyelevel(GLfloat el) { eyelevel = el; }
+  void setEyelevel(GLfloat el) { default_eyelevel = el; eyelevel = el; }
   void setSensitivity(GLfloat sens) { sensitivity = sens; }
   void setSpeed(GLfloat sp) { default_speed = sp; }
 
@@ -28,7 +28,9 @@ class FpsMovement {
 
   // movement-related
   GLfloat jump_force = 0.0f;
-  GLfloat eyelevel = 0.0f;
+  GLfloat default_eyelevel = 0.0f;
+  GLfloat eyelevel = default_eyelevel;
+  GLfloat duck_offset = 3.0f;
   GLfloat sensitivity = DEFAULT_SENSITIVITY;
   GLfloat default_speed = DEFAULT_MOVEMENT_SPEED;
   GLfloat speed = default_speed;

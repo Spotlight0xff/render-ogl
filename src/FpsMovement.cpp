@@ -32,6 +32,12 @@ void FpsMovement::handleKeyboard(bool keys[]) {
       camera->setY(eyelevel);
     }
   }
+
+  if (keys[GLFW_KEY_LEFT_CONTROL]) {
+    eyelevel = default_eyelevel - duck_offset;
+  } else {
+    eyelevel = default_eyelevel;
+  }
   if (keys[GLFW_KEY_H]) {
     camera->moveDown(delta_frame * speed);
   }
