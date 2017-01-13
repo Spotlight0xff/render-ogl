@@ -39,6 +39,7 @@ flags = [
     '-I./src/',
     '-I/usr/include/freetype2',
     '-I/usr/include/SOIL',
+    '-I/usr/include/bullet',
     '-std=c++14',
     '-Weverything',
     '-Wno-c++98-compat',

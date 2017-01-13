@@ -15,6 +15,7 @@ find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(Assimp REQUIRED)
 find_package(SOIL REQUIRED)
+find_package(Bullet REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 
 add_executable(render ${sources})
@@ -25,6 +26,7 @@ target_include_directories(render PUBLIC
   src
   ${FREETYPE_INCLUDE_DIRS}
   ${SOIL_INCLUDE_DIR}
+  ${BULLET_INCLUDE_DIRS}
   )
 
 # copy recourses into build dir
@@ -39,6 +41,7 @@ target_link_libraries(render PUBLIC
   ${FREETYPE_LIBRARIES}
   ${ASSIMP_LIBRARIES}
   ${SOIL_LIBRARIES}
+  ${BULLET_LIBRARIES}
   )
 
 # For the unit tests
