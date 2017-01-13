@@ -1,11 +1,18 @@
-#include "Camera.h"
-
+#include "EulerCamera.h"
+#include "FpsMovement.h"
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <iostream> // DEBUG
+void EulerCamera::setMovement(FpsMovement& movement) {
+  do_mouse = [&movement](GLfloat x, GLfloat y) {
+    movement.handleMouse(x,y);
+  };
+
+  do_keyboard = [&movement](bool keys[]) {
+    movement.handleKeyboard(keys);
+  };
+}
 
 void EulerCamera::look(GLfloat delta_x, GLfloat delta_y) {
     yaw += delta_x;
@@ -50,7 +57,6 @@ void EulerCamera::moveUp(GLfloat delta) {
 void EulerCamera::moveDown(GLfloat delta) {
   pos -= delta * up;
 }
-
 
 
 inline glm::mat4 EulerCamera::getViewMatrix() const{

@@ -4,7 +4,7 @@
 #include "FontRender.h"
 #include "Model.h"
 #include "Input.h"
-#include "Camera.h"
+#include "EulerCamera.h"
 #include "Scene.h"
 #include "LightObject.h"
 #include "ModelObject.h"
@@ -21,7 +21,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/norm.hpp>
 
 
 namespace {
