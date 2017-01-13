@@ -62,6 +62,6 @@ void EulerCamera::moveDown(GLfloat delta_frame) {
 
 
 
-inline glm::mat4 EulerCamera::getViewMatrix() {
+inline glm::mat4 EulerCamera::getViewMatrix() const{
   return glm::lookAt(pos, pos + front, up);
 }

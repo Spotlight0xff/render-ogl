@@ -17,14 +17,14 @@ class Camera {
   virtual void moveRight(GLfloat delta_frame) = 0;
   virtual void moveBackward(GLfloat delta_frame) = 0;
 
-  virtual glm::mat4 getViewMatrix() = 0;
-  virtual glm::vec3 getPosition() = 0;
+  virtual glm::mat4 getViewMatrix() const = 0;
+  virtual glm::vec3 getPosition() const = 0;
 
   void setMouseSensitivity(GLfloat sensitivity) {
     mouse_sens = sensitivity;
   }
 
-  GLfloat getMouseSensitivitiy() {
+  GLfloat getMouseSensitivitiy() const {
     return mouse_sens;
   }
 
@@ -32,7 +32,7 @@ class Camera {
     movement_speed = speed;
   }
 
-  GLfloat getMovementSpeed() {
+  GLfloat getMovementSpeed() const {
     return movement_speed;
   }
 
@@ -53,13 +53,17 @@ class EulerCamera : public Camera {
   void moveUp(GLfloat delta_frame);
   void moveDown(GLfloat delta_frame);
 
-  void moveY0() {
-    pos.y = 0;
+  void setY(GLfloat y) {
+    pos.y = y;
+  }
+
+  void setPosition(glm::vec3 p) {
+    pos = p;
   }
 
 
-  glm::mat4 getViewMatrix();
-  glm::vec3 getPosition() {
+  glm::mat4 getViewMatrix() const;
+  glm::vec3 getPosition() const {
     return pos;
   }
 
