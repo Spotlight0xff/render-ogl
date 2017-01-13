@@ -1,11 +1,11 @@
-#include "LightObject.h"
+#include "PhongLight.h"
 
 
 namespace engine {
 namespace components {
 
 
-void LightObject::draw() {
+void PhongLight::draw() {
   shader.use();
   engine::scene::Camera const &camera = scene->getCameraRef();
 
@@ -19,7 +19,7 @@ void LightObject::draw() {
   model.draw(shader);
 }
 
-glm::mat4 LightObject::getModelMatrix() {
+glm::mat4 PhongLight::getModelMatrix() {
   return glm::translate(glm::mat4(1.0f), position);
 }
 

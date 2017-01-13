@@ -1,4 +1,4 @@
-#include "ModelObjectPhong.h"
+#include "PhongModel.h"
 #include "engine/Model.h"
 #include "engine/scene/SceneObject.h"
 #include "engine/Scene.h"
@@ -9,7 +9,7 @@ namespace engine {
 namespace components {
 
 
-ModelObjectPhong::ModelObjectPhong(Model *m, engine::scene::SceneObject const &l, Scene *s)
+PhongModel::PhongModel(Model *m, PhongLight const &l, Scene *s)
         : ModelObject(m, s),
           light(l) {
   setShader("phong_model",

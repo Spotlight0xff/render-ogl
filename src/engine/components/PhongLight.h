@@ -1,5 +1,5 @@
-#ifndef LIGHTOBJECT_H
-#define LIGHTOBJECT_H
+#ifndef ENGINE_COMPONENTS_PHONGLIGHT_H
+#define ENGINE_COMPONENTS_PHONGLIGHT_H
 
 #include "engine/scene/SceneObject.h"
 #include "engine/ShaderCompiler.h"
@@ -14,9 +14,9 @@
 namespace engine {
 namespace components {
 
-class LightObject : public engine::scene::SceneObject {
+class PhongLight : public engine::scene::SceneObject {
   public:
-    LightObject(Scene *s)
+    PhongLight(Scene *s)
             : scene(s),
               model("resources/models/cube.obj") {
       shader = Shader("light_simple");

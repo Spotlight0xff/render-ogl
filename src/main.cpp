@@ -6,8 +6,8 @@
 #include "engine/Input.h"
 #include "engine/scene/EulerCamera.h"
 #include "engine/Scene.h"
-#include "engine/components/LightObject.h"
-#include "engine/components/ModelObjectPhong.h"
+#include "engine/components/PhongLight.h"
+#include "engine/components/PhongModel.h"
 
 #include <iostream>
 #include <vector>
@@ -101,12 +101,12 @@ int main() {
   scene.useCamera(&camera);
 
   // light source
-  components::LightObject light(&scene);
+  components::PhongLight light(&scene);
   //LightObject light2(&scene);
 
 
   // Nanosuit object
-  components::ModelObjectPhong obj_nanosuit(&model_nanosuit, light, &scene);
+  components::PhongModel obj_nanosuit(&model_nanosuit, light, &scene);
   obj_nanosuit.setPosition({0.0, 0.0, -20.0});
 
   // Ground object
