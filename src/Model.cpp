@@ -108,25 +108,40 @@ Mesh Model::processMesh(aiMesh const* mesh, const aiScene* scene) {
 }
 
 std::vector<Texture> Model::loadTextures(
-    aiMaterial* mat, aiTextureType type, std::string type_name) {
+    aiMaterial* mat, aiTextureType ai_type, std::string type_name) {
   std::vector<Texture> texs;
-  size_t count = mat->GetTextureCount(type);
+  size_t count = mat->GetTextureCount(ai_type);
   texs.reserve(count);
   for (size_t i=0; i < count; i++) {
     aiString tex_str;
-    mat->GetTexture(type, static_cast<unsigned int>(i), &tex_str);
+    mat->GetTexture(ai_type, static_cast<unsigned int>(i), &tex_str);
     for(auto const& t : loaded_textures) {
       if (t.path == std::string(tex_str.C_Str())) {
         texs.push_back(t);
       }
     }
-    texs.push_back(loadTexture(tex_str.C_Str(), directory.c_str()));
+
+    TextureType type = TextureType::UNKNOWN;
+    if (ai_type == aiTextureType_DIFFUSE) {
+      type = TextureType::DIFFUSE;
+    } else if (ai_type == aiTextureType_SPECULAR) {
+      type = TextureType::SPECULAR;
+    }
+    Texture texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
+
+    aiColor3D ambient (0.f,0.f,0.f);
+    mat->Get(AI_MATKEY_COLOR_DIFFUSE,texture.diffuse);
+    mat->Get(AI_MATKEY_COLOR_AMBIENT,texture.ambient);
+    mat->Get(AI_MATKEY_COLOR_SPECULAR,texture.specular);
+    mat->Get(AI_MATKEY_SHININESS,texture.shininess);
+    texs.push_back(texture);
   }
   return texs;
 }
 
-Texture Model::loadTexture(const char* file, const char* directory) {
+Texture Model::loadTexture(const char* file, const char* directory, TextureType type) {
     Texture texture;
+    texture.type = type;
     int width = 0, height = 0;
     unsigned char* image = nullptr;
     std::string path(directory);
@@ -138,6 +153,7 @@ Texture Model::loadTexture(const char* file, const char* directory) {
       return {};
     }
     texture.path = path;
+
 
     // handle textures
 

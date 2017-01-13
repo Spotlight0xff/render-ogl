@@ -2,37 +2,53 @@
 
 out vec4 color;
 
-uniform vec3 lightColor;
+struct Material {
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+  float shininess;
+};
+
+uniform Material material;
 uniform float ambientStrength;
+
+// Light
+uniform vec3 lightColor;
 uniform vec3 lightPos;
+
+// Camera
 uniform vec3 viewPos;
+
+
+// Texture
 uniform sampler2D tex;
 
+/*
+ *  Input variables
+ */
 in vec2 TexCoord;
 in vec3 Normal;
-in vec3 FragPos;
+in vec3 FragPos; // fragment position
+
 
 void main()
 {
-  // ambient
-  vec3 ambient = ambientStrength * lightColor;
+  // Ambient
+  vec3 ambient = ambientStrength * material.ambient;
 
-  // diffuse
+  // Diffuse
   vec3 norm = normalize(Normal);
-  vec3 light_dir = normalize(lightPos - FragPos);
-  float diff = max(dot(norm, light_dir), 0.0); // angle
-  vec3 diffuse = diff * lightColor;
+  vec3 lightDir = normalize(lightPos - FragPos);
+  // calc the angle between the incoming light and us
+  float diff = max(dot(norm, lightDir), 0.0);
+  vec3 diffuse = diff * material.diffuse;
 
-  // specular
-  float specularStrength = 0.7f;
-  vec3 view_dir = normalize(viewPos - FragPos);
-  vec3 reflect_dir = reflect(-light_dir, norm);
-  float spec = pow(max(dot(view_dir, reflect_dir), 0.0), 32);
-  vec3 specular = specularStrength * spec * light_dir;
+  // Specular
+  vec3 viewDir = normalize(viewPos - FragPos);
+  vec3 reflectDir = reflect(-lightDir, norm);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+  vec3 specular = spec * material.specular;
 
-
-  // put together
-  vec3 result = (ambient + diffuse + specular);
-
+  vec3 result = (ambient + diffuse + specular) * lightColor;
   color = texture(tex, TexCoord) * vec4(result, 1.0);
 }

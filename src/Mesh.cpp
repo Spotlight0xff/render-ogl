@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -64,10 +65,22 @@ bool Mesh::setup() {
 }
 
 void Mesh::draw(Shader const& shader) const{
-  for(auto const& t : textures) {
-    glBindTexture(GL_TEXTURE_2D, t.id);
-  }
   shader.use();
+  size_t i = 0;
+  for(auto const& t : textures) {
+    glActiveTexture(GL_TEXTURE0 + i);
+    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t.shininess);
+    glUniform3fv(glGetUniformLocation(shader.getId(), "material.ambient"), 1,
+        glm::value_ptr(t.ambient));
+
+    glUniform3fv(glGetUniformLocation(shader.getId(), "material.diffuse"), 1,
+        glm::value_ptr(t.diffuse));
+
+    glUniform3fv(glGetUniformLocation(shader.getId(), "material.specular"), 1,
+        glm::value_ptr(t.specular));
+    glBindTexture(GL_TEXTURE_2D, t.id);
+    i++;
+  }
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(vertices.size()), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);

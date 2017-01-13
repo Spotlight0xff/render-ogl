@@ -33,6 +33,7 @@ class Model {
   Mesh processMesh(aiMesh const* mesh, const aiScene* scene);
   std::vector<Texture> loadTextures(
       aiMaterial* mat, aiTextureType type, std::string type_name);
-  Texture loadTexture(const char* path, const char* directory);
+  Texture loadTexture(const char* file, const char* directory,
+    TextureType type);
 };
 #endif

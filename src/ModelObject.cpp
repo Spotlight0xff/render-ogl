@@ -35,7 +35,7 @@ ModelObject::ModelObject(Model* m, SceneObject const& l, Scene* s)
            glUniform3fv(glGetUniformLocation(shader.getId(), "cameraPos"), 1,
                glm::value_ptr(scene.getCameraRef().getPosition()));
            // ambient strength is static for now
-           glUniform1f(glGetUniformLocation(shader.getId(), "ambientStrength"), 0.1);
+           glUniform1f(glGetUniformLocation(shader.getId(), "ambientStrength"), 0.5);
          });
 }
 
