@@ -27,8 +27,9 @@ void FpsMovement::handleKeyboard(bool keys[]) {
     speed = default_speed;
   }
   if (keys[GLFW_KEY_SPACE]) {
-    if (jump_force == 0.0f) {
-      jump_force = inital_force;
+    if (jump_speed == 0.0f) {
+      jump_speed = initial_force;
+      jumping = true;
       camera->setY(eyelevel);
     }
   }
@@ -41,13 +42,15 @@ void FpsMovement::handleKeyboard(bool keys[]) {
   if (keys[GLFW_KEY_H]) {
     camera->moveDown(delta_frame * speed);
   }
-  if (camera->getPosition().y >= eyelevel) {
-    GLfloat net_force = jump_force - gravity;
-    camera->moveUp(net_force * delta_frame);
-    jump_force -= gravity;
+  if (jumping) {
+    camera->moveUp(jump_speed * delta_frame);
+    jump_speed -= gravity;
+    if (camera->getPosition().y <= eyelevel) {
+      jumping = false;
+    }
   }
   if (camera->getPosition().y < eyelevel) {
-    jump_force = 0.0f;
+    jump_speed = 0.0;
     camera->setY(eyelevel);
   }
 }

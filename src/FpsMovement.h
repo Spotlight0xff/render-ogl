@@ -27,17 +27,26 @@ class FpsMovement {
   Camera* camera;
 
   // movement-related
-  GLfloat jump_force = 0.0f;
-  GLfloat default_eyelevel = 0.0f;
-  GLfloat eyelevel = default_eyelevel;
-  GLfloat duck_offset = 3.0f;
+
+  // general
+  static constexpr GLfloat gravity = 0.891f;
   GLfloat sensitivity = DEFAULT_SENSITIVITY;
   GLfloat default_speed = DEFAULT_MOVEMENT_SPEED;
   GLfloat speed = default_speed;
   GLfloat shift_modifier = 2.0f;
-  static constexpr GLfloat gravity = 0.0891f;
-  static constexpr GLfloat inital_force = 40.0f;
 
+
+  // jumping
+  GLfloat jump_speed = 0.0f;
+  bool jumping = false;
+  static constexpr GLfloat initial_force = 50.0f;
+
+  // ducking
+  GLfloat duck_offset = 3.0f;
+
+  // eyelevel
+  GLfloat default_eyelevel = 0.0f;
+  GLfloat eyelevel = default_eyelevel;
 
   // technical auxiliaries
   GLfloat delta_frame = 0.0f;
