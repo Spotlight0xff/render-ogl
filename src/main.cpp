@@ -7,7 +7,7 @@
 #include "EulerCamera.h"
 #include "Scene.h"
 #include "LightObject.h"
-#include "ModelObject.h"
+#include "ModelObjectPhong.h"
 
 #include <iostream>
 #include <vector>
@@ -101,14 +101,15 @@ int main() {
 
   // light source
   LightObject light(&scene);
+  //LightObject light2(&scene);
 
 
   // Nanosuit object
-  ModelObject obj_nanosuit(&model_nanosuit, light, &scene);
+  ModelObjectPhong obj_nanosuit(&model_nanosuit, light, &scene);
   obj_nanosuit.setPosition({0.0, 0.0, -20.0});
 
   // Ground object
-  ModelObject obj_ground(&model_ground, light, &scene);
+  ModelObject obj_ground(&model_ground, &scene);
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
   // set custom shader for checkerboard
