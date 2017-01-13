@@ -55,7 +55,7 @@ class ModelObject : public SceneObject {
   ~ModelObject() {
   }
 
-  void draw() {
+  void draw() override {
     // use shader program
     shader.use();
 
@@ -84,7 +84,7 @@ class ModelObject : public SceneObject {
     return color;
   }
   glm::vec3 getPosition() const override;
-  glm::mat4 getModelMatrix();
+  glm::mat4 getModelMatrix() override;
   // TODO: move(delta_vec)
 
  private:

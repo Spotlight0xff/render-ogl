@@ -19,7 +19,7 @@ class LightObject : public SceneObject {
     shader = Shader("resources/shaders/light_vertex.glsl", "resources/shaders/light_fragment.glsl");
   }
 
-  void draw() {
+  void draw() override {
     shader.use();
     Camera const& camera = scene->getCameraRef();
 

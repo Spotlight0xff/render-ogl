@@ -28,8 +28,8 @@ class EulerCamera : public Camera {
 
 
 
-  glm::mat4 getViewMatrix() const;
-  glm::vec3 getPosition() const { return pos; }
+  glm::mat4 getViewMatrix() const override;
+  glm::vec3 getPosition() const override { return pos; }
 
   std::function<void(bool keys[])> do_keyboard;
   std::function<void(GLfloat, GLfloat)> do_mouse;

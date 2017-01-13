@@ -83,9 +83,6 @@ int main() {
   Model model_ground("resources/models/ground.obj");
 
 
-
-
-
   // Setup camera and movement
   EulerCamera camera;
   camera.look(0.0f, 0.0f);
