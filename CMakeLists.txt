@@ -47,16 +47,16 @@ target_link_libraries(render PUBLIC
 # For the unit tests
 find_package(GTest)
 if (GTEST_FOUND)
-  add_executable(unit_tests ${sources_test} ${sources})
+  #add_executable(unit_tests ${sources_test} ${sources})
 
   # prevent collisions
-  target_compile_definitions(unit_tests PUBLIC UNIT_TESTS)
+  #target_compile_definitions(unit_tests PUBLIC UNIT_TESTS)
 
-  # use exec as link librar -> inherit compiler options & libs
-  set_target_properties(render PROPERTIES ENABLE_EXPORTS ON)
+  # use exec as link library -> inherit compiler options & libs
+  #set_target_properties(render PROPERTIES ENABLE_EXPORTS ON)
 
-  target_link_libraries(unit_tests PUBLIC
-    ${GTEST_BOTH_LIBRARIES}
-    render
-    )
+  #target_link_libraries(unit_tests PUBLIC
+    #${GTEST_BOTH_LIBRARIES}
+    #render
+    #)
 endif()
