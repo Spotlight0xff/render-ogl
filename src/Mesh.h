@@ -29,9 +29,9 @@ class Mesh {
   bool setup();
   void draw(Shader const& shader) const;
 
-  std::vector<GLuint> getIndices() const{
-    return indices;
-  }
+  std::vector<GLuint> getIndices() const{ return indices; }
+  std::vector<Vertex> getVertices() const{ return vertices; }
+  std::vector<Texture> getTextures() const{ return textures; }
 
  private:
   std::vector<Vertex> vertices;

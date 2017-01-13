@@ -12,12 +12,18 @@ Model::Model(const char* p)
   directory = path.substr(0, path.find_last_of('/'));
   directory += '/';
   loadModel();
-  size_t count = 0;
+  size_t count_v = 0;
+  size_t count_i = 0;
+  size_t count_t = 0;
   for(auto const& m : meshes) {
-    count += m.getIndices().size();
+    count_v += m.getVertices().size();
+    count_i += m.getIndices().size();
+    count_t += m.getTextures().size();
   }
-  std::cout << "Imported " << meshes.size() << " meshes.\n"
-    << " with " << count << " vertices.\n";
+  std::cout << "Imported " << meshes.size() << " meshes with a total of\n"
+    << count_v << " vertices,\n"
+    << count_i << " indices and\n"
+    << count_t << " textures.\n";
 }
 
 void Model::draw(Shader const& shader) const{
@@ -97,10 +103,6 @@ Mesh Model::processMesh(aiMesh const* mesh, const aiScene* scene) {
       indices.push_back(f.mIndices[i]);
     }
   }
-  std::cout << "Mesh parsing done:\n"
-    << vertices.size() << " vertices\n"
-    << indices.size() << " indices\n"
-    << textures.size() << " textures\n";
 
   return Mesh(vertices, indices, textures);
 }
@@ -129,7 +131,6 @@ Texture Model::loadTexture(const char* file, const char* directory) {
     unsigned char* image = nullptr;
     std::string path(directory);
     path += file;
-    std::cout << "load " << path << "\n";
     image = SOIL_load_image(path.c_str(),
         &width, &height, 0, SOIL_LOAD_RGB);
     if (image == nullptr) {
