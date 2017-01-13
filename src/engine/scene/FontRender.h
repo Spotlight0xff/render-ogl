@@ -48,9 +48,6 @@ class FontRenderer {
     // char -> glyph struct
     std::unordered_map<GLchar, struct CharGlyph> cached_font;
 
-    struct CharGlyph getCached(GLchar character);
-
-    bool isCached(GLchar character);
 };
 
 

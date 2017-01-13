@@ -17,9 +17,6 @@ namespace model {
 
 class Mesh {
   public:
-    Mesh(aiMesh const *mesh, aiScene const *scene,
-         std::string const &path);
-
     Mesh(std::vector<Vertex> vertices,
          std::vector<GLuint> indices,
          std::vector<Texture> textures);
