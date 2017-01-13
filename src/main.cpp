@@ -62,9 +62,11 @@ int main() {
 
 
   //Shader shader("resources/shaders/model_vertex.glsl", "resources/shaders/model_fragment.glsl");
-  Shader shader_model("resources/shaders/model_ambient_v.glsl", "resources/shaders/model_ambient_f.glsl");
+  Shader shader_model("resources/shaders/model_phong_v.glsl", "resources/shaders/model_phong_f.glsl");
   Shader shader_light("resources/shaders/light_vertex.glsl", "resources/shaders/light_fragment.glsl");
+  Shader shader_ground("resources/shaders/ground.vs", "resources/shaders/ground.fs");
   Model model("resources/models/nanosuit2/nanosuit.obj");
+  Model ground("resources/models/ground.obj");
   Model light("resources/models/cube.obj");
 
   model.setPosition({0.0, -7.0, -20.0});
@@ -146,12 +148,12 @@ int main() {
     light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + model.getPositon());
     glm::mat4 mat_model_light = light.getModelMatrix();
     glm::mat4 view_light = camera.getViewMatrix();
-    //glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 100.0f);
+    glm::mat4 projection_light = glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 100.0f);
 
     //glm::mat4 mvp = projection * view * mat_model;
     glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "model"), 1, GL_FALSE, glm::value_ptr(mat_model));
     glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shader_model.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection_light));
     glUniform3f(glGetUniformLocation(shader_model.getId(), "lightColor"), 1.0, 1.0, 1.0);
     glm::vec3 light_pos = glm::vec3(0.0, -7.0, -20.0) + glm::vec3(pos_x, 10.0, pos_z);
     glUniform3fv(glGetUniformLocation(shader_model.getId(), "lightPos"), 1, glm::value_ptr(light_pos));
