@@ -6,6 +6,9 @@
 
 #include <iostream>
 
+namespace engine {
+namespace scene {
+
 void FpsMovement::handleKeyboard(bool keys[]) {
   handleDelta();
   if (keys[GLFW_KEY_W]) {
@@ -73,4 +76,7 @@ void FpsMovement::handleDelta() {
   GLfloat current_time = glfwGetTime();
   delta_frame = current_time - last_frame;
   last_frame = current_time;
+}
+
+} // end namespace engine::scene
 }

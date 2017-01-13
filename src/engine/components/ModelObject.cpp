@@ -1,15 +1,17 @@
 #include "ModelObject.h"
-#include "Model.h"
-#include "SceneObject.h"
-#include "Scene.h"
+#include "engine/scene/SceneObject.h"
+#include "engine/Scene.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 
-ModelObject::ModelObject(Model* m, Scene* s)
-: model(m),
-  shader(),
-  scene(s) {
+namespace engine {
+namespace components {
+
+ModelObject::ModelObject(Model *m, Scene *s)
+        : model(m),
+          shader(),
+          scene(s) {
 }
 
 void ModelObject::setPosition(glm::vec3 pos) {
@@ -30,7 +32,7 @@ glm::mat4 ModelObject::getModelMatrix() {
 }
 
 
-void ModelObject::setShader(const char* shader_name, ShaderSettingFunc settings) {
+void ModelObject::setShader(const char *shader_name, ShaderSettingFunc settings) {
   shader = Shader(shader_name);
   shader_settings = settings;
 }
@@ -43,4 +45,7 @@ void ModelObject::draw() {
 
   // TODO: remove shader from draw()
   model->draw(shader);
+}
+
+}  // namespace engine::components
 }

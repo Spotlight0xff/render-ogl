@@ -19,13 +19,14 @@
 
 #include "Mesh.h"
 
+namespace engine {
+namespace model {
 Mesh::Mesh(std::vector<Vertex> v,
-       std::vector<GLuint> ind,
-       std::vector<Texture> tex)
-  : vertices(v),
-    indices(ind),
-    textures(tex)
-{
+           std::vector<GLuint> ind,
+           std::vector<Texture> tex)
+        : vertices(v),
+          indices(ind),
+          textures(tex) {
   // Copy stuff into GPU & so on
   setup();
 }
@@ -46,14 +47,15 @@ bool Mesh::setup() {
 
   // handle indices
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_indices);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()  * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
   // Tell OpenGL how to interpret our data
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), static_cast<GLvoid*>(0));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), static_cast<GLvoid *>(0));
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(offsetof(Vertex, normal)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid *>(offsetof(Vertex, normal)));
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(offsetof(Vertex, tex_coord)));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        reinterpret_cast<GLvoid *>(offsetof(Vertex, tex_coord)));
   glEnableVertexAttribArray(2);
 
   glEnableVertexAttribArray(0);
@@ -64,23 +66,26 @@ bool Mesh::setup() {
   return true;
 }
 
-void Mesh::draw(Shader const& shader) const{
+void Mesh::draw(Shader const &shader) const {
   size_t i = 0;
-  for(auto const& t : textures) {
+  for (auto const &t : textures) {
     glActiveTexture(GL_TEXTURE0 + i);
     glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t.shininess);
     glUniform3fv(glGetUniformLocation(shader.getId(), "material.ambient"), 1,
-        glm::value_ptr(t.ambient));
+                 glm::value_ptr(t.ambient));
 
     glUniform3fv(glGetUniformLocation(shader.getId(), "material.diffuse"), 1,
-        glm::value_ptr(t.diffuse));
+                 glm::value_ptr(t.diffuse));
 
     glUniform3fv(glGetUniformLocation(shader.getId(), "material.specular"), 1,
-        glm::value_ptr(t.specular));
+                 glm::value_ptr(t.specular));
     glBindTexture(GL_TEXTURE_2D, t.id);
     i++;
   }
   glBindVertexArray(vao);
   glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(vertices.size()), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
+}
+
+} // end namespace engine::model
 }

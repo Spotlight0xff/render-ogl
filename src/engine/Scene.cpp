@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+namespace engine {
+
 void Scene::draw() {
   if (enabled_fps) {
     fps_counter.draw();
@@ -9,3 +11,5 @@ void Scene::draw() {
     o->draw();
   }
 }
+
+} // end namespace engine

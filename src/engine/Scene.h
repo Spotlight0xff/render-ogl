@@ -1,14 +1,14 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef ENGINE_SCENE_H
+#define ENGINE_SCENE_H
 
 #include "Model.h"
 #include "ShaderCompiler.h"
-#include "Camera.h"
-#include "Input.h"
-#include "FontRender.h"
-#include "FpsCounter.h"
+#include "engine/scene/Camera.h"
+#include "engine/Input.h"
+#include "engine/scene/FontRender.h"
+#include "engine/scene/FpsCounter.h"
 
-#include "SceneObject.h"
+#include "engine/scene/SceneObject.h"
 //#include "ModelObject.h"
 //#include "LightObject.h"
 
@@ -21,8 +21,10 @@
 #include <vector>
 #include <functional>
 
-class ModelObject;
-class LightObject;
+namespace engine {
+
+//class components::ModelObject;
+//class LightObject;
 
 class Scene {
  public:
@@ -34,15 +36,15 @@ class Scene {
   //void addModel(Model model, Shader shader) {
   //}
 
-  void addObjectRef(SceneObject* object) {
+  void addObjectRef(scene::SceneObject* object) {
     objects.push_back(object);
   }
 
-  void setLight(SceneObject* l) {
+  void setLight(scene::SceneObject* l) {
     objects.push_back(l);
   }
 
-  void useCamera(Camera* cam) { camera = cam; }
+  void useCamera(scene::Camera* cam) { camera = cam; }
 
   void enableFpsCounter() { enabled_fps = true; }
 
@@ -56,19 +58,20 @@ class Scene {
   }
 
   Input & getInputRef() { return input; }
-  FontRenderer& getFontRef() { return font; }
-  Camera const& getCameraRef() const { return *camera; }
+  scene::FontRenderer& getFontRef() { return font; }
+  scene::Camera const& getCameraRef() const { return *camera; }
   //SceneObject const& getLightRef() const { return *light; }
 
 
  private:
   Input input;
-  FpsCounter fps_counter;
-  Camera* camera;
+  scene::FpsCounter fps_counter;
+  scene::Camera* camera;
   GLFWwindow* window;
-  FontRenderer font;
+  scene::FontRenderer font;
   bool enabled_fps = false;
-  std::vector<SceneObject*> objects;
-  //std::vector<std::reference_wrapper<SceneObject>> objects;
+  std::vector<scene::SceneObject*> objects;
+  //std::vector<std::reference_wrapper<SceneObject>> components;
 };
+} // end namespace engine
 #endif

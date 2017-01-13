@@ -7,8 +7,10 @@
 #include <fstream>
 #include <iostream>
 
-Shader::Shader(std::string const& shader_name)
-  : name(shader_name) {
+namespace engine {
+
+Shader::Shader(std::string const &shader_name)
+        : name(shader_name) {
   bool success;
   std::string error;
   std::vector<GLuint> shaders;
@@ -16,13 +18,13 @@ Shader::Shader(std::string const& shader_name)
   success = compileShader(shader_name + ".vert", GL_VERTEX_SHADER, vertex_shader, error);
   if (!success) {
     std::cout << "[Shader::" << shader_name << "] Compilation of vertex shader failed:\n"
-      << error << std::endl;
+              << error << std::endl;
     return;
   }
   success = compileShader(shader_name + ".frag", GL_FRAGMENT_SHADER, fragment_shader, error);
   if (!success) {
     std::cout << "[Shader::" << shader_name << "] Compilation of fragment shader failed:\n"
-      << error << std::endl;
+              << error << std::endl;
     return;
   }
 
@@ -37,13 +39,13 @@ Shader::Shader(std::string const& shader_name)
   std::cout << "[Shader::" << shader_name << "] Compilation and linking process complete\n";
 }
 
-void Shader::use() const{
+void Shader::use() const {
   glUseProgram(shader_prog);
 }
 
 // TODO, just provide vertex & fragment path --> compile + link together
 // TODO: check if context is active --> null exception otherwise
-bool Shader::compileShader(std::string file, GLuint type, GLuint& shader, std::string& error) {
+bool Shader::compileShader(std::string file, GLuint type, GLuint &shader, std::string &error) {
   // first load from file
   std::string line, content;
   std::ifstream f(directory + file);
@@ -51,10 +53,10 @@ bool Shader::compileShader(std::string file, GLuint type, GLuint& shader, std::s
     error = "File not found";
     return false;
   }
-  while(std::getline(f, line)) {
+  while (std::getline(f, line)) {
     content += line + "\n";
   }
-  const char* shader_source = content.c_str();
+  const char *shader_source = content.c_str();
 
   // then create & compile shader
   shader = glCreateShader(type);
@@ -74,9 +76,9 @@ bool Shader::compileShader(std::string file, GLuint type, GLuint& shader, std::s
   return true;
 }
 
-bool Shader::linkShaders(std::vector<GLuint> const& shaders, GLuint& shaderProg, std::string& error) {
+bool Shader::linkShaders(std::vector<GLuint> const &shaders, GLuint &shaderProg, std::string &error) {
   shaderProg = glCreateProgram();
-  for(auto shader : shaders) {
+  for (auto shader : shaders) {
     glAttachShader(shaderProg, shader);
   }
   glLinkProgram(shaderProg);
@@ -94,3 +96,5 @@ bool Shader::linkShaders(std::vector<GLuint> const& shaders, GLuint& shaderProg,
   std::cout << "Linked " << shaders.size() << " shaders successfully.\n";
   return true;
 }
+
+} // end namespace engine

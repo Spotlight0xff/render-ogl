@@ -6,10 +6,13 @@
 
 #include <string>
 
+namespace engine {
+namespace model {
+
 enum class TextureType {
-  UNKNOWN,
-  DIFFUSE,
-  SPECULAR
+    UNKNOWN,
+    DIFFUSE,
+    SPECULAR
 };
 
 struct Texture {
@@ -21,4 +24,7 @@ struct Texture {
   glm::vec3 ambient = glm::vec3(0.3f);
   glm::vec3 specular = glm::vec3(1.0f);
 };
+
+} // end namespace engine::model
+}
 #endif
