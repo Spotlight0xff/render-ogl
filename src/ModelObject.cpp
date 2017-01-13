@@ -12,8 +12,7 @@ ModelObject::ModelObject(Model* m, SceneObject const& l, Scene* s)
   light(l),
   scene(s) {
 
-  setShader("resources/shaders/model_phong_v.glsl",
-         "resources/shaders/model_phong_f.glsl",
+  setShader("phong_model",
          [](Scene& scene, ModelObject& obj, Shader& shader) {
            glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "model"), 1, GL_FALSE,
                glm::value_ptr(obj.getModelMatrix()));
@@ -57,8 +56,8 @@ glm::mat4 ModelObject::getModelMatrix() {
 }
 
 
-void ModelObject::setShader(const char* shader_vs, const char* shader_fs, ShaderSettingFunc settings) {
-  shader = Shader(shader_vs, shader_fs);
+void ModelObject::setShader(const char* shader_name, ShaderSettingFunc settings) {
+  shader = Shader(shader_name);
   shader_settings = settings;
 }
 

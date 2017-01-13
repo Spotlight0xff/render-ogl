@@ -16,7 +16,7 @@ class LightObject : public SceneObject {
   LightObject(Scene* s)
   : scene(s),
     model("resources/models/cube.obj"){
-    shader = Shader("resources/shaders/light_vertex.glsl", "resources/shaders/light_fragment.glsl");
+    shader = Shader("light_simple");
   }
 
   void draw() override;

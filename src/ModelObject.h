@@ -17,7 +17,7 @@ class ModelObject : public SceneObject {
 
   SceneObject const& getLightRef() { return light; }
 
-  void setShader(const char* shader_vs, const char* shader_fs, ShaderSettingFunc settings);
+  void setShader(const char* shader_name, ShaderSettingFunc settings);
 
   void draw() override;
 

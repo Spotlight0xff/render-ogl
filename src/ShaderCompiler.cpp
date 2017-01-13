@@ -7,18 +7,22 @@
 #include <fstream>
 #include <iostream>
 
-Shader::Shader(std::string const& path_vertex, std::string const& path_fragment) {
+Shader::Shader(std::string const& shader_name)
+  : name(shader_name) {
   bool success;
   std::string error;
   std::vector<GLuint> shaders;
 
-  success = compileShader(path_vertex.c_str(), GL_VERTEX_SHADER, vertex_shader, error);
+  success = compileShader(shader_name + ".vert", GL_VERTEX_SHADER, vertex_shader, error);
   if (!success) {
+    std::cout << "[Shader::" << shader_name << "] Compilation of vertex shader failed:\n"
+      << error << std::endl;
     return;
   }
-  success = compileShader(path_fragment.c_str(), GL_FRAGMENT_SHADER, fragment_shader, error);
+  success = compileShader(shader_name + ".frag", GL_FRAGMENT_SHADER, fragment_shader, error);
   if (!success) {
-    std::cerr << "failed: " << error << std::endl;
+    std::cout << "[Shader::" << shader_name << "] Compilation of fragment shader failed:\n"
+      << error << std::endl;
     return;
   }
 
@@ -29,6 +33,8 @@ Shader::Shader(std::string const& path_vertex, std::string const& path_fragment)
   for (auto shader: shaders) {
     glDeleteShader(shader);
   }
+
+  std::cout << "[Shader::" << shader_name << "] Compilation and linking process complete\n";
 }
 
 void Shader::use() const{
@@ -37,10 +43,10 @@ void Shader::use() const{
 
 // TODO, just provide vertex & fragment path --> compile + link together
 // TODO: check if context is active --> null exception otherwise
-bool Shader::compileShader(const char* path, GLuint type, GLuint& shader, std::string& error) {
+bool Shader::compileShader(std::string file, GLuint type, GLuint& shader, std::string& error) {
   // first load from file
   std::string line, content;
-  std::ifstream f(path);
+  std::ifstream f(directory + file);
   if (!f.good()) {
     error = "File not found";
     return false;
@@ -61,12 +67,10 @@ bool Shader::compileShader(const char* path, GLuint type, GLuint& shader, std::s
   glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
   if (!success) {
     glGetShaderInfoLog(shader, 512, nullptr, error_log);
-    std::cerr << "Failed shader: " << error_log << std::endl;
     error = error_log;
     return false;
   }
 
-  std::cout << "Compiler shader '" << path << "' successfully.\n";
   return true;
 }
 

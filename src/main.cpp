@@ -112,7 +112,7 @@ int main() {
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
   // set custom shader for checkerboard
-  obj_ground.setShader("resources/shaders/ground.vs", "resources/shaders/ground.fs",
+  obj_ground.setShader("checkerboard",
       [](Scene& s, ModelObject& obj, Shader& shader) {
         glm::mat4 model = obj.getModelMatrix();
         glm::mat4 view = s.getCameraRef().getViewMatrix();
