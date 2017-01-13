@@ -8,9 +8,6 @@
 #include <iostream> // DEBUG
 
 void EulerCamera::look(GLfloat delta_x, GLfloat delta_y) {
-    delta_x *= mouse_sens;
-    delta_y *= mouse_sens;
-
     yaw += delta_x;
     pitch += delta_y;
 
@@ -28,36 +25,30 @@ void EulerCamera::look(GLfloat delta_x, GLfloat delta_y) {
 }
 
 
-void EulerCamera::moveForward(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
-  pos += speed * front;
+void EulerCamera::moveForward(GLfloat delta) {
+  pos += delta * front;
 }
 
-void EulerCamera::moveBackward(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
-  pos -= speed * front;
+void EulerCamera::moveBackward(GLfloat delta) {
+  pos -= delta * front;
 }
 
-void EulerCamera::moveLeft(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
+void EulerCamera::moveLeft(GLfloat delta) {
   glm::vec3 right = glm::normalize(glm::cross(front, up));
-  pos -= speed * right;
+  pos -= delta * right;
 }
 
-void EulerCamera::moveRight(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
+void EulerCamera::moveRight(GLfloat delta) {
   glm::vec3 right = glm::normalize(glm::cross(front, up));
-  pos += speed * right;
+  pos += delta * right;
 }
 
-void EulerCamera::moveUp(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
-  pos += speed * up;
+void EulerCamera::moveUp(GLfloat delta) {
+  pos += delta * up;
 }
 
-void EulerCamera::moveDown(GLfloat delta_frame) {
-  GLfloat speed = movement_speed * delta_frame;
-  pos -= speed * up;
+void EulerCamera::moveDown(GLfloat delta) {
+  pos -= delta * up;
 }
 
 
