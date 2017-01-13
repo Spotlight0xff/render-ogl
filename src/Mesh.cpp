@@ -65,7 +65,6 @@ bool Mesh::setup() {
 }
 
 void Mesh::draw(Shader const& shader) const{
-  shader.use();
   size_t i = 0;
   for(auto const& t : textures) {
     glActiveTexture(GL_TEXTURE0 + i);
