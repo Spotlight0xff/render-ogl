@@ -10,7 +10,6 @@ class SceneObject {
   virtual glm::mat4 getModelMatrix() = 0;
   virtual glm::vec3 getColor() const = 0;
   virtual ~SceneObject() {}
-  //virtual ~SceneObject();
 
  private:
   // TODO implement hierarchical structure
