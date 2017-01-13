@@ -44,7 +44,8 @@ void Model::loadModel() {
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path,
       aiProcess_Triangulate |
-      aiProcess_FlipUVs);
+      aiProcess_FlipUVs |
+      aiProcess_GenNormals);
   if (!scene) {
     std::cerr << "Import error for " << path
       << ": " << importer.GetErrorString() << "\n";
