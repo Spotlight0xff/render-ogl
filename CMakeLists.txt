@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(graphics-engine CXX)
+project(graphics-engine CXX C)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
@@ -16,7 +16,7 @@ find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(SOIL REQUIRED)
 find_package(Bullet)
-find_package(Threads REQUIRED)
+find_package(Threads)
 pkg_search_module(GLFW REQUIRED glfw3)
 pkg_search_module(ASSIMP REQUIRED assimp)
 
