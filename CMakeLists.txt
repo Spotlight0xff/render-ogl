@@ -75,7 +75,7 @@ add_subdirectory(${EXTERNAL_PROJECTS_DIR}/gtest)
 
 enable_testing()
 add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST})
-target_compile_options(${PROJECT_TEST_NAME} PUBLIC -std=c++11 -Wall)
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC
   ${PROJECT_INCLUDE_DIRS}
   ${GTEST_INCLUDE_DIRS}
