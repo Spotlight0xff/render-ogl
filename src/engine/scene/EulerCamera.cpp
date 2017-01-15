@@ -2,6 +2,8 @@
 #include "FpsMovement.h"
 
 #include <GL/glew.h>
+
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace engine {

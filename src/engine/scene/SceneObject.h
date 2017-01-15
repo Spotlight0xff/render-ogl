@@ -1,6 +1,7 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 namespace engine {

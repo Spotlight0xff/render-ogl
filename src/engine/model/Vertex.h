@@ -1,6 +1,7 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 namespace engine {

@@ -4,6 +4,8 @@
 #include "engine/ShaderCompiler.h"
 
 #include <GL/glew.h>
+
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 #pragma GCC diagnostic push

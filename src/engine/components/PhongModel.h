@@ -8,6 +8,7 @@
 #include "PhongLight.h"
 #include "engine/Scene.h"
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 namespace engine {

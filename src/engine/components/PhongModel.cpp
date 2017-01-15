@@ -3,6 +3,7 @@
 #include "engine/scene/SceneObject.h"
 #include "engine/Scene.h"
 
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace engine {
