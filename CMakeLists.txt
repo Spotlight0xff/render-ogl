@@ -13,10 +13,10 @@ find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(Assimp)
 find_package(SOIL REQUIRED)
 find_package(Bullet)
 pkg_search_module(GLFW REQUIRED glfw3)
+pkg_search_module(ASSIMP REQUIRED assimp)
 
 add_executable(render ${sources})
 
