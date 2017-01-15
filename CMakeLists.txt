@@ -24,6 +24,9 @@ target_compile_options(render PUBLIC -std=c++1y -Wall)
 
 target_include_directories(render PUBLIC
   src
+  "/usr/include"
+  "/usr/include/freetype2"
+  "/usr/include/freetype2/freetype"
   ${FREETYPE_INCLUDE_DIRS}
   ${SOIL_INCLUDE_DIR}
   ${BULLET_INCLUDE_DIRS}
