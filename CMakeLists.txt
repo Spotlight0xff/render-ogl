@@ -76,6 +76,10 @@ add_subdirectory(${EXTERNAL_PROJECTS_DIR}/gtest)
 enable_testing()
 add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST})
 target_compile_options(${PROJECT_TEST_NAME} PUBLIC -std=c++11 -Wall)
+target_include_directories(${PROJECT_TEST_NAME} PUBLIC
+  ${GTEST_INCLUDE_DIRS}
+  )
+
 add_dependencies(${PROJECT_TEST_NAME} googletest)
 target_link_libraries(${PROJECT_TEST_NAME}
   ${GTEST_LIBRARIES}
