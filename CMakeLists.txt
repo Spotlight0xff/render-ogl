@@ -13,13 +13,13 @@ file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
 # Find all required packages
 find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(SOIL REQUIRED)
 find_package(Bullet)
 find_package(Threads)
 pkg_search_module(GLFW REQUIRED glfw3)
 pkg_search_module(ASSIMP REQUIRED assimp)
+find_package(GLEW REQUIRED glew)
 
 #
 
