@@ -5,6 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 
 file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
+list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/main.cpp)
 file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
 
 
@@ -61,7 +62,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverag
 
 
 # compile & link target
-add_executable(render ${SOURCES})
+add_executable(render ${SOURCES} src/main.cpp)
 target_include_directories(render PUBLIC ${PROJECT_INCLUDE_DIRS})
 target_link_libraries(render PUBLIC ${PROJECT_LIBRARIES})
 
@@ -76,7 +77,7 @@ add_subdirectory(${EXTERNAL_PROJECTS_DIR}/gtest)
 
 
 enable_testing()
-add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST})
+add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST} ${SOURCES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC
   ${PROJECT_INCLUDE_DIRS}
@@ -85,6 +86,7 @@ target_include_directories(${PROJECT_TEST_NAME} PUBLIC
 
 add_dependencies(${PROJECT_TEST_NAME} googletest)
 target_link_libraries(${PROJECT_TEST_NAME}
+  ${PROJECT_LIBRARIES}
   ${GTEST_LIBRARIES}
   ${GTEST_LIBS_DIR}/libgtest.a
   ${GTEST_LIBS_DIR}/libgtest_main.a
