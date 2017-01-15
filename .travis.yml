@@ -13,9 +13,23 @@ addons:
     - cmake
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install xorg-dev libsoil-dev libassimp-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglew-dev libglm-dev
+  - sudo apt-get install xorg-dev libsoil-dev libassimp-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglm-dev
+
+install:
+  - wget https://github.com/nigels-com/glew/releases/download/glew-2.0.0/glew-2.0.0.tgz
+  - tar -xzvf glew-2.0.0.tgz
+  - pushd glew-2.0.0 && make && sudo make install && popd
 
 script:
+  - mkdir glew_git
+  - cd glew_git
+  - git clone https://github.com/nigels-com/glew.git glew
+  - cd glew
+  - cd build
+  - cmake ./cmake
+  - make -j4
+  - sudo make install
+  - cd ../../../
   - mkdir glfw_git
   - cd glfw_git
   - git clone https://github.com/glfw/glfw.git
