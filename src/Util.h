@@ -18,7 +18,7 @@ void APIENTRY glDebugOutput(GLenum source,
                             GLenum severity,
                             GLsizei /*length*/,
                             const GLchar *message,
-                            const void * /*userParam*/);
+                            void * /*userParam*/);
 
 bool enableDebugOutput();
 

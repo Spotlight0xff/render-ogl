@@ -20,7 +20,7 @@ pkg_search_module(GLFW REQUIRED glfw3)
 
 add_executable(render ${sources})
 
-target_compile_options(render PUBLIC -std=c++1y -Wall)
+target_compile_options(render PUBLIC -std=c++11 -Wall)
 
 target_include_directories(render PUBLIC
   src
@@ -40,6 +40,7 @@ add_custom_target(copy-runtime-files ALL
 target_link_libraries(render PUBLIC
   ${OPENGL_LIBRARIES}
   ${GLFW_LIBRARIES}
+  ${GLFW_STATIC_LIBRARIES}
   ${GLEW_LIBRARIES}
   ${FREETYPE_LIBRARIES}
   ${ASSIMP_LIBRARIES}
