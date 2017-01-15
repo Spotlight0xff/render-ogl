@@ -13,7 +13,7 @@ addons:
     - cmake
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install libsoil-dev libassimp-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglew-dev
+  - sudo apt-get install xorg-dev libsoil-dev libassimp-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglew-dev libglm-dev
 script:
   - mkdir glfw_git
   - cd glfw_git
