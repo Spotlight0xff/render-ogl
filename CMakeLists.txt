@@ -51,7 +51,8 @@ set(PROJECT_INCLUDE_DIRS
   ${BULLET_INCLUDE_DIRS}
   )
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 
 #if(CMAKE_COMPILER_IS_GNUCXX)
     #add_definitions(-std=c++11 -Wall -ansi -Wno-deprecated -pthread)
