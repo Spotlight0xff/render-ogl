@@ -13,7 +13,6 @@
 #pragma GCC diagnostic ignored "-Wreserved-id-macro"
 #pragma GCC diagnostic ignored "-Wpadded"
 #include <ft2build.h>
-#include "freetype/freetype.h"
 #include FT_FREETYPE_H
 #pragma GCC diagnostic pop
 
