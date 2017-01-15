@@ -3,6 +3,19 @@
 
 #include "cpp_sorter.h"
 #include "gtest/gtest.h"
+#include "Util.h"
+
+
+TEST(unit_test_util, split)
+{
+  std::string str = "a/b";
+  std::vector<std::string> splits;
+  util::split(str, '/', splits);
+
+
+	EXPECT_EQ(splits[0], "a");
+	EXPECT_EQ(splits[1], "b");
+}
 
 TEST(cpp_sorter_test, null_term_str_sort)
 {
