@@ -1,0 +1,20 @@
+language: cpp
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
+    packages:
+    - gcc-5
+    - g++-5
+    - clang-3.6
+    - cmake
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install libsoil-dev libassimp-dev glfw3 libfreetype6-dev libbullet-dev libgl-dev libglew-dev
+script:
+  - mkdir build
+  - cd build
+  - cmake .. && make
