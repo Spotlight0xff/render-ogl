@@ -6,14 +6,11 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.6
-    - sourceline: 'ppa:openrave/release'
     packages:
     - gcc-5
     - g++-5
     - clang-3.6
     - cmake
-    - assimp
-    - bullet
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install xorg-dev libsoil-dev libassimp-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglew-dev libglm-dev
