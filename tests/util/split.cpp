@@ -24,3 +24,11 @@ TEST(unit_test_util, split2) {
 
 	EXPECT_EQ(splits.size(), 0);
 }
+
+TEST(unit_test_util, split3) {
+  std::string str = "abc/def/";
+  std::vector<std::string> splits;
+  util::split(str, '/', splits);
+
+  EXPECT_EQ(splits.size(), 2);
+}
