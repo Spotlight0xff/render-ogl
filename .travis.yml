@@ -6,7 +6,7 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.6
-    - openrave
+    - sourceline: 'ppa:openrave/release'
     packages:
     - gcc-5
     - g++-5
