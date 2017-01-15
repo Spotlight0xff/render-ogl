@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
-project(render-ogl)
+project(graphics-engine CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 
-file(GLOB_RECURSE sources src/*.cpp src/*.h src/*.vs)
-file(GLOB_RECURSE sources_test tests/*.cpp tests/*.h)
-file(GLOB_RECURSE data resources/*)
+file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
+file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
+
+
 
 # Find all required packages
 find_package(PkgConfig REQUIRED)
@@ -15,29 +16,19 @@ find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
 find_package(SOIL REQUIRED)
 find_package(Bullet)
+find_package(Threads REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 pkg_search_module(ASSIMP REQUIRED assimp)
 
-add_executable(render ${sources})
-
-target_compile_options(render PUBLIC -std=c++11 -Wall)
-
-target_include_directories(render PUBLIC
-  src
-  "/usr/include"
-  "/usr/include/freetype2"
-  "/usr/include/freetype2/freetype"
-  ${FREETYPE_INCLUDE_DIRS}
-  ${SOIL_INCLUDE_DIR}
-  ${BULLET_INCLUDE_DIRS}
-  )
+#
 
 # copy recourses into build dir
 add_custom_target(copy-runtime-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     DEPENDS render)
 
-target_link_libraries(render PUBLIC
+# compiler and linker options
+set(PROJECT_LIBRARIES
   ${OPENGL_LIBRARIES}
   ${GLFW_LIBRARIES}
   ${GLFW_STATIC_LIBRARIES}
@@ -46,21 +37,52 @@ target_link_libraries(render PUBLIC
   ${ASSIMP_LIBRARIES}
   ${SOIL_LIBRARIES}
   ${BULLET_LIBRARIES}
+  ${THREADS_LIBRARIES}
   )
 
-# For the unit tests
-find_package(GTest)
-if (GTEST_FOUND)
-  #add_executable(unit_tests ${sources_test} ${sources})
+set(PROJECT_INCLUDE_DIRS
+  "src"
+  "src/include"
+  "/usr/include"
+  "/usr/include/freetype2"
+  "/usr/include/freetype2/freetype"
+  ${FREETYPE_INCLUDE_DIRS}
+  ${SOIL_INCLUDE_DIR}
+  ${BULLET_INCLUDE_DIRS}
+  )
 
-  # prevent collisions
-  #target_compile_definitions(unit_tests PUBLIC UNIT_TESTS)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-  # use exec as link library -> inherit compiler options & libs
-  #set_target_properties(render PROPERTIES ENABLE_EXPORTS ON)
+#if(CMAKE_COMPILER_IS_GNUCXX)
+    #add_definitions(-std=c++11 -Wall -ansi -Wno-deprecated -pthread)
+#endif()
 
-  #target_link_libraries(unit_tests PUBLIC
-    #${GTEST_BOTH_LIBRARIES}
-    #render
-    #)
-endif()
+
+# compile & link target
+add_executable(render ${SOURCES})
+target_include_directories(render PUBLIC ${PROJECT_INCLUDE_DIRS})
+target_link_libraries(render PUBLIC ${PROJECT_LIBRARIES})
+
+
+
+###
+### Unit testing using Google test
+###
+set(EXTERNAL_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/external)
+set(PROJECT_TEST_NAME unit_tests)
+add_subdirectory(${EXTERNAL_PROJECTS_DIR}/gtest)
+
+
+enable_testing()
+add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST})
+target_compile_options(${PROJECT_TEST_NAME} PUBLIC -std=c++11 -Wall)
+add_dependencies(${PROJECT_TEST_NAME} googletest)
+target_link_libraries(${PROJECT_TEST_NAME}
+  ${GTEST_LIBRARIES}
+  ${GTEST_LIBS_DIR}/libgtest.a
+  ${GTEST_LIBS_DIR}/libgtest_main.a
+  )
+target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
+add_test(NAME ${PROJECT_TEST_NAME} COMMAND ${PROJECT_TEST_NAME})
+
+
