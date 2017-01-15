@@ -21,15 +21,6 @@ install:
   - pushd glew-2.0.0 && make && sudo make install && popd
 
 script:
-  - mkdir glew_git
-  - cd glew_git
-  - git clone https://github.com/nigels-com/glew.git glew
-  - cd glew
-  - cd build
-  - cmake ./cmake
-  - make -j4
-  - sudo make install
-  - cd ../../../
   - mkdir glfw_git
   - cd glfw_git
   - git clone https://github.com/glfw/glfw.git
