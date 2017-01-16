@@ -2,7 +2,7 @@
 #define ENGINE_COMPONENTS_PHONGMODEL_H
 
 #include "engine/Model.h"
-#include "ModelObject.h"
+#include "engine/components/ModelObject.h"
 #include "engine/ShaderCompiler.h"
 #include "engine/scene/SceneObject.h"
 #include "PhongLight.h"

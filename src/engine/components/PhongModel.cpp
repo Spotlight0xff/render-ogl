@@ -16,7 +16,7 @@ PhongModel::PhongModel(Model *m, PhongLight const &l, Scene *s)
   setShader("phong_model",
             [this](Scene &scene, ModelObject &obj, Shader &shader) {
               glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "model"), 1, GL_FALSE,
-                                 glm::value_ptr(obj.getModelMatrix()));
+                                 glm::value_ptr(this->getModelMatrix()));
               // Camera view
               glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "view"), 1, GL_FALSE,
                                  glm::value_ptr(scene.getCameraRef().getViewMatrix()));

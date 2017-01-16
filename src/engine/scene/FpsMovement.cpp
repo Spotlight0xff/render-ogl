@@ -51,6 +51,10 @@ void FpsMovement::handleKeyboard(bool keys[]) {
     if (camera->getPosition().y <= eyelevel) {
       jumping = false;
     }
+  } else {
+    if (camera->getPosition().y > eyelevel) {
+      camera->setY(eyelevel);
+    }
   }
   if (camera->getPosition().y < eyelevel) {
     jump_speed = 0.0;
