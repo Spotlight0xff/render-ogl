@@ -120,9 +120,9 @@ int main() {
         glm::mat4 model = obj.getModelMatrix();
         glm::mat4 view = s.getCameraRef().getViewMatrix();
         glm::mat4 projection = s.getProjectionMatrix();
-        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(shader.getUniform("model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(shader.getUniform("view"), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(shader.getUniform("projection"), 1, GL_FALSE, glm::value_ptr(projection));
       });
 
   // Add our models to the scene

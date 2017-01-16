@@ -3,8 +3,7 @@
 
 #include <vector>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "opengl.h"
 #include <glm/glm.hpp>
 
 bool loadObj(const char* path,

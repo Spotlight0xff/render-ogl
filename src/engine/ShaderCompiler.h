@@ -15,6 +15,9 @@ class Shader {
     Shader(std::string const &shader_name);
 
     void use() const;
+    GLint getUniform(const char* name) {
+      return glGetUniformLocation(shader_prog, name);
+    }
 
     GLuint getId() const { return shader_prog; }
 
