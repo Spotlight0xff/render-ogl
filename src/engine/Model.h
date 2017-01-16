@@ -22,7 +22,7 @@ class Model {
   public:
     Model(const char *path);
 
-    void draw(Shader const &shader) const;
+    void draw(Shader& shader) const;
 
     void draw() const;
 

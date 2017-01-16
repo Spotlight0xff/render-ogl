@@ -30,7 +30,7 @@ Model::Model(const char *p)
             << count_t << " textures.\n";
 }
 
-void Model::draw(Shader const &shader) const {
+void Model::draw(Shader &shader) const {
   for (auto const &m : meshes) {
     m.draw(shader);
   }
