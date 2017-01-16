@@ -4,7 +4,7 @@
 #define DEFAULT_SENSITIVITY 0.1f
 #define DEFAULT_MOVEMENT_SPEED 5.0f
 
-#include <GL/glew.h>
+#include "opengl.h"
 
 namespace engine {
 namespace scene {

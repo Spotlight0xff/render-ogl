@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "FpsMovement.h"
 
-#include <GL/glew.h>
+#include "opengl.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

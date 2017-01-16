@@ -4,8 +4,7 @@
 #include <vector>
 
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "opengl.h"
 
 namespace util {
 size_t split(const std::string& s, char delimiter, std::vector<std::string>& splits);

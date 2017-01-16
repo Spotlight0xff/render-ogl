@@ -90,14 +90,21 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC
   ${PROJECT_INCLUDE_DIRS}
   ${GTEST_INCLUDE_DIRS}
+  tests
   )
 
+# removing some libraries, we are mocking them :)
+list(REMOVE_ITEM PROJECT_LIBRARIES   ${GLEW_LIBRARIES})
+
+# add google test and link that shit
 add_dependencies(${PROJECT_TEST_NAME} googletest)
 target_link_libraries(${PROJECT_TEST_NAME}
   ${PROJECT_LIBRARIES}
   ${GTEST_LIBRARIES}
   ${GTEST_LIBS_DIR}/libgtest.a
   ${GTEST_LIBS_DIR}/libgtest_main.a
+  ${GTEST_LIBS_DIR}/../libgmock.a
+  ${GTEST_LIBS_DIR}/../libgmock_main.a
   )
 target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
 add_test(NAME ${PROJECT_TEST_NAME} COMMAND ${PROJECT_TEST_NAME})
