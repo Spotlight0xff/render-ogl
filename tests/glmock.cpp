@@ -2194,14 +2194,6 @@ void  mockgl_BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, cons
 }
 PFNGLBUFFERSUBDATAPROC __glewBufferSubData = mockgl_BufferSubData;
 
-// typedef void (GLAPIENTRY * PFNGLBINDVERTEXARRAYAPPLEPROC) (GLuint array);
-
-void  mockgl_BindVertexArray(GLuint array)
-{
-    return getMock()->gl_BindVertexArray(array);
-}
-PFNGLBINDVERTEXARRAYAPPLEPROC __glewBindVertexArray = mockgl_BindVertexArray;
-
 void  mockgl_DeleteBuffers(GLsizei n, const GLuint * buffers)
 {
     return getMock()->gl_DeleteBuffers(n, buffers);
@@ -2213,13 +2205,6 @@ void  mockgl_DeleteQueries(GLsizei n, const GLuint * ids)
     return getMock()->gl_DeleteQueries(n, ids);
 }
 PFNGLDELETEQUERIESPROC __glewDeleteQueries = mockgl_DeleteQueries;
-
-void  mockgl_DeleteVertexArrays(GLsizei n, const GLuint * arrays)
-{
-    return getMock()->gl_DeleteVertexArrays(n, arrays);
-}
-PFNGLDELETEVERTEXARRAYSAPPLEPROC __glewDeleteVertexArrays = mockgl_DeleteVertexArrays;
-
 
 void  mockgl_EndQuery(GLenum target)
 {
@@ -2238,13 +2223,6 @@ void  mockgl_GenQueries(GLsizei n, GLuint * ids)
     return getMock()->gl_GenQueries(n, ids);
 }
 PFNGLGENQUERIESPROC __glewGenQueries = mockgl_GenQueries;
-
-void  mockgl_GenVertexArrays(GLsizei n, GLuint * arrays)
-{
-    return getMock()->gl_GenQueries(n, arrays);
-}
-PFNGLGENQUERIESPROC __glewGenVertexArrays = mockgl_GenVertexArrays;
-
 
 void  mockgl_GetBufferParameteriv(GLenum target, GLenum pname, GLint * params)
 {
@@ -2341,21 +2319,6 @@ unsigned int  mockgl_CreateShader(GLenum type)
     return getMock()->gl_CreateShader(type);
 }
 PFNGLCREATESHADERPROC __glewCreateShader = mockgl_CreateShader;
-
-
-// typedef void (GLAPIENTRY * PFNGLDEBUGMESSAGECALLBACKAMDPROC) (GLDEBUGPROCAMD callback, void *userParam);
-void  mockgl_DebugMessageCallback(GLDEBUGPROC callback, const void* userParam)
-{
-    return getMock()->gl_DebugMessageCallback(callback, userParam);
-}
-PFNGLDEBUGMESSAGECALLBACKPROC __glewDebugMessageCallback = mockgl_DebugMessageCallback;
-
-// typedef void (GLAPIENTRY * PFNGLDEBUGMESSAGECONTROLPROC) (GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids, GLboolean enabled);
-void  mockgl_DebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids, GLboolean enabled)
-{
-    return getMock()->gl_DebugMessageControl(source, type, severity, count, ids, enabled);
-}
-PFNGLDEBUGMESSAGECONTROLPROC __glewDebugMessageControl = mockgl_DebugMessageControl;
 
 void  mockgl_DeleteProgram(GLuint program)
 {
@@ -3347,6 +3310,168 @@ void  mockgl_GetnUniformdv(GLuint program, GLint location, GLsizei bufSize, GLdo
 }
 PFNGLGETNUNIFORMDVPROC __glewGetnUniformdv = mockgl_GetnUniformdv;
 
+void  mockgl_BindFramebuffer(GLenum target, GLuint framebuffer)
+{
+    return getMock()->gl_BindFramebuffer(target, framebuffer);
+}
+PFNGLBINDFRAMEBUFFERPROC __glewBindFramebuffer = mockgl_BindFramebuffer;
+
+void  mockgl_BindRenderbuffer(GLenum target, GLuint renderbuffer)
+{
+    return getMock()->gl_BindRenderbuffer(target, renderbuffer);
+}
+PFNGLBINDRENDERBUFFERPROC __glewBindRenderbuffer = mockgl_BindRenderbuffer;
+
+void  mockgl_BlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter)
+{
+    return getMock()->gl_BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+}
+PFNGLBLITFRAMEBUFFERPROC __glewBlitFramebuffer = mockgl_BlitFramebuffer;
+
+unsigned int  mockgl_CheckFramebufferStatus(GLenum target)
+{
+    return getMock()->gl_CheckFramebufferStatus(target);
+}
+PFNGLCHECKFRAMEBUFFERSTATUSPROC __glewCheckFramebufferStatus = mockgl_CheckFramebufferStatus;
+
+void  mockgl_DeleteFramebuffers(GLsizei n, const GLuint * framebuffers)
+{
+    return getMock()->gl_DeleteFramebuffers(n, framebuffers);
+}
+PFNGLDELETEFRAMEBUFFERSPROC __glewDeleteFramebuffers = mockgl_DeleteFramebuffers;
+
+void  mockgl_DeleteRenderbuffers(GLsizei n, const GLuint * renderbuffers)
+{
+    return getMock()->gl_DeleteRenderbuffers(n, renderbuffers);
+}
+PFNGLDELETERENDERBUFFERSPROC __glewDeleteRenderbuffers = mockgl_DeleteRenderbuffers;
+
+void  mockgl_FramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+{
+    return getMock()->gl_FramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+}
+PFNGLFRAMEBUFFERRENDERBUFFERPROC __glewFramebufferRenderbuffer = mockgl_FramebufferRenderbuffer;
+
+void  mockgl_FramebufferTexture1D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+{
+    return getMock()->gl_FramebufferTexture1D(target, attachment, textarget, texture, level);
+}
+PFNGLFRAMEBUFFERTEXTURE1DPROC __glewFramebufferTexture1D = mockgl_FramebufferTexture1D;
+
+void  mockgl_FramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+{
+    return getMock()->gl_FramebufferTexture2D(target, attachment, textarget, texture, level);
+}
+PFNGLFRAMEBUFFERTEXTURE2DPROC __glewFramebufferTexture2D = mockgl_FramebufferTexture2D;
+
+void  mockgl_FramebufferTexture3D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint layer)
+{
+    return getMock()->gl_FramebufferTexture3D(target, attachment, textarget, texture, level, layer);
+}
+PFNGLFRAMEBUFFERTEXTURE3DPROC __glewFramebufferTexture3D = mockgl_FramebufferTexture3D;
+
+void  mockgl_FramebufferTextureLayer(GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer)
+{
+    return getMock()->gl_FramebufferTextureLayer(target, attachment, texture, level, layer);
+}
+PFNGLFRAMEBUFFERTEXTURELAYERPROC __glewFramebufferTextureLayer = mockgl_FramebufferTextureLayer;
+
+void  mockgl_GenFramebuffers(GLsizei n, GLuint * framebuffers)
+{
+    return getMock()->gl_GenFramebuffers(n, framebuffers);
+}
+PFNGLGENFRAMEBUFFERSPROC __glewGenFramebuffers = mockgl_GenFramebuffers;
+
+void  mockgl_GenRenderbuffers(GLsizei n, GLuint * renderbuffers)
+{
+    return getMock()->gl_GenRenderbuffers(n, renderbuffers);
+}
+PFNGLGENRENDERBUFFERSPROC __glewGenRenderbuffers = mockgl_GenRenderbuffers;
+
+void  mockgl_GenerateMipmap(GLenum target)
+{
+    return getMock()->gl_GenerateMipmap(target);
+}
+PFNGLGENERATEMIPMAPPROC __glewGenerateMipmap = mockgl_GenerateMipmap;
+
+void  mockgl_GetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint * params)
+{
+    return getMock()->gl_GetFramebufferAttachmentParameteriv(target, attachment, pname, params);
+}
+PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC __glewGetFramebufferAttachmentParameteriv = mockgl_GetFramebufferAttachmentParameteriv;
+
+void  mockgl_GetRenderbufferParameteriv(GLenum target, GLenum pname, GLint * params)
+{
+    return getMock()->gl_GetRenderbufferParameteriv(target, pname, params);
+}
+PFNGLGETRENDERBUFFERPARAMETERIVPROC __glewGetRenderbufferParameteriv = mockgl_GetRenderbufferParameteriv;
+
+unsigned char  mockgl_IsFramebuffer(GLuint framebuffer)
+{
+    return getMock()->gl_IsFramebuffer(framebuffer);
+}
+PFNGLISFRAMEBUFFERPROC __glewIsFramebuffer = mockgl_IsFramebuffer;
+
+unsigned char  mockgl_IsRenderbuffer(GLuint renderbuffer)
+{
+    return getMock()->gl_IsRenderbuffer(renderbuffer);
+}
+PFNGLISRENDERBUFFERPROC __glewIsRenderbuffer = mockgl_IsRenderbuffer;
+
+void  mockgl_RenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+{
+    return getMock()->gl_RenderbufferStorage(target, internalformat, width, height);
+}
+PFNGLRENDERBUFFERSTORAGEPROC __glewRenderbufferStorage = mockgl_RenderbufferStorage;
+
+void  mockgl_RenderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
+{
+    return getMock()->gl_RenderbufferStorageMultisample(target, samples, internalformat, width, height);
+}
+PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC __glewRenderbufferStorageMultisample = mockgl_RenderbufferStorageMultisample;
+
+void  mockgl_GetQueryObjecti64v(GLuint id, GLenum pname, GLint64 * params)
+{
+    return getMock()->gl_GetQueryObjecti64v(id, pname, params);
+}
+PFNGLGETQUERYOBJECTI64VPROC __glewGetQueryObjecti64v = mockgl_GetQueryObjecti64v;
+
+void  mockgl_GetQueryObjectui64v(GLuint id, GLenum pname, GLuint64 * params)
+{
+    return getMock()->gl_GetQueryObjectui64v(id, pname, params);
+}
+PFNGLGETQUERYOBJECTUI64VPROC __glewGetQueryObjectui64v = mockgl_GetQueryObjectui64v;
+
+void  mockgl_QueryCounter(GLuint id, GLenum target)
+{
+    return getMock()->gl_QueryCounter(id, target);
+}
+PFNGLQUERYCOUNTERPROC __glewQueryCounter = mockgl_QueryCounter;
+
+void  mockgl_BindVertexArray(GLuint array)
+{
+    return getMock()->gl_BindVertexArray(array);
+}
+PFNGLBINDVERTEXARRAYPROC __glewBindVertexArray = mockgl_BindVertexArray;
+
+void  mockgl_DeleteVertexArrays(GLsizei n, const GLuint * arrays)
+{
+    return getMock()->gl_DeleteVertexArrays(n, arrays);
+}
+PFNGLDELETEVERTEXARRAYSPROC __glewDeleteVertexArrays = mockgl_DeleteVertexArrays;
+
+void  mockgl_GenVertexArrays(GLsizei n, GLuint * arrays)
+{
+    return getMock()->gl_GenVertexArrays(n, arrays);
+}
+PFNGLGENVERTEXARRAYSPROC __glewGenVertexArrays = mockgl_GenVertexArrays;
+
+unsigned char  mockgl_IsVertexArray(GLuint array)
+{
+    return getMock()->gl_IsVertexArray(array);
+}
+PFNGLISVERTEXARRAYPROC __glewIsVertexArray = mockgl_IsVertexArray;
+
 void  mockgl_BindBufferARB(GLenum target, GLuint buffer)
 {
     return getMock()->gl_BindBufferARB(target, buffer);
@@ -3401,12 +3526,6 @@ unsigned char  mockgl_IsBufferARB(GLuint buffer)
 }
 PFNGLISBUFFERARBPROC __glewIsBufferARB = mockgl_IsBufferARB;
 
-void mockgl_GenerateMipmap(GLenum target)
-{
-    return getMock()->gl_GenerateMipmap(target);
-}
-PFNGLGENERATEMIPMAPPROC __glewGenerateMipmap = mockgl_GenerateMipmap;
-
 void * mockgl_MapBufferARB(GLenum target, GLenum access)
 {
     return getMock()->gl_MapBufferARB(target, access);
@@ -3418,6 +3537,66 @@ unsigned char  mockgl_UnmapBufferARB(GLenum target)
     return getMock()->gl_UnmapBufferARB(target);
 }
 PFNGLUNMAPBUFFERARBPROC __glewUnmapBufferARB = mockgl_UnmapBufferARB;
+
+void  mockgl_DebugMessageCallback(GLDEBUGPROC callback, const void * userParam)
+{
+    return getMock()->gl_DebugMessageCallback(callback, userParam);
+}
+PFNGLDEBUGMESSAGECALLBACKPROC __glewDebugMessageCallback = mockgl_DebugMessageCallback;
+
+void  mockgl_DebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled)
+{
+    return getMock()->gl_DebugMessageControl(source, type, severity, count, ids, enabled);
+}
+PFNGLDEBUGMESSAGECONTROLPROC __glewDebugMessageControl = mockgl_DebugMessageControl;
+
+void  mockgl_DebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * buf)
+{
+    return getMock()->gl_DebugMessageInsert(source, type, id, severity, length, buf);
+}
+PFNGLDEBUGMESSAGEINSERTPROC __glewDebugMessageInsert = mockgl_DebugMessageInsert;
+
+unsigned int  mockgl_GetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog)
+{
+    return getMock()->gl_GetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog);
+}
+PFNGLGETDEBUGMESSAGELOGPROC __glewGetDebugMessageLog = mockgl_GetDebugMessageLog;
+
+void  mockgl_GetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei * length, GLchar * label)
+{
+    return getMock()->gl_GetObjectLabel(identifier, name, bufSize, length, label);
+}
+PFNGLGETOBJECTLABELPROC __glewGetObjectLabel = mockgl_GetObjectLabel;
+
+void  mockgl_GetObjectPtrLabel(const void * ptr, GLsizei bufSize, GLsizei * length, GLchar * label)
+{
+    return getMock()->gl_GetObjectPtrLabel(ptr, bufSize, length, label);
+}
+PFNGLGETOBJECTPTRLABELPROC __glewGetObjectPtrLabel = mockgl_GetObjectPtrLabel;
+
+void  mockgl_ObjectLabel(GLenum identifier, GLuint name, GLsizei length, const GLchar * label)
+{
+    return getMock()->gl_ObjectLabel(identifier, name, length, label);
+}
+PFNGLOBJECTLABELPROC __glewObjectLabel = mockgl_ObjectLabel;
+
+void  mockgl_ObjectPtrLabel(const void * ptr, GLsizei length, const GLchar * label)
+{
+    return getMock()->gl_ObjectPtrLabel(ptr, length, label);
+}
+PFNGLOBJECTPTRLABELPROC __glewObjectPtrLabel = mockgl_ObjectPtrLabel;
+
+void  mockgl_PopDebugGroup()
+{
+    return getMock()->gl_PopDebugGroup();
+}
+PFNGLPOPDEBUGGROUPPROC __glewPopDebugGroup = mockgl_PopDebugGroup;
+
+void  mockgl_PushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar * message)
+{
+    return getMock()->gl_PushDebugGroup(source, id, length, message);
+}
+PFNGLPUSHDEBUGGROUPPROC __glewPushDebugGroup = mockgl_PushDebugGroup;
 
 GLenum glewInit()
 {

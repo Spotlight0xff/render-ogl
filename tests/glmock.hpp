@@ -5,7 +5,6 @@
 
 #include <GL/glew.h>
 
-
 class GLMock {
 public:
     GLMock();
@@ -107,7 +106,6 @@ public:
     MOCK_METHOD2( gl_Fogiv, void (GLenum pname, const GLint * params) );
     MOCK_METHOD1( gl_FrontFace, void (GLenum mode) );
     MOCK_METHOD6( gl_Frustum, void (GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar) );
-    MOCK_METHOD1( gl_GenerateMipmap, void (GLenum target) );
     MOCK_METHOD1( gl_GenLists, GLuint (GLsizei range) );
     MOCK_METHOD2( gl_GenTextures, void (GLsizei n, GLuint * textures) );
     MOCK_METHOD2( gl_GetBooleanv, void (GLenum pname, GLboolean * params) );
@@ -502,10 +500,8 @@ public:
     MOCK_METHOD2( gl_BindBuffer, void  (GLenum target, GLuint buffer) );
     MOCK_METHOD4( gl_BufferData, void  (GLenum target, GLsizeiptr size, const void * data, GLenum usage) );
     MOCK_METHOD4( gl_BufferSubData, void  (GLenum target, GLintptr offset, GLsizeiptr size, const void * data) );
-    MOCK_METHOD1( gl_BindVertexArray, void (GLuint array) );
     MOCK_METHOD2( gl_DeleteBuffers, void  (GLsizei n, const GLuint * buffers) );
     MOCK_METHOD2( gl_DeleteQueries, void  (GLsizei n, const GLuint * ids) );
-    MOCK_METHOD2( gl_DeleteVertexArrays, void ( GLsizei n, const GLuint* arrays) );
     MOCK_METHOD1( gl_EndQuery, void  (GLenum target) );
     MOCK_METHOD2( gl_GenBuffers, void  (GLsizei n, GLuint * buffers) );
     MOCK_METHOD2( gl_GenQueries, void  (GLsizei n, GLuint * ids) );
@@ -525,8 +521,6 @@ public:
     MOCK_METHOD1( gl_CompileShader, void  (GLuint shader) );
     MOCK_METHOD0( gl_CreateProgram, unsigned int  () );
     MOCK_METHOD1( gl_CreateShader, unsigned int  (GLenum type) );
-    MOCK_METHOD2( gl_DebugMessageCallback, void (GLDEBUGPROC callback, const void* userParam) );
-    MOCK_METHOD6( gl_DebugMessageControl, void (GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint* ids, GLboolean enabled) );
     MOCK_METHOD1( gl_DeleteProgram, void  (GLuint program) );
     MOCK_METHOD1( gl_DeleteShader, void  (GLuint shader) );
     MOCK_METHOD2( gl_DetachShader, void  (GLuint program, GLuint shader) );
@@ -692,6 +686,33 @@ public:
     MOCK_METHOD4( gl_GetnCompressedTexImage, void  (GLenum target, GLint lod, GLsizei bufSize, GLvoid * pixels) );
     MOCK_METHOD6( gl_GetnTexImage, void  (GLenum tex, GLint level, GLenum format, GLenum type, GLsizei bufSize, GLvoid * pixels) );
     MOCK_METHOD4( gl_GetnUniformdv, void  (GLuint program, GLint location, GLsizei bufSize, GLdouble * params) );
+    MOCK_METHOD2( gl_BindFramebuffer, void  (GLenum target, GLuint framebuffer) );
+    MOCK_METHOD2( gl_BindRenderbuffer, void  (GLenum target, GLuint renderbuffer) );
+    MOCK_METHOD10( gl_BlitFramebuffer, void  (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) );
+    MOCK_METHOD1( gl_CheckFramebufferStatus, unsigned int  (GLenum target) );
+    MOCK_METHOD2( gl_DeleteFramebuffers, void  (GLsizei n, const GLuint * framebuffers) );
+    MOCK_METHOD2( gl_DeleteRenderbuffers, void  (GLsizei n, const GLuint * renderbuffers) );
+    MOCK_METHOD4( gl_FramebufferRenderbuffer, void  (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) );
+    MOCK_METHOD5( gl_FramebufferTexture1D, void  (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) );
+    MOCK_METHOD5( gl_FramebufferTexture2D, void  (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) );
+    MOCK_METHOD6( gl_FramebufferTexture3D, void  (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint layer) );
+    MOCK_METHOD5( gl_FramebufferTextureLayer, void  (GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer) );
+    MOCK_METHOD2( gl_GenFramebuffers, void  (GLsizei n, GLuint * framebuffers) );
+    MOCK_METHOD2( gl_GenRenderbuffers, void  (GLsizei n, GLuint * renderbuffers) );
+    MOCK_METHOD1( gl_GenerateMipmap, void  (GLenum target) );
+    MOCK_METHOD4( gl_GetFramebufferAttachmentParameteriv, void  (GLenum target, GLenum attachment, GLenum pname, GLint * params) );
+    MOCK_METHOD3( gl_GetRenderbufferParameteriv, void  (GLenum target, GLenum pname, GLint * params) );
+    MOCK_METHOD1( gl_IsFramebuffer, unsigned char  (GLuint framebuffer) );
+    MOCK_METHOD1( gl_IsRenderbuffer, unsigned char  (GLuint renderbuffer) );
+    MOCK_METHOD4( gl_RenderbufferStorage, void  (GLenum target, GLenum internalformat, GLsizei width, GLsizei height) );
+    MOCK_METHOD5( gl_RenderbufferStorageMultisample, void  (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height) );
+    MOCK_METHOD3( gl_GetQueryObjecti64v, void  (GLuint id, GLenum pname, GLint64 * params) );
+    MOCK_METHOD3( gl_GetQueryObjectui64v, void  (GLuint id, GLenum pname, GLuint64 * params) );
+    MOCK_METHOD2( gl_QueryCounter, void  (GLuint id, GLenum target) );
+    MOCK_METHOD1( gl_BindVertexArray, void  (GLuint array) );
+    MOCK_METHOD2( gl_DeleteVertexArrays, void  (GLsizei n, const GLuint * arrays) );
+    MOCK_METHOD2( gl_GenVertexArrays, void  (GLsizei n, GLuint * arrays) );
+    MOCK_METHOD1( gl_IsVertexArray, unsigned char  (GLuint array) );
     MOCK_METHOD2( gl_BindBufferARB, void  (GLenum target, GLuint buffer) );
     MOCK_METHOD4( gl_BufferDataARB, void  (GLenum target, GLsizeiptrARB size, const void * data, GLenum usage) );
     MOCK_METHOD4( gl_BufferSubDataARB, void  (GLenum target, GLintptrARB offset, GLsizeiptrARB size, const void * data) );
@@ -703,6 +724,16 @@ public:
     MOCK_METHOD1( gl_IsBufferARB, unsigned char  (GLuint buffer) );
     MOCK_METHOD2( gl_MapBufferARB, void * (GLenum target, GLenum access) );
     MOCK_METHOD1( gl_UnmapBufferARB, unsigned char  (GLenum target) );
+    MOCK_METHOD2( gl_DebugMessageCallback, void  (GLDEBUGPROC callback, const void * userParam) );
+    MOCK_METHOD6( gl_DebugMessageControl, void  (GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled) );
+    MOCK_METHOD6( gl_DebugMessageInsert, void  (GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * buf) );
+    MOCK_METHOD8( gl_GetDebugMessageLog, unsigned int  (GLuint count, GLsizei bufSize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog) );
+    MOCK_METHOD5( gl_GetObjectLabel, void  (GLenum identifier, GLuint name, GLsizei bufSize, GLsizei * length, GLchar * label) );
+    MOCK_METHOD4( gl_GetObjectPtrLabel, void  (const void * ptr, GLsizei bufSize, GLsizei * length, GLchar * label) );
+    MOCK_METHOD4( gl_ObjectLabel, void  (GLenum identifier, GLuint name, GLsizei length, const GLchar * label) );
+    MOCK_METHOD3( gl_ObjectPtrLabel, void  (const void * ptr, GLsizei length, const GLchar * label) );
+    MOCK_METHOD0( gl_PopDebugGroup, void  () );
+    MOCK_METHOD4( gl_PushDebugGroup, void  (GLenum source, GLuint id, GLsizei length, const GLchar * message) );
     MOCK_METHOD0( glew_Init, GLenum () );
     MOCK_METHOD1( glew_IsSupported, GLboolean (const char * name) );
     MOCK_METHOD1( glew_GetExtension, GLboolean (const char * name) );

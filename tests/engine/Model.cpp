@@ -28,8 +28,6 @@ TEST(Model, Loading) {
   EXPECT_CALL(mock, gl_BufferData(_, _, _, _)).Times(AtLeast(2));
   EXPECT_CALL(mock, gl_BindBuffer(_, _)).Times(AtLeast(3));
 
-  // various
-  EXPECT_CALL(mock, gl_GenQueries(_, _));
 
   engine::Model model_cube("resources/models/cube.obj");
 
