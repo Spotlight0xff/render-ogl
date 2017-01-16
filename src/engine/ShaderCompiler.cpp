@@ -40,7 +40,12 @@ Shader::Shader(std::string const &shader_name)
 }
 
 void Shader::use() const {
-  glUseProgram(shader_prog);
+  GLint current;
+  glGetIntegerv (GL_CURRENT_PROGRAM, &current);
+
+  if (current != shader_prog) {
+    glUseProgram(shader_prog);
+  }
 }
 
 // TODO, just provide vertex & fragment path --> compile + link together
