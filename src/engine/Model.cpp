@@ -99,6 +99,8 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
     std::vector<model::Texture> specular_maps = loadTextures(mat,
                                                       aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specular_maps.begin(), specular_maps.end());
+
+    loaded_textures.insert(loaded_textures.end(), textures.begin(), textures.end());
   }
 
   for (size_t face_id = 0; face_id < mesh->mNumFaces; face_id++) {
