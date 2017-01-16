@@ -47,6 +47,7 @@ void Model::loadModel() {
   if (!scene) {
     std::cerr << "Import error for " << path
               << ": " << importer.GetErrorString() << "\n";
+    return;
   }
 
   processNode(scene->mRootNode, scene);

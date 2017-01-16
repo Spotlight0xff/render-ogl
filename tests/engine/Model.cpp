@@ -51,11 +51,24 @@ TEST(Model, Draw) {
 
   engine::Model model_cube("resources/models/cube.obj");
 
+
+
   EXPECT_CALL(mock, gl_BindVertexArray(_)).Times(2);
   EXPECT_CALL(mock, gl_DrawElements(GL_TRIANGLES, _, _, _));
 
   Shader shader;
   model_cube.draw(shader);
+}
+
+
+TEST(Model, FailLoad) {
+  GLMock mock;
+  testing::internal::CaptureStderr();
+
+
+  engine::Model model_cube("non_existent.obj");
+  ASSERT_EQ(testing::internal::GetCapturedStderr(), "Import error for non_existent.obj: Unable to open file \"non_existent.obj\".\n");
+  ASSERT_EQ(model_cube.meshes.size(), 0);
 }
 
 } // end namespace engine

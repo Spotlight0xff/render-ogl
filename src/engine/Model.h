@@ -27,6 +27,7 @@ class Model {
 
   private:
     FRIEND_TEST(Model, Loading);
+    FRIEND_TEST(Model, FailLoad);
     std::string directory;
     std::string path;
     std::vector<model::Mesh> meshes;
