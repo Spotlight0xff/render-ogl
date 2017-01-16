@@ -51,7 +51,7 @@ TEST(Model, Draw) {
 
   engine::Model model_cube("resources/models/cube.obj");
 
-  EXPECT_CALL(mock, gl_BindVertexArray(_)).Times(3);
+  EXPECT_CALL(mock, gl_BindVertexArray(_)).Times(2);
   EXPECT_CALL(mock, gl_DrawElements(GL_TRIANGLES, _, _, _));
 
   Shader shader;
