@@ -42,7 +42,8 @@ void Model::loadModel() {
   const aiScene *scene = importer.ReadFile(path,
                                            aiProcess_Triangulate |
                                            aiProcess_FlipUVs |
-                                           aiProcess_GenNormals);
+                                           aiProcess_GenNormals |
+                                           aiProcess_JoinIdenticalVertices);
   if (!scene) {
     std::cerr << "Import error for " << path
               << ": " << importer.GetErrorString() << "\n";
