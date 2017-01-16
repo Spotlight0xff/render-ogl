@@ -85,7 +85,7 @@ void Mesh::draw(Shader const &shader) const {
     i++;
   }
   glBindVertexArray(vao);
-  glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(vertices.size()), GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);
 }
 
