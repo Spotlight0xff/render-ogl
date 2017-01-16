@@ -31,7 +31,7 @@ class EulerCamera : public Camera {
 
     void setY(GLfloat y) override { pos.y = y; }
 
-    void setPosition(glm::vec3 p) override { pos = p; }
+    void setPosition(glm::vec3 p) override { pos = p; updateMatrices(); }
 
     void setMovement(FpsMovement &movement) override;
 
