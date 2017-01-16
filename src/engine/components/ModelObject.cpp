@@ -8,10 +8,9 @@
 namespace engine {
 namespace components {
 
-ModelObject::ModelObject(Model *m, Scene *s)
+ModelObject::ModelObject(Model *m)
         : model(m),
-          shader(),
-          scene(s) {
+          shader(){
 }
 
 void ModelObject::setPosition(glm::vec3 pos) {
@@ -37,11 +36,11 @@ void ModelObject::setShader(const char *shader_name, ShaderSettingFunc settings)
   shader_settings = settings;
 }
 
-void ModelObject::draw() {
+void ModelObject::draw(Scene& scene) {
   // use shader program
   shader.use();
 
-  shader_settings(*scene, *this, shader);
+  shader_settings(scene, *this, shader);
 
   // TODO: remove shader from draw()
   model->draw(shader);

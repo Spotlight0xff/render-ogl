@@ -16,10 +16,12 @@ namespace components {
 
 class PhongModel : public ModelObject {
   public:
-    PhongModel(Model *m, PhongLight const &l, Scene *s);
+    PhongModel(Model *m)
+            : ModelObject(m) {}
+
+    void drawModel(Shader& shader) { model->draw(shader); }
 
   private:
-    engine::scene::SceneObject const &light;
 };
 
 } // end namespace engine::components

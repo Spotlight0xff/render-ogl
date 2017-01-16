@@ -17,26 +17,24 @@ namespace components {
 
 class PhongLight : public engine::scene::SceneObject {
   public:
-    PhongLight(Scene *s)
-            : scene(s),
-              model("resources/models/cube.obj") {
+    PhongLight()
+      : model("resources/models/cube.obj") {
       shader = Shader("light_simple");
     }
 
-    void draw() override;
+    void draw(Scene& scene) override;
 
     void setPosition(glm::vec3 pos) { position = pos; }
 
-    glm::vec3 getPosition() const override { return position; }
+    glm::vec3 getPosition() const { return position; }
 
-    glm::vec3 getColor() const override { return glm::vec3(1.0, 1.0, 1.0); }
+    glm::vec3 getColor() const { return glm::vec3(1.0, 1.0, 1.0); }
 
-    glm::mat4 getModelMatrix() override;
+    glm::mat4 getModelMatrix();
 
   private:
     glm::vec3 position;
 
-    Scene *scene;
     Shader shader;
     Model model;
 

@@ -8,7 +8,7 @@ void Scene::draw() {
   }
 
   for (auto o : objects) {
-    o->draw();
+    o->draw(*this);
   }
 }
 

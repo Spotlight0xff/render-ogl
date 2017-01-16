@@ -6,8 +6,8 @@
 #include "engine/Input.h"
 #include "engine/scene/EulerCamera.h"
 #include "engine/Scene.h"
-#include "engine/components/PhongLight.h"
-#include "engine/components/PhongModel.h"
+#include "engine/components/Phong/PhongLight.h"
+#include "engine/components/Phong/PhongModel.h"
 #include "engine/Timing.h"
 
 #include <iostream>
@@ -23,9 +23,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <engine/scene/Phong.h>
 
 
-#define INTERACTIVE
+//#define INTERACTIVE
 
 
 namespace {
@@ -105,16 +106,19 @@ int main() {
   scene.useCamera(&camera);
 
   // light source
-  components::PhongLight light(&scene);
+  //components::PhongLight light(&scene);
   //LightObject light2(&scene);
 
+  scene::Phong phong_scene;
 
   // Nanosuit object
-  components::PhongModel obj_nanosuit(&model_nanosuit, light, &scene);
-  obj_nanosuit.setPosition({0.0, 0.0, 15.0});
+  components::PhongModel* obj_nanosuit = phong_scene.addModel(model_nanosuit);
+  obj_nanosuit->setPosition({0.0, 0.0, 15.0});
+
+  components::PhongLight* light = phong_scene.addLight();
 
   // Ground object
-  components::ModelObject obj_ground(&model_ground, &scene);
+  components::ModelObject obj_ground(&model_ground);
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
   // set custom shader for checkerboard
@@ -128,19 +132,16 @@ int main() {
         glUniformMatrix4fv(shader.getUniform("projection"), 1, GL_FALSE, glm::value_ptr(projection));
       });
 
+
   // Add our models to the scene
-  scene.addObjectRef(&light);
-  //scene.addObjectRef(&light2);
-  scene.addObjectRef(&obj_nanosuit);
   scene.addObjectRef(&obj_ground);
-  //scene.addObjectRef(&particles);
+  scene.addObjectRef(&phong_scene);
 
   std::vector<components::ModelObject*> objs;
   for (int i=-3; i < 4; i ++) {
     for (int j=1; j < 7; j ++) {
-      components::PhongModel* obj= new components::PhongModel(&model_nanosuit, light, &scene);
-      obj->setPosition(obj_nanosuit.getPosition() - glm::vec3({5.0 * i, 0.0, 5.0 * j}));
-      scene.addObjectRef(obj);
+      components::PhongModel* obj= phong_scene.addModel(model_nanosuit);
+      obj->setPosition(obj_nanosuit->getPosition() - glm::vec3({5.0 * i, 0.0, 5.0 * j}));
       objs.push_back(obj);
     }
   }
@@ -154,12 +155,10 @@ int main() {
   timer.Start();
 #ifdef INTERACTIVE
   scene.getInputRef().addMouseCallback(camera.do_mouse);
-  //camera.lookAt(obj_nanosuit.getPosition());// + glm::vec3({0.0, 10.0, 0.0}));
   camera.setPosition({0.0, 12.0, 30.0});
-  //camera.lookAt(obj_nanosuit.getPosition());
   do {
 #else
-  glm::vec3 look_at = obj_nanosuit.getPosition() + glm::vec3({0.0, 10.0, 20.0});
+  glm::vec3 look_at = obj_nanosuit->getPosition() + glm::vec3({0.0, 10.0, 0.0});
   camera.lookAt(look_at);
   for (GLfloat camera_r = 0.0f; camera_r < 15.0; camera_r += 0.01) {
 #endif
@@ -175,7 +174,7 @@ int main() {
       GLfloat pos_x = sin(glfwGetTime() * speed) * r;
       GLfloat pos_z = cos(glfwGetTime() * speed) * r;
 
-      light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit.getPosition());
+      light->setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit->getPosition());
     }
 #ifndef INTERACTIVE
     {

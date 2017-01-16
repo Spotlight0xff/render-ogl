@@ -7,8 +7,8 @@
 #include "engine/Input.h"
 #include "engine/scene/FontRender.h"
 #include "engine/scene/FpsCounter.h"
-
 #include "engine/scene/SceneObject.h"
+
 //#include "ModelObject.h"
 //#include "LightObject.h"
 
@@ -36,13 +36,13 @@ class Scene {
   //void addModel(Model model, Shader shader) {
   //}
 
-  void addObjectRef(scene::SceneObject* object) {
+  void addObjectRef(::engine::scene::SceneObject* object) {
     objects.push_back(object);
   }
 
-  void setLight(scene::SceneObject* l) {
-    objects.push_back(l);
-  }
+  //void setLight(scene::SceneObject* l) {
+  //  objects.push_back(l);
+  //}
 
   void useCamera(scene::Camera* cam) { camera = cam; }
 
