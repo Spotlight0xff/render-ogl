@@ -32,7 +32,7 @@ TEST(Performance, Rendering) {
 
 
   engine::Model model_cube("resources/models/cube.obj");
-  engine::components::ModelObject obj_cube(&model_cube, &scene);
+/*  engine::components::ModelObject obj_cube(&model_cube);
   scene.addObjectRef(&obj_cube);
   scene.addObjectRef(&obj_cube);
 
@@ -50,5 +50,5 @@ TEST(Performance, Rendering) {
   scene.draw();
   std::cout << "counter vao: " << counter_bind_vao << "\n";
   std::cout << "counter draw: " << counter_draw << "\n";
-  std::cout << "counter draw indices: " << counter_draw_indices << "\n";
+  std::cout << "counter draw indices: " << counter_draw_indices << "\n";*/
 }

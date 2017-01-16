@@ -38,21 +38,39 @@ size_t Phong::getMaxLights() {
 }
 
 void Phong::draw(Scene& scene) {
-  shader_model.set("projection", scene.getProjectionMatrix());
-  shader_model.set("view", scene.getCameraRef().getViewMatrix());
-
-  shader_model.set("lightColor", lights[0]->getColor());
-  shader_model.set("lightPos", lights[0]->getPosition());
-  shader_model.set("cameraPos", scene.getCameraRef().getPosition());
-  shader_model.set("ambientStrength", 0.5f);
-
-  for(auto const& o : objects) {
-    shader_model.set("model", o->getModelMatrix());
-    o->drawModel(shader_model);
-  }
+  /*shader_lights.set("projection", scene.getProjectionMatrix());
+  shader_lights.set("view", scene.getCameraRef().getViewMatrix());
+  */
+  int i = 0;
+  shader_model.set("active_lights", GLint(lights.size()));
 
   for(auto const& l: lights) {
-    l->draw(scene);
+    std::string plight = "pointLights[" + std::to_string(i) + "].";
+    shader_model.set(plight + "position", l->getPosition());
+    shader_model.set(plight + "constant", GLfloat(1.0));
+    shader_model.set(plight + "linear", GLfloat(0.09));
+    shader_model.set(plight + "quadratic", GLfloat(0.032));
+    shader_model.set(plight + "ambient", {1.0, 1.0, 1.0});
+    shader_model.set(plight + "diffuse", {1.0, 1.0, 1.0});
+    shader_model.set(plight + "specular", {1.0, 1.0, 1.0});
+
+    shader_lights.set("projection", scene.getProjectionMatrix());
+    shader_lights.set("view", scene.getCameraRef().getViewMatrix());
+    shader_lights.set("model", l->getModelMatrix());
+    l->drawModel();
+    i ++;
+  }
+
+
+
+  for(auto const& o : objects) {
+    shader_model.set("projection", scene.getProjectionMatrix());
+    shader_model.set("view", scene.getCameraRef().getViewMatrix());
+    shader_model.set("model", o->getModelMatrix());
+    shader_model.set("ambientStrength", 0.2f);
+    shader_model.set("viewPos", scene.getCameraRef().getPosition());
+
+    o->drawModel(shader_model);
   }
 }
 

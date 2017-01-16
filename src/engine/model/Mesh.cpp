@@ -89,5 +89,11 @@ void Mesh::draw(Shader const &shader) const {
   glBindVertexArray(0);
 }
 
+void Mesh::draw() const {
+  glBindVertexArray(vao);
+  glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
+  glBindVertexArray(0);
+}
+
 } // end namespace engine::model
 }

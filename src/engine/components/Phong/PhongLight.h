@@ -19,10 +19,11 @@ class PhongLight : public engine::scene::SceneObject {
   public:
     PhongLight()
       : model("resources/models/cube.obj") {
-      shader = Shader("light_simple");
     }
 
     void draw(Scene& scene) override;
+
+    void drawModel();
 
     void setPosition(glm::vec3 pos) { position = pos; }
 
@@ -34,8 +35,6 @@ class PhongLight : public engine::scene::SceneObject {
 
   private:
     glm::vec3 position;
-
-    Shader shader;
     Model model;
 
 };

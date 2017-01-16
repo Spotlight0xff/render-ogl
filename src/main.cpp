@@ -105,10 +105,6 @@ int main() {
   scene.enableFpsCounter();
   scene.useCamera(&camera);
 
-  // light source
-  //components::PhongLight light(&scene);
-  //LightObject light2(&scene);
-
   scene::Phong phong_scene;
 
   // Nanosuit object
@@ -116,6 +112,7 @@ int main() {
   obj_nanosuit->setPosition({0.0, 0.0, 15.0});
 
   components::PhongLight* light = phong_scene.addLight();
+  components::PhongLight* light2 = phong_scene.addLight();
 
   // Ground object
   components::ModelObject obj_ground(&model_ground);
@@ -124,12 +121,9 @@ int main() {
   // set custom shader for checkerboard
   obj_ground.setShader("checkerboard",
       [](Scene& s, components::ModelObject& obj, Shader& shader) {
-        glm::mat4 model = obj.getModelMatrix();
-        glm::mat4 view = s.getCameraRef().getViewMatrix();
-        glm::mat4 projection = s.getProjectionMatrix();
-        glUniformMatrix4fv(shader.getUniform("model"), 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(shader.getUniform("view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(shader.getUniform("projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        shader.set("model", obj.getModelMatrix());
+        shader.set("view", s.getCameraRef().getViewMatrix());
+        shader.set("projection", s.getProjectionMatrix());
       });
 
 
@@ -141,7 +135,9 @@ int main() {
   for (int i=-3; i < 4; i ++) {
     for (int j=1; j < 7; j ++) {
       components::PhongModel* obj= phong_scene.addModel(model_nanosuit);
-      obj->setPosition(obj_nanosuit->getPosition() - glm::vec3({5.0 * i, 0.0, 5.0 * j}));
+      obj->setPosition(obj_nanosuit->getPosition()
+       - glm::vec3({5.0 * i, 0.0, 5.0 * j})
+       - glm::vec3({0.0, 0.0, 10.0}));
       objs.push_back(obj);
     }
   }
@@ -170,11 +166,16 @@ int main() {
     scene.draw();
     {
       GLfloat r = 6.0f;
-      GLfloat speed = 3.5f;
+      GLfloat r2 = 25.0f;
+      GLfloat speed = 0.5f;
+      GLfloat speed2 = 1.5f;
       GLfloat pos_x = sin(glfwGetTime() * speed) * r;
       GLfloat pos_z = cos(glfwGetTime() * speed) * r;
+      GLfloat pos_x2 = sin(glfwGetTime() * speed2) * r2;
+      GLfloat pos_z2 = cos(glfwGetTime() * speed2) * r2;
 
-      light->setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit->getPosition());
+      light->setPosition(glm::vec3(pos_x, 5.0, pos_z) + obj_nanosuit->getPosition());
+      light2->setPosition(glm::vec3(pos_z2, 10.0, pos_x2) + (obj_nanosuit->getPosition() - glm::vec3(0.0, 0.0, 30.0)));
     }
 #ifndef INTERACTIVE
     {

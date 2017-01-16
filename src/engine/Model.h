@@ -24,6 +24,7 @@ class Model {
 
     void draw(Shader const &shader) const;
 
+    void draw() const;
 
   private:
     FRIEND_TEST(Model, Loading);
@@ -45,6 +46,7 @@ class Model {
 
     model::Texture loadTexture(const char *file, const char *directory,
                         model::TextureType type);
+
 };
 
 } // end namespace engine

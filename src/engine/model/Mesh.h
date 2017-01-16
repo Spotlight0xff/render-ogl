@@ -25,7 +25,11 @@ class Mesh {
 
     bool setup();
 
+    // draw with shader (textures mostly)
     void draw(Shader const &shader) const;
+
+    // and without
+    void draw() const;
 
     std::vector<GLuint> getIndices() const { return indices; }
 

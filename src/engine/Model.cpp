@@ -37,6 +37,15 @@ void Model::draw(Shader const &shader) const {
 }
 
 
+// draw without shaders
+void Model::draw() const {
+  for (auto const &m : meshes) {
+    m.draw();
+  }
+}
+
+
+
 void Model::loadModel() {
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(path,
