@@ -10,6 +10,7 @@ namespace engine {
 
 class Shader {
   public:
+    // TODO: Caching, RAII, more ctors, shader-compiler -> shader-instance
     Shader() {}
 
     Shader(std::string const &shader_name);
