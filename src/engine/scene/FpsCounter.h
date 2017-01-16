@@ -39,11 +39,12 @@ class FpsCounter {
         last_time += 1.0;
         //performance_str = std::to_string(frame_ms) + " ms/frame";
         fps_string = std::to_string(fps) + " FPS";
+        font.updateWindow(input.width, input.height);
       }
 
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       //fontRenderer.render(performance_str, 20.0f, height - 300.0f, glm::vec3(0.5,0.8f, 0.2f));
-      font.render(fps_string, 20.0f, input.height, glm::vec3(0.5, 0.8f, 0.2f));
+      font.render(fps_string, 20.0f, input.height - 80.0f, glm::vec3(0.5, 0.8f, 0.2f));
     }
 
   private:

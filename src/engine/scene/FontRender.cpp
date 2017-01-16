@@ -7,24 +7,20 @@
 
 #include <iostream>
 
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 1024
 
 namespace engine {
 namespace scene {
 
-FontRenderer::FontRenderer() {
+FontRenderer::FontRenderer(int window_width, int window_height) {
   if (FT_Init_FreeType(&ft)) {
     std::cerr << "Failed to initialize freetype2 library\n";
     return;
   }
   shader = Shader("font");
 
-#define WINDOW_WIDTH  1280
-#define WINDOW_HEIGHT 1024
-
-  glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f,
-                                    static_cast<GLfloat>(WINDOW_HEIGHT));
-  shader.use();
-  glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+  updateWindow(window_width, window_height);
 
 
   // Text rendering setup for OpenGL
@@ -44,6 +40,12 @@ FontRenderer::~FontRenderer() {
   glDeleteBuffers(1, &vbo_font);
   glDeleteVertexArrays(1, &vao_font);
   FT_Done_FreeType(ft);
+}
+
+void FontRenderer::updateWindow(GLfloat width, GLfloat height) {
+  glm::mat4 projection = glm::ortho(0.0f, width, 0.0f, height);
+  shader.use();
+  glUniformMatrix4fv(shader.getUniform("projection"), 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 bool FontRenderer::load(const char *path, FT_UInt height) {

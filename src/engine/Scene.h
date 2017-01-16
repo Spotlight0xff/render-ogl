@@ -29,6 +29,7 @@ class Scene {
  public:
   Scene(GLFWwindow* w)
   : input(w),
+    font(input.width, input.height),
     fps_counter(font, input),
     window(w) { }
   //void addLight(Light const& light);

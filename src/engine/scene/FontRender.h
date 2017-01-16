@@ -33,9 +33,11 @@ struct CharGlyph {
 
 class FontRenderer {
   public:
-    FontRenderer();
+    FontRenderer(int window_width, int window_height);
 
     ~FontRenderer();
+
+    void updateWindow(GLfloat width, GLfloat height);
 
     bool load(const char *path, FT_UInt height = 48);
 
