@@ -3,13 +3,9 @@
 out vec4 color;
 
 struct Material {
-  vec3 ambient;
-  vec3 diffuse;
-  vec3 specular;
   float shininess;
-  // TODO:
-  // sampler2D diffuse;
-  // sampled2D specular;
+  sampler2D diffuse;
+  sampler2D specular;
 };
 
 struct PointLight {
@@ -75,8 +71,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
     // Combine results
     vec3 ambient = light.ambient * vec3(texture(tex, TexCoord));
-    vec3 diffuse = light.diffuse * diff * vec3(texture(tex, TexCoord));
-    vec3 specular = light.specular * spec * vec3(texture(tex, TexCoord));
+    vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+    vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoord));
 
     ambient *= attenuation;
     diffuse *= attenuation;
