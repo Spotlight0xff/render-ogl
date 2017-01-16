@@ -6,18 +6,20 @@ in vec3 FragPos;
 
 void main()
 {
+    vec4 color_dark = vec4(0.4, 0.4, 0.4, 1.0);
+    vec4 color_bright = vec4(0.1, 0.1, 0.1, 1.0);
   vec2 pos = mod(FragPos.xz, vec2(2));
   if (pos.x > 1.0) {
     if (pos.y > 1.0) {
-    color = vec4(1.0, 1.0, 1.0, 1.0);
+    color = color_bright;
     } else {
-    color = vec4(0.0, 0.0, 0.0, 1.0);
+    color = color_dark;
     }
   } else {
     if (pos.y > 1.0) {
-    color = vec4(0.0, 0.0, 0.0, 1.0);
+    color = color_dark;
     } else {
-    color = vec4(1.0, 1.0, 1.0, 1.0);
+    color = color_bright;
     }
   }
 }
