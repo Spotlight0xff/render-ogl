@@ -23,6 +23,14 @@ class Phong : public SceneObject {
 
     size_t getMaxLights();
 
+    std::vector<engine::components::PhongModel*> getObjects() {
+      return objects;
+    }
+
+    std::vector<engine::components::PhongLight*> getLights() {
+      return lights;
+    }
+
     void draw(Scene& scene);
 
   private:
