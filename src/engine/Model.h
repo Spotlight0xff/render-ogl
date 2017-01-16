@@ -5,6 +5,9 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#define FRIEND_TEST(test_case_name, test_name)\
+friend class test_case_name##_##test_name##_Test
+
 #include "engine/model/Mesh.h"
 #include "engine/model/Texture.h"
 #include "ShaderCompiler.h"
@@ -23,6 +26,7 @@ class Model {
 
 
   private:
+    FRIEND_TEST(Model, Loading);
     std::string directory;
     std::string path;
     std::vector<model::Mesh> meshes;
