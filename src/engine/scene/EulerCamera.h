@@ -35,6 +35,8 @@ class EulerCamera : public Camera {
 
     void setMovement(FpsMovement &movement) override;
 
+    void lookAt(glm::vec3 pos);
+
 
     glm::mat4 getViewMatrix() const override;
 
@@ -50,6 +52,10 @@ class EulerCamera : public Camera {
     glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    glm::mat4 view_matrix;
+
+    void updateMatrices();
 
 };
 

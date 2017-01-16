@@ -34,38 +34,56 @@ void EulerCamera::look(GLfloat delta_x, GLfloat delta_y) {
   temp_front.y = sin(glm::radians(pitch));
   temp_front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
   this->front = glm::normalize(temp_front);
+
+  updateMatrices();
 }
+
 
 
 void EulerCamera::moveForward(GLfloat delta) {
   pos += delta * front;
+  updateMatrices();
 }
 
 void EulerCamera::moveBackward(GLfloat delta) {
   pos -= delta * front;
+  updateMatrices();
 }
 
 void EulerCamera::moveLeft(GLfloat delta) {
   glm::vec3 right = glm::normalize(glm::cross(front, up));
   pos -= delta * right;
+  updateMatrices();
 }
 
 void EulerCamera::moveRight(GLfloat delta) {
   glm::vec3 right = glm::normalize(glm::cross(front, up));
   pos += delta * right;
+  updateMatrices();
 }
 
 void EulerCamera::moveUp(GLfloat delta) {
   pos += delta * up;
+  updateMatrices();
 }
 
 void EulerCamera::moveDown(GLfloat delta) {
   pos -= delta * up;
+  updateMatrices();
 }
 
 
 inline glm::mat4 EulerCamera::getViewMatrix() const {
-  return glm::lookAt(pos, pos + front, up);
+  return view_matrix;
+}
+
+void EulerCamera::lookAt(glm::vec3 p) {
+  view_matrix = glm::lookAt(pos, p + front, up);
+}
+
+
+void EulerCamera::updateMatrices() {
+  view_matrix = glm::lookAt(pos, pos + front, up);
 }
 
 } // end namespace engine::scene
