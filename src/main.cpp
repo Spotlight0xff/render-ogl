@@ -111,7 +111,7 @@ int main() {
 
   // Nanosuit object
   components::PhongModel obj_nanosuit(&model_nanosuit, light, &scene);
-  obj_nanosuit.setPosition({0.0, 0.0, -20.0});
+  obj_nanosuit.setPosition({0.0, 0.0, 15.0});
 
   // Ground object
   components::ModelObject obj_ground(&model_ground, &scene);
@@ -137,9 +137,9 @@ int main() {
 
   std::vector<components::ModelObject*> objs;
   for (int i=-3; i < 4; i ++) {
-    for (int j=-3; j < 4; j ++) {
+    for (int j=1; j < 7; j ++) {
       components::PhongModel* obj= new components::PhongModel(&model_nanosuit, light, &scene);
-      obj->setPosition({-5.0 * i, 0.0, -5.0 * j});
+      obj->setPosition(obj_nanosuit.getPosition() - glm::vec3({5.0 * i, 0.0, 5.0 * j}));
       scene.addObjectRef(obj);
       objs.push_back(obj);
     }
