@@ -8,6 +8,7 @@
 #include "engine/Scene.h"
 #include "engine/components/PhongLight.h"
 #include "engine/components/PhongModel.h"
+#include "engine/Timing.h"
 
 #include <iostream>
 #include <vector>
@@ -22,6 +23,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+
+#define INTERACTIVE
 
 
 namespace {
@@ -83,7 +87,6 @@ int main() {
 
   Model model_nanosuit("resources/models/nanosuit2/nanosuit.obj");
   Model model_ground("resources/models/ground.obj");
-  //Model model_interior("resources/models/audi/audo_r8.obj");
 
 
   // Setup camera and movement
@@ -130,45 +133,76 @@ int main() {
   //scene.addObjectRef(&light2);
   scene.addObjectRef(&obj_nanosuit);
   scene.addObjectRef(&obj_ground);
+  //scene.addObjectRef(&particles);
 
-  //std::vector<ModelObject*> objs;
-  //for (int i=-2; i < 5; i ++) {
-    //for (int j=-2; j < 5; j ++) {
-      //ModelObject* obj= new ModelObject(&model_nanosuit, light, &scene);
-      //obj->setPosition({5.0 * i, 0.0, 5.0 * j});
-      //scene.addObjectRef(obj);
-      //objs.push_back(obj);
-    //}
-  //}
+  std::vector<components::ModelObject*> objs;
+  for (int i=-3; i < 4; i ++) {
+    for (int j=-3; j < 4; j ++) {
+      components::PhongModel* obj= new components::PhongModel(&model_nanosuit, light, &scene);
+      obj->setPosition({-5.0 * i, 0.0, -5.0 * j});
+      scene.addObjectRef(obj);
+      objs.push_back(obj);
+    }
+  }
 
 
+
+
+
+
+  engine::Timing timer;
+  timer.Start();
+#ifdef INTERACTIVE
   scene.getInputRef().addMouseCallback(camera.do_mouse);
-
-  camera.setPosition({0.0, 0.0, -40.0});
-
+  //camera.lookAt(obj_nanosuit.getPosition());// + glm::vec3({0.0, 10.0, 0.0}));
+  camera.setPosition({0.0, 12.0, 30.0});
+  //camera.lookAt(obj_nanosuit.getPosition());
   do {
+#else
+  glm::vec3 look_at = obj_nanosuit.getPosition() + glm::vec3({0.0, 10.0, 20.0});
+  camera.lookAt(look_at);
+  for (GLfloat camera_r = 0.0f; camera_r < 15.0; camera_r += 0.01) {
+#endif
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
     scene.draw();
+    {
+      GLfloat r = 6.0f;
+      GLfloat speed = 3.5f;
+      GLfloat pos_x = sin(glfwGetTime() * speed) * r;
+      GLfloat pos_z = cos(glfwGetTime() * speed) * r;
 
-    GLfloat r = 6.0f;
-    GLfloat speed = 3.5f;
-    GLfloat pos_x = sin(glfwGetTime() * speed) * r;
-    GLfloat pos_z = cos(glfwGetTime() * speed) * r;
+      light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit.getPosition());
+    }
+#ifndef INTERACTIVE
+    {
+      GLfloat r = 20.0f;
+      GLfloat speed = 0.5f;
+      GLfloat pos_x = sin(camera_r * speed) * r;
+      GLfloat pos_z = cos(camera_r * speed) * r;
 
-    light.setPosition(glm::vec3(pos_x, 10.0, pos_z) + obj_nanosuit.getPosition());
-    //light2.setPosition(glm::vec3(pos_z, 10.0, pos_x) + obj_nanosuit.getPosition());
+      camera.setPosition(glm::vec3(pos_x, 10.0, pos_z) + look_at);
+      camera.lookAt(look_at);
+    }
+#endif
 
 
     glfwSwapBuffers(window);
     glfwPollEvents();
 
+#ifdef INTERACTIVE
     scene.getInputRef().handleKeys([&camera]
                       (bool keys[]) {
                       camera.do_keyboard(keys);
                       });
-  } while(glfwWindowShouldClose(window) == 0);
+    } while(glfwWindowShouldClose(window) == 0);
+#else
+  } // end for loop
+#endif
+  std::cout << "Time elapsed: " << timer.waitStop()/ 1000000.0 << " ms\n";
 
   glfwTerminate();
 
