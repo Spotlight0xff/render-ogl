@@ -50,9 +50,9 @@ void Phong::draw(Scene& scene) {
     shader_model.set(plight + "constant", GLfloat(1.0));
     shader_model.set(plight + "linear", GLfloat(0.09));
     shader_model.set(plight + "quadratic", GLfloat(0.032));
-    shader_model.set(plight + "ambient", {0.05f, 0.05f, 0.05f});
-    shader_model.set(plight + "diffuse", {1.0, 1.0, 1.0});
-    shader_model.set(plight + "specular", {1.0, 1.0, 1.0});
+    shader_model.set(plight + "ambient", glm::vec3({0.2f, 0.2f, 0.2f}));
+    shader_model.set(plight + "diffuse", glm::vec3({1.0, 1.0, 1.0}));
+    shader_model.set(plight + "specular", glm::vec3({1.0, 1.0, 1.0}));
 
     shader_lights.set("projection", scene.getProjectionMatrix());
     shader_lights.set("view", scene.getCameraRef().getViewMatrix());
