@@ -107,9 +107,11 @@ void doIdle(GLFWwindow* window,
     glfwSwapBuffers(window);
     glfwPollEvents();
 
-    scene.getInputRef().handleKeys([&camera]
+    scene.getInputRef().handleKeys([&camera, &window]
                                            (bool keys[]) {
-      camera.do_keyboard(keys);
+      if (keys[GLFW_KEY_ESCAPE]) {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
     });
   } while(glfwWindowShouldClose(window) == 0);
 }
