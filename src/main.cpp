@@ -41,7 +41,7 @@ void doPerformanceTest(GLFWwindow* window,
                   ::engine::Scene& scene,
                   ::engine::scene::Phong& phong_scene,
                   ::engine::components::PhongModel* obj) {
-  glm::vec3 look_at = obj->getPosition() + glm::vec3({0.0, 10.0, 0.0});
+  glm::vec3 look_at = obj->getPosition() + glm::vec3(0.0, 10.0, 0.0);
   glfwSwapInterval(0);
   for(size_t i = 0; i < 2000; i++) {
 
@@ -78,7 +78,7 @@ void doIdle(GLFWwindow* window,
                   ::engine::scene::Phong& phong_scene,
                   ::engine::components::PhongModel* obj,
                   ::engine::scene::EulerCamera& camera) {
-  glm::vec3 look_at = obj->getPosition() + glm::vec3({0.0, 10.0, 0.0});
+  glm::vec3 look_at = obj->getPosition() + glm::vec3(0.0, 10.0, 0.0);
   do {
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -229,8 +229,8 @@ int main() {
       for (int j=1; j < 7; j ++) {
         components::PhongModel* obj= phong_scene.addModel(model_nanosuit);
         obj->setPosition(obj_nanosuit->getPosition()
-         - glm::vec3({5.0 * i, 0.0, 5.0 * j})
-         - glm::vec3({0.0, 0.0, 10.0}));
+         - glm::vec3(5.0 * i, 0.0, 5.0 * j)
+         - glm::vec3(0.0, 0.0, 10.0));
         objs.push_back(obj);
       }
     }
@@ -259,7 +259,7 @@ int main() {
       GLfloat speed = 3.0f;
       GLfloat light_x = sin(glfwGetTime() * speed) * r;
       GLfloat light_z = cos(glfwGetTime() * speed) * r;
-      light->setPosition(obj_nanosuit->getPosition() + glm::vec3({light_x, 7.0, light_z}));
+      light->setPosition(obj_nanosuit->getPosition() + glm::vec3(light_x, 7.0, light_z));
       scene.getInputRef().handleKeys([&camera]
                                              (bool keys[]) {
         camera.do_keyboard(keys);
