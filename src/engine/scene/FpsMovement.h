@@ -4,6 +4,7 @@
 #define DEFAULT_SENSITIVITY 0.1f
 #define DEFAULT_MOVEMENT_SPEED 5.0f
 
+#include <glm/vec3.hpp>
 #include "opengl.h"
 
 namespace engine {
@@ -37,6 +38,7 @@ class FpsMovement {
     Camera *camera;
 
     // movement-related
+    static constexpr GLfloat max_speed = 20.0f;
 
     // general
     static constexpr GLfloat gravity = 0.891f;
@@ -44,6 +46,9 @@ class FpsMovement {
     GLfloat default_speed = DEFAULT_MOVEMENT_SPEED;
     GLfloat speed = default_speed;
     GLfloat shift_modifier = 2.0f;
+
+    // movement
+    glm::vec3 velocity;
 
 
     // jumping

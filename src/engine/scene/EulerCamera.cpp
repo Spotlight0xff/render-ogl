@@ -72,6 +72,14 @@ void EulerCamera::moveDown(GLfloat delta) {
   updateMatrices();
 }
 
+void EulerCamera::move(glm::vec3 delta) {
+  // TODO(André): optimize that shit
+  glm::vec3 right = glm::normalize(glm::cross(front, up));
+  pos += (delta[0] * front);
+  pos +=  delta[1] * right;
+  updateMatrices();
+}
+
 
 inline glm::mat4 EulerCamera::getViewMatrix() const {
   return view_matrix;

@@ -37,6 +37,8 @@ class EulerCamera : public Camera {
 
     void lookAt(glm::vec3 pos);
 
+    void move(glm::vec3 delta);
+
 
     glm::mat4 getViewMatrix() const override;
 

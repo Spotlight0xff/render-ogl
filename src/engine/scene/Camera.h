@@ -29,6 +29,8 @@ class Camera {
 
     virtual void moveDown(GLfloat delta_frame) = 0;
 
+    virtual void move(glm::vec3 delta) = 0;
+
     virtual glm::mat4 getViewMatrix() const = 0;
 
     virtual glm::vec3 getPosition() const = 0;
