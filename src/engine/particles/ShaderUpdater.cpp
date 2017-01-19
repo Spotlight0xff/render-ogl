@@ -31,6 +31,7 @@ bool ShaderUpdater::init() {
 
 
   // TODO: check for errors of locations
+  return true;
 }
 
 
