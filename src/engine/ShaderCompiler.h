@@ -39,9 +39,7 @@ class Shader {
     GLuint getId() const { return shader_prog; }
 
   private:
-    GLuint shader_prog,
-            vertex_shader,
-            fragment_shader;
+    GLuint shader_prog;
     std::string name;
     static constexpr const char *directory = "resources/shaders/";
 

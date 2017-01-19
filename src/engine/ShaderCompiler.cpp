@@ -1,4 +1,5 @@
 #include "ShaderCompiler.h"
+#include "Util.h"
 
 #include <GL/glew.h>
 
@@ -15,12 +16,27 @@ Shader::Shader(std::string const &shader_name)
   std::string error;
   std::vector<GLuint> shaders;
 
+
+  // TODO: check for geometry shader
+  if (util::fileExists(directory + shader_name + ".geom")) {
+    GLuint geometry_shader;
+    success = compileShader(shader_name + ".geom", GL_GEOMETRY_SHADER, geometry_shader, error);
+    if (!success) {
+      std::cout << "[Shader::" << shader_name << "] Compilation of vertex shader failed:\n"
+                << error << std::endl;
+      return;
+    }
+    shaders.push_back(geometry_shader);
+  }
+
+  GLuint vertex_shader;
   success = compileShader(shader_name + ".vert", GL_VERTEX_SHADER, vertex_shader, error);
   if (!success) {
     std::cout << "[Shader::" << shader_name << "] Compilation of vertex shader failed:\n"
               << error << std::endl;
     return;
   }
+  GLuint fragment_shader;
   success = compileShader(shader_name + ".frag", GL_FRAGMENT_SHADER, fragment_shader, error);
   if (!success) {
     std::cout << "[Shader::" << shader_name << "] Compilation of fragment shader failed:\n"
