@@ -82,7 +82,10 @@ bool Compiler::setup() {
 
 bool Compiler::finalize() {
   std::string error;
-  linkShaders(shaders_, shader_prog_, error);
+  bool success = linkShaders(shaders_, shader_prog_, error);
+  if (!success) {
+    return false;
+  }
 
 
   for (auto shader: shaders_) {
@@ -90,6 +93,7 @@ bool Compiler::finalize() {
   }
 
   std::cout << "[Shader::" << name_ << "] Compilation and linking process complete\n";
+  return true;
 }
 
 void Compiler::use() const {
