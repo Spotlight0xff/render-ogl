@@ -228,6 +228,7 @@ def read_defines_from_glew(glew_location):
                 False == line.startswith('#ifndef GL_ARB_vertex_array_object') and \
                 False == line.startswith('#ifndef GL_ARB_framebuffer_object') and \
                 False == line.startswith('#ifndef GL_KHR_debug') and \
+                False == line.startswith('#ifndef GL_ARB_uniform_buffer_object') and \
                 False == line.startswith('#ifndef GL_ARB_transform_feedback2') and \
                 False == line.startswith('#ifndef GL_ARB_vertex_buffer_object'):
             line = line.replace('#ifndef GL_', '-DGL_')

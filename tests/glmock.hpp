@@ -716,6 +716,16 @@ public:
     MOCK_METHOD1( gl_IsTransformFeedback, unsigned char  (GLuint id) );
     MOCK_METHOD0( gl_PauseTransformFeedback, void  () );
     MOCK_METHOD0( gl_ResumeTransformFeedback, void  () );
+    MOCK_METHOD3( gl_BindBufferBase, void  (GLenum target, GLuint index, GLuint buffer) );
+    MOCK_METHOD5( gl_BindBufferRange, void  (GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size) );
+    MOCK_METHOD5( gl_GetActiveUniformBlockName, void  (GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName) );
+    MOCK_METHOD4( gl_GetActiveUniformBlockiv, void  (GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params) );
+    MOCK_METHOD5( gl_GetActiveUniformName, void  (GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName) );
+    MOCK_METHOD5( gl_GetActiveUniformsiv, void  (GLuint program, GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params) );
+    MOCK_METHOD3( gl_GetIntegeri_v, void  (GLenum target, GLuint index, GLint * data) );
+    MOCK_METHOD2( gl_GetUniformBlockIndex, unsigned int  (GLuint program, const GLchar * uniformBlockName) );
+    MOCK_METHOD4( gl_GetUniformIndices, void  (GLuint program, GLsizei uniformCount, const GLchar *const * uniformNames, GLuint * uniformIndices) );
+    MOCK_METHOD3( gl_UniformBlockBinding, void  (GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding) );
     MOCK_METHOD1( gl_BindVertexArray, void  (GLuint array) );
     MOCK_METHOD2( gl_DeleteVertexArrays, void  (GLsizei n, const GLuint * arrays) );
     MOCK_METHOD2( gl_GenVertexArrays, void  (GLsizei n, GLuint * arrays) );

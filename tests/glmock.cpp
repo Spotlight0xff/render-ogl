@@ -3490,6 +3490,66 @@ void  mockgl_ResumeTransformFeedback()
 }
 PFNGLRESUMETRANSFORMFEEDBACKPROC __glewResumeTransformFeedback = mockgl_ResumeTransformFeedback;
 
+void  mockgl_BindBufferBase(GLenum target, GLuint index, GLuint buffer)
+{
+    return getMock()->gl_BindBufferBase(target, index, buffer);
+}
+PFNGLBINDBUFFERBASEPROC __glewBindBufferBase = mockgl_BindBufferBase;
+
+void  mockgl_BindBufferRange(GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size)
+{
+    return getMock()->gl_BindBufferRange(target, index, buffer, offset, size);
+}
+PFNGLBINDBUFFERRANGEPROC __glewBindBufferRange = mockgl_BindBufferRange;
+
+void  mockgl_GetActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName)
+{
+    return getMock()->gl_GetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName);
+}
+PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC __glewGetActiveUniformBlockName = mockgl_GetActiveUniformBlockName;
+
+void  mockgl_GetActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params)
+{
+    return getMock()->gl_GetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
+}
+PFNGLGETACTIVEUNIFORMBLOCKIVPROC __glewGetActiveUniformBlockiv = mockgl_GetActiveUniformBlockiv;
+
+void  mockgl_GetActiveUniformName(GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName)
+{
+    return getMock()->gl_GetActiveUniformName(program, uniformIndex, bufSize, length, uniformName);
+}
+PFNGLGETACTIVEUNIFORMNAMEPROC __glewGetActiveUniformName = mockgl_GetActiveUniformName;
+
+void  mockgl_GetActiveUniformsiv(GLuint program, GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params)
+{
+    return getMock()->gl_GetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
+}
+PFNGLGETACTIVEUNIFORMSIVPROC __glewGetActiveUniformsiv = mockgl_GetActiveUniformsiv;
+
+void  mockgl_GetIntegeri_v(GLenum target, GLuint index, GLint * data)
+{
+    return getMock()->gl_GetIntegeri_v(target, index, data);
+}
+PFNGLGETINTEGERI_VPROC __glewGetIntegeri_v = mockgl_GetIntegeri_v;
+
+unsigned int  mockgl_GetUniformBlockIndex(GLuint program, const GLchar * uniformBlockName)
+{
+    return getMock()->gl_GetUniformBlockIndex(program, uniformBlockName);
+}
+PFNGLGETUNIFORMBLOCKINDEXPROC __glewGetUniformBlockIndex = mockgl_GetUniformBlockIndex;
+
+void  mockgl_GetUniformIndices(GLuint program, GLsizei uniformCount, const GLchar *const * uniformNames, GLuint * uniformIndices)
+{
+    return getMock()->gl_GetUniformIndices(program, uniformCount, uniformNames, uniformIndices);
+}
+PFNGLGETUNIFORMINDICESPROC __glewGetUniformIndices = mockgl_GetUniformIndices;
+
+void  mockgl_UniformBlockBinding(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding)
+{
+    return getMock()->gl_UniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+}
+PFNGLUNIFORMBLOCKBINDINGPROC __glewUniformBlockBinding = mockgl_UniformBlockBinding;
+
 void  mockgl_BindVertexArray(GLuint array)
 {
     return getMock()->gl_BindVertexArray(array);
