@@ -7,8 +7,8 @@
 
 class GLMock {
 public:
-    //GLMock();
-    //~GLMock();
+    GLMock();
+    ~GLMock();
     MOCK_METHOD2( gl_Accum, void (GLenum op, GLfloat value) );
     MOCK_METHOD2( gl_AlphaFunc, void (GLenum func, GLclampf ref) );
     MOCK_METHOD3( gl_AreTexturesResident, GLboolean (GLsizei n, const GLuint * textures, GLboolean * residences) );
