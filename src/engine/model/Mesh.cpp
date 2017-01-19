@@ -34,6 +34,20 @@ Mesh::Mesh(std::vector<Vertex> v,
   setup();
 }
 
+Mesh::~Mesh() {
+  //if (vbo_vertices) {
+  //  glDeleteBuffers(1, &vbo_vertices);
+  //}
+
+  //if (ebo_indices) {
+  //  glDeleteBuffers(1, &ebo_indices);
+  //}
+
+  //if (vao) {
+  //  glDeleteVertexArrays(1, &vao);
+  //}
+}
+
 bool Mesh::setup() {
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo_vertices);

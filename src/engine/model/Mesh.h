@@ -22,6 +22,7 @@ class Mesh {
     Mesh(std::vector<Vertex> vertices,
          std::vector<GLuint> indices,
          std::vector<Texture2D*> textures);
+    ~Mesh();
 
     bool setup();
 

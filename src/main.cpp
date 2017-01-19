@@ -149,7 +149,7 @@ GLFWwindow* initGL() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // disable vsync
-  glfwSwapInterval(1);
+  glfwSwapInterval(0);
 
 
   glEnable(GL_BLEND); // needed for text rendering
