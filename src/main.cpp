@@ -213,25 +213,25 @@ int main() {
 
 
   // Ground object
-  components::ModelObject obj_ground(&model_ground);
+  components::CustomShaderObject obj_ground(&model_ground, "checkerboard",
+                                 [](Scene& s, components::ModelObject& obj, engine::shader::Compiler& shader) {
+    shader.set("model", obj.getModelMatrix());
+    shader.set("view", s.getCameraRef().getViewMatrix());
+    shader.set("projection", s.getProjectionMatrix());
+  });
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
-  // set custom shader for checkerboard
-  obj_ground.setShader("checkerboard",
-      [](Scene& s, components::ModelObject& obj, Shader& shader) {
-        shader.set("model", obj.getModelMatrix());
-        shader.set("view", s.getCameraRef().getViewMatrix());
-        shader.set("projection", s.getProjectionMatrix());
-      });
 
 
   // Add our models to the scene
   scene.addObjectRef(&obj_ground);
+  //scene.addObjectRef(&obj_weapon);
   scene.addObjectRef(&phong_scene);
 
 
 
-  DemoMode mode = DemoMode::IDLE;
+
+  DemoMode mode = DemoMode::INTERACTIVE;
   if (mode == DemoMode::PERFORMANCE_TEST) {
     components::PhongLight* light2 = phong_scene.addLight();
     components::PhongLight* light3 = phong_scene.addLight();

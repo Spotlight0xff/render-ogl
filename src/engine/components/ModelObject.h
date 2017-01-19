@@ -15,13 +15,10 @@ namespace components {
 
 
 class ModelObject : public engine::scene::SceneObject {
-    using ShaderSettingFunc = std::function<void(Scene &, ModelObject &, Shader &)>;
   public:
     ModelObject(Model *m);
 
-    void setShader(const char *shader_name, ShaderSettingFunc settings);
-
-    void draw(Scene&) override;
+    virtual void draw(Scene&) override;
 
 
     void setPosition(glm::vec3 pos);
@@ -42,12 +39,11 @@ class ModelObject : public engine::scene::SceneObject {
     glm::vec3 scale = glm::vec3(1.0);
     glm::vec3 color;
 
-    std::vector<Shader> shaders;
+    std::vector<::engine::shader::Compiler> shaders;
 
 
     Model *model;
-    Shader shader;
-    ShaderSettingFunc shader_settings = [](Scene &s, ModelObject &m, Shader &sh) {};
+    ::engine::shader::Compiler shader;
 };
 
 } // end namespace engine::components
