@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "Vertex.h"
-#include "Texture.h"
+#include "engine/Texture2D.h"
 #include "engine/ShaderCompiler.h"
 
 namespace engine {
@@ -21,7 +21,7 @@ class Mesh {
   public:
     Mesh(std::vector<Vertex> vertices,
          std::vector<GLuint> indices,
-         std::vector<Texture> textures);
+         std::vector<Texture2D> textures);
 
     bool setup();
 
@@ -35,12 +35,12 @@ class Mesh {
 
     std::vector<Vertex> getVertices() const { return vertices; }
 
-    std::vector<Texture> getTextures() const { return textures; }
+    std::vector<Texture2D> getTextures() const { return textures; }
 
   private:
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-    std::vector<Texture> textures;
+    std::vector<Texture2D> textures;
 
     GLuint vao = 0;
     GLuint vbo_vertices = 0;

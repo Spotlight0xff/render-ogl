@@ -17,7 +17,7 @@
 #include <engine/Model.h>
 
 #include "Vertex.h"
-#include "Texture.h"
+#include "engine/Texture.h"
 #include "Util.h"
 
 #include "Mesh.h"
@@ -26,7 +26,7 @@ namespace engine {
 namespace model {
 Mesh::Mesh(std::vector<Vertex> v,
            std::vector<GLuint> ind,
-           std::vector<Texture> tex)
+           std::vector<Texture2D> tex)
         : vertices(v),
           indices(ind),
           textures(tex) {
@@ -73,23 +73,15 @@ void Mesh::draw(Shader &shader) const {
   size_t i = 0;
   for (auto const &t : textures) {
 
-    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t.shininess);
-    /*glUniform3fv(glGetUniformLocation(shader.getId(), "material.ambient"), 1,
-                 glm::value_ptr(t.ambient));*/
+    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t.shininess_);
 
-    /*glUniform3fv(glGetUniformLocation(shader.getId(), "material.diffuse"), 1,
-                 glm::value_ptr(t.diffuse));
-
-    glUniform3fv(glGetUniformLocation(shader.getId(), "material.specular"), 1,
-                 glm::value_ptr(t.specular));*/
-    if (t.type == ::engine::model::TextureType::DIFFUSE) {
+    if (t.getType() == ::engine::Texture2D::Type::DIFFUSE) {
       shader.set("material.diffuse", GLint(i));
 
-    } else if (t.type == ::engine::model::TextureType::SPECULAR) {
+    } else if (t.getType() == ::engine::Texture2D::Type::SPECULAR) {
       shader.set("material.specular", GLint(i));
     }
-    glActiveTexture(GL_TEXTURE0 + i);
-    glBindTexture(GL_TEXTURE_2D, t.id);
+    t.bind(GL_TEXTURE0 + i);
     i++;
   }
   glBindVertexArray(vao);

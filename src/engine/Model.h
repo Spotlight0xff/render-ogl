@@ -9,7 +9,7 @@
 friend class test_case_name##_##test_name##_Test
 
 #include "engine/model/Mesh.h"
-#include "engine/model/Texture.h"
+#include "Texture2D.h"
 #include "ShaderCompiler.h"
 
 #include "engine/scene/SceneObject.h"
@@ -32,7 +32,7 @@ class Model {
     std::string directory;
     std::string path;
     std::vector<model::Mesh> meshes;
-    std::vector<model::Texture> loaded_textures;
+    std::vector<Texture2D> loaded_textures;
 
 
     void loadModel();
@@ -41,11 +41,11 @@ class Model {
 
     model::Mesh processMesh(aiMesh const *mesh, const aiScene *scene);
 
-    std::vector<model::Texture> loadTextures(
+    std::vector<Texture2D> loadTextures(
             aiMaterial *mat, aiTextureType type, std::string type_name);
 
-    model::Texture loadTexture(const char *file, const char *directory,
-                        model::TextureType type);
+    Texture2D loadTexture(const char *file, const char *directory,
+                        Texture2D::Type type);
 
 };
 
