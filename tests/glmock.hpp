@@ -709,6 +709,13 @@ public:
     MOCK_METHOD3( gl_GetQueryObjecti64v, void  (GLuint id, GLenum pname, GLint64 * params) );
     MOCK_METHOD3( gl_GetQueryObjectui64v, void  (GLuint id, GLenum pname, GLuint64 * params) );
     MOCK_METHOD2( gl_QueryCounter, void  (GLuint id, GLenum target) );
+    MOCK_METHOD2( gl_BindTransformFeedback, void  (GLenum target, GLuint id) );
+    MOCK_METHOD2( gl_DeleteTransformFeedbacks, void  (GLsizei n, const GLuint * ids) );
+    MOCK_METHOD2( gl_DrawTransformFeedback, void  (GLenum mode, GLuint id) );
+    MOCK_METHOD2( gl_GenTransformFeedbacks, void  (GLsizei n, GLuint * ids) );
+    MOCK_METHOD1( gl_IsTransformFeedback, unsigned char  (GLuint id) );
+    MOCK_METHOD0( gl_PauseTransformFeedback, void  () );
+    MOCK_METHOD0( gl_ResumeTransformFeedback, void  () );
     MOCK_METHOD1( gl_BindVertexArray, void  (GLuint array) );
     MOCK_METHOD2( gl_DeleteVertexArrays, void  (GLsizei n, const GLuint * arrays) );
     MOCK_METHOD2( gl_GenVertexArrays, void  (GLsizei n, GLuint * arrays) );

@@ -3448,6 +3448,48 @@ void  mockgl_QueryCounter(GLuint id, GLenum target)
 }
 PFNGLQUERYCOUNTERPROC __glewQueryCounter = mockgl_QueryCounter;
 
+void  mockgl_BindTransformFeedback(GLenum target, GLuint id)
+{
+    return getMock()->gl_BindTransformFeedback(target, id);
+}
+PFNGLBINDTRANSFORMFEEDBACKPROC __glewBindTransformFeedback = mockgl_BindTransformFeedback;
+
+void  mockgl_DeleteTransformFeedbacks(GLsizei n, const GLuint * ids)
+{
+    return getMock()->gl_DeleteTransformFeedbacks(n, ids);
+}
+PFNGLDELETETRANSFORMFEEDBACKSPROC __glewDeleteTransformFeedbacks = mockgl_DeleteTransformFeedbacks;
+
+void  mockgl_DrawTransformFeedback(GLenum mode, GLuint id)
+{
+    return getMock()->gl_DrawTransformFeedback(mode, id);
+}
+PFNGLDRAWTRANSFORMFEEDBACKPROC __glewDrawTransformFeedback = mockgl_DrawTransformFeedback;
+
+void  mockgl_GenTransformFeedbacks(GLsizei n, GLuint * ids)
+{
+    return getMock()->gl_GenTransformFeedbacks(n, ids);
+}
+PFNGLGENTRANSFORMFEEDBACKSPROC __glewGenTransformFeedbacks = mockgl_GenTransformFeedbacks;
+
+unsigned char  mockgl_IsTransformFeedback(GLuint id)
+{
+    return getMock()->gl_IsTransformFeedback(id);
+}
+PFNGLISTRANSFORMFEEDBACKPROC __glewIsTransformFeedback = mockgl_IsTransformFeedback;
+
+void  mockgl_PauseTransformFeedback()
+{
+    return getMock()->gl_PauseTransformFeedback();
+}
+PFNGLPAUSETRANSFORMFEEDBACKPROC __glewPauseTransformFeedback = mockgl_PauseTransformFeedback;
+
+void  mockgl_ResumeTransformFeedback()
+{
+    return getMock()->gl_ResumeTransformFeedback();
+}
+PFNGLRESUMETRANSFORMFEEDBACKPROC __glewResumeTransformFeedback = mockgl_ResumeTransformFeedback;
+
 void  mockgl_BindVertexArray(GLuint array)
 {
     return getMock()->gl_BindVertexArray(array);
