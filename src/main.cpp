@@ -41,7 +41,7 @@ enum class DemoMode {
 void doPerformanceTest(GLFWwindow* window,
                   ::engine::Scene& scene,
                   ::engine::scene::Phong& phong_scene,
-                  ::engine::components::PhongModel* obj) {
+                  std::unique_ptr<::engine::components::PhongModel> const& obj) {
   glm::vec3 look_at = obj->getPosition() + glm::vec3(0.0, 10.0, 0.0);
   glfwSwapInterval(0);
   for(size_t i = 0; i < 2000; i++) {
@@ -77,7 +77,7 @@ void doPerformanceTest(GLFWwindow* window,
 void doIdle(GLFWwindow* window,
                   ::engine::Scene& scene,
                   ::engine::scene::Phong& phong_scene,
-                  ::engine::components::PhongModel* obj,
+                  std::unique_ptr<::engine::components::PhongModel> const& obj,
                   ::engine::scene::EulerCamera& camera) {
   glm::vec3 look_at = obj->getPosition() + glm::vec3(0.0, 10.0, 0.0);
   do {
@@ -206,10 +206,18 @@ int main() {
                        });*/
 
   // Nanosuit object
-  components::PhongModel* obj_nanosuit = phong_scene.addModel(model_nanosuit);
+  std::unique_ptr<components::PhongModel>& obj_nanosuit = phong_scene.addModel(model_nanosuit);
+  if (!obj_nanosuit) {
+    std::cerr << "Failed to add the nanosuit model to the scene.\n";
+    return EXIT_FAILURE;
+  }
   obj_nanosuit->setPosition({0.0, 0.0, 15.0});
 
-  components::PhongLight* light = phong_scene.addLight();
+  std::unique_ptr<components::PhongLight>& light = phong_scene.addLight();
+  if (!light) {
+    std::cerr << "Failed to add light to the scene.\n";
+    return EXIT_FAILURE;
+  }
 
 
   // Ground object
@@ -233,18 +241,16 @@ int main() {
 
   DemoMode mode = DemoMode::INTERACTIVE;
   if (mode == DemoMode::PERFORMANCE_TEST) {
-    components::PhongLight* light2 = phong_scene.addLight();
-    components::PhongLight* light3 = phong_scene.addLight();
-    components::PhongLight* light4 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const&  light2 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const& light3 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const& light4 = phong_scene.addLight();
     // add some more models ;)
-    std::vector<components::ModelObject*> objs;
     for (int i=-3; i < 4; i ++) {
       for (int j=1; j < 7; j ++) {
-        components::PhongModel* obj= phong_scene.addModel(model_nanosuit);
+        std::unique_ptr<components::PhongModel> const& obj= phong_scene.addModel(model_nanosuit);
         obj->setPosition(obj_nanosuit->getPosition()
          - glm::vec3(5.0 * i, 0.0, 5.0 * j)
          - glm::vec3(0.0, 0.0, 10.0));
-        objs.push_back(obj);
       }
     }
     camera.setPosition({0.0, 25.0, 25.0});
@@ -253,9 +259,9 @@ int main() {
     doPerformanceTest(window, scene, phong_scene, obj_nanosuit);
     std::cout << "Time elapsed: " << timer.waitStop()/ 1000000.0 << " ms\n";
   } else if (mode == DemoMode::IDLE) {
-    components::PhongLight* light2 = phong_scene.addLight();
-    components::PhongLight* light3 = phong_scene.addLight();
-    components::PhongLight* light4 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const& light2 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const& light3 = phong_scene.addLight();
+    std::unique_ptr<components::PhongLight> const& light4 = phong_scene.addLight();
     camera.setPosition({0.0, 15.0, 25.0});
     doIdle(window, scene, phong_scene, obj_nanosuit, camera);
   } else if (mode == DemoMode::INTERACTIVE) {
