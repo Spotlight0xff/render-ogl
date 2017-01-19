@@ -1,7 +1,7 @@
 #ifndef FONT_RENDER_H
 #define FONT_RENDER_H
 
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 
 #include "opengl.h"
 
@@ -45,7 +45,7 @@ class FontRenderer {
 
   private:
     FT_Library ft;
-    Shader shader;
+    ::engine::shader::Compiler shader;
     GLuint vao_font = 0, vbo_font = 0;
 
     // char -> glyph struct

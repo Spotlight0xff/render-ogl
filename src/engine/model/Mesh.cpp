@@ -69,7 +69,7 @@ bool Mesh::setup() {
   return true;
 }
 
-void Mesh::draw(Shader &shader) const {
+void Mesh::draw(::engine::shader::Compiler &shader) const {
   size_t i = 0;
   for (auto const &t : textures) {
 

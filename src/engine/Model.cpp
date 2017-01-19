@@ -40,7 +40,7 @@ Model::~Model() {
 
 }
 
-void Model::draw(Shader &shader) const {
+void Model::draw(::engine::shader::Compiler &shader) const {
   for (auto const &m : meshes) {
     m.draw(shader);
   }

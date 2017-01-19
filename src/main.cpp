@@ -1,6 +1,6 @@
 #include "main.h"
 #include "Util.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/scene/FontRender.h"
 #include "engine/Model.h"
 #include "engine/Input.h"
@@ -24,6 +24,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <engine/scene/Phong.h>
+#include <engine/components/CustomShaderObject.h>
 
 
 //#define INTERACTIVE
@@ -191,6 +192,18 @@ int main() {
   scene.useCamera(&camera);
 
   scene::Phong phong_scene;
+
+  /*components::ModelObject obj_weapon(&model_weapon);
+  obj_weapon.setPosition({0.0, 0.0, 20.0});
+  obj_weapon.setScale({20.0, 20.0, 20.0});
+  obj_weapon.setShader("viewmodel",
+                       [](Scene& s, components::ModelObject& obj, Shader& shader) {
+                         obj.setPosition(s.getCameraRef().getPosition());
+                         glm::mat4 projection = glm::ortho(0.0f, GLfloat(s.getInputRef().width), 0.0f, GLfloat(s.getInputRef().height));
+                         shader.set("model", s.getCameraRef().getViewMatrix());//obj.getModelMatrix());
+                         //shader.set("view", s.getCameraRef().getViewMatrix());
+                         shader.set("projection", projection);
+                       });*/
 
   // Nanosuit object
   components::PhongModel* obj_nanosuit = phong_scene.addModel(model_nanosuit);

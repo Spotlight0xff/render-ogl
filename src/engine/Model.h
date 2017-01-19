@@ -10,7 +10,7 @@ friend class test_case_name##_##test_name##_Test
 
 #include "engine/model/Mesh.h"
 #include "Texture2D.h"
-#include "ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 
 #include "engine/scene/SceneObject.h"
 
@@ -23,7 +23,7 @@ class Model {
     Model(const char *path);
     ~Model();
 
-    void draw(Shader& shader) const;
+    void draw(::engine::shader::Compiler& shader) const;
 
     void draw() const;
 

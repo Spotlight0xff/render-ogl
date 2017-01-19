@@ -2,7 +2,7 @@
 #define ENGINE_COMPONENTS_PHONGLIGHT_H
 
 #include "engine/scene/SceneObject.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/Scene.h"
 #include "engine/Model.h"
 #include "engine/scene/Camera.h"

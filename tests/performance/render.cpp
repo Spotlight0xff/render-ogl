@@ -6,7 +6,7 @@
 #include "glmock.hpp"
 
 #include "engine/Model.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/components/ModelObject.h"
 
 using ::testing::_;

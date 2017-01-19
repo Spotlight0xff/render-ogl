@@ -2,7 +2,7 @@
 #define ENGINE_SCENE_H
 
 #include "Model.h"
-#include "ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/scene/Camera.h"
 #include "engine/Input.h"
 #include "engine/scene/FontRender.h"

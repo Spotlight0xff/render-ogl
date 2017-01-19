@@ -52,7 +52,7 @@ set(PROJECT_INCLUDE_DIRS
   ${BULLET_INCLUDE_DIRS}
   )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
 
 link_directories(${GLEW_LIBRARY_DIRS})

@@ -3,7 +3,7 @@
 
 #include "engine/Model.h"
 #include "engine/components/ModelObject.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/scene/SceneObject.h"
 #include "PhongLight.h"
 #include "engine/Scene.h"
@@ -19,7 +19,7 @@ class PhongModel : public ModelObject {
     PhongModel(Model *m)
             : ModelObject(m) {}
 
-    void drawModel(Shader& shader) { model->draw(shader); }
+    void drawModel(::engine::shader::Compiler& shader) { model->draw(shader); }
 
   private:
 };

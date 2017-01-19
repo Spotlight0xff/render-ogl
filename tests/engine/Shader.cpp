@@ -3,7 +3,7 @@
 //
 
 #include "glmock.hpp"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 
 #include <gtest/gtest.h>
 

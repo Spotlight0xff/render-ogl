@@ -12,7 +12,7 @@
 
 #include "Vertex.h"
 #include "engine/Texture2D.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 
 namespace engine {
 namespace model {
@@ -26,7 +26,7 @@ class Mesh {
     bool setup();
 
     // draw with shader (textures mostly)
-    void draw(Shader &shader) const;
+    void draw(engine::shader::Compiler &shader) const;
 
     // and without
     void draw() const;

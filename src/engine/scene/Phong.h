@@ -36,8 +36,8 @@ class Phong : public SceneObject {
   private:
     static constexpr size_t max_lights = 4;
 
-    Shader shader_model;
-    Shader shader_lights;
+    ::engine::shader::Compiler shader_model;
+    ::engine::shader::Compiler shader_lights;
 
     std::vector<engine::components::PhongModel*> objects;
     std::vector<engine::components::PhongLight*> lights;

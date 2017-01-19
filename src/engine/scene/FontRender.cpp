@@ -13,12 +13,12 @@
 namespace engine {
 namespace scene {
 
-FontRenderer::FontRenderer(int window_width, int window_height) {
+FontRenderer::FontRenderer(int window_width, int window_height)
+  : shader("font"){
   if (FT_Init_FreeType(&ft)) {
     std::cerr << "Failed to initialize freetype2 library\n";
     return;
   }
-  shader = Shader("font");
 
   updateWindow(window_width, window_height);
 

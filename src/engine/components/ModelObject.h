@@ -2,7 +2,7 @@
 #define MODELOBJECT_H
 
 #include "engine/Model.h"
-#include "engine/ShaderCompiler.h"
+#include "engine/shader/compiler.h"
 #include "engine/scene/SceneObject.h"
 #include "engine/Scene.h"
 
