@@ -8,3 +8,12 @@ Graphics Engine supporting:
 Work in progress:
 * Instanced rendering
 * Particle system
+
+Development:
+* Stick to the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+* Don't overuse templates (bloats up compile times)
+* Use RAII where possible
+* Try to avoid raw pointers
+  * use unique_ptr instead
+  * only use shared_ptr if required (kills performance due to reference counting)
+* Turn on your brain
