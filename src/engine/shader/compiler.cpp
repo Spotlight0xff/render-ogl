@@ -17,8 +17,10 @@ Compiler::Compiler(std::string const &shader_name, bool compile_link, Stages sta
         : name_(shader_name),
           stages_(stages) {
   if (compile_link) {
-    setup();
-    finalize();
+    bool success = setup();
+    if (success) {
+      finalize();
+    }
   }
 }
 
