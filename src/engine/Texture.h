@@ -15,6 +15,12 @@ class Texture {
     Texture(GLenum target = GL_TEXTURE_2D)
             : target_(target) {}
 
+    ~Texture() {
+      if (id_ != 0) {
+        glDeleteTextures(1, &id_);
+      }
+    }
+
     void bind(GLenum unit) const{
       glActiveTexture(unit);
       glBindTexture(target_, id_);

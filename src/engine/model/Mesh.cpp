@@ -26,7 +26,7 @@ namespace engine {
 namespace model {
 Mesh::Mesh(std::vector<Vertex> v,
            std::vector<GLuint> ind,
-           std::vector<Texture2D> tex)
+           std::vector<Texture2D*> tex)
         : vertices(v),
           indices(ind),
           textures(tex) {
@@ -73,15 +73,15 @@ void Mesh::draw(Shader &shader) const {
   size_t i = 0;
   for (auto const &t : textures) {
 
-    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t.shininess_);
+    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t->shininess_);
 
-    if (t.getType() == ::engine::Texture2D::Type::DIFFUSE) {
+    if (t->getType() == ::engine::Texture2D::Type::DIFFUSE) {
       shader.set("material.diffuse", GLint(i));
 
-    } else if (t.getType() == ::engine::Texture2D::Type::SPECULAR) {
+    } else if (t->getType() == ::engine::Texture2D::Type::SPECULAR) {
       shader.set("material.specular", GLint(i));
     }
-    t.bind(GL_TEXTURE0 + i);
+    t->bind(GL_TEXTURE0 + i);
     i++;
   }
   glBindVertexArray(vao);

@@ -21,6 +21,7 @@ namespace engine {
 class Model {
   public:
     Model(const char *path);
+    ~Model();
 
     void draw(Shader& shader) const;
 
@@ -32,7 +33,7 @@ class Model {
     std::string directory;
     std::string path;
     std::vector<model::Mesh> meshes;
-    std::vector<Texture2D> loaded_textures;
+    std::vector<Texture2D*> loaded_textures;
 
 
     void loadModel();
@@ -41,10 +42,10 @@ class Model {
 
     model::Mesh processMesh(aiMesh const *mesh, const aiScene *scene);
 
-    std::vector<Texture2D> loadTextures(
+    std::vector<Texture2D*> loadTextures(
             aiMaterial *mat, aiTextureType type, std::string type_name);
 
-    Texture2D loadTexture(const char *file, const char *directory,
+    Texture2D* loadTexture(const char *file, const char *directory,
                         Texture2D::Type type);
 
 };

@@ -32,6 +32,14 @@ Model::Model(const char *p)
             << count_t << " textures.\n";
 }
 
+
+Model::~Model() {
+  for(auto texture : loaded_textures) {
+    delete texture;
+  }
+
+}
+
 void Model::draw(Shader &shader) const {
   for (auto const &m : meshes) {
     m.draw(shader);
@@ -79,7 +87,7 @@ void Model::processNode(aiNode const *node, const aiScene *scene) {
 model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   std::vector<model::Vertex> vertices;
   std::vector<GLuint> indices;
-  std::vector<Texture2D> textures;
+  std::vector<Texture2D*> textures;
 
   const glm::vec3 zero_vec(0.0f);
   vertices.reserve(mesh->mNumVertices);
@@ -105,10 +113,10 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   }
   if (mesh->mMaterialIndex) {
     aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-    std::vector<Texture2D> diffuse_maps = loadTextures(mat,
+    std::vector<Texture2D*> diffuse_maps = loadTextures(mat,
                                                      aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuse_maps.begin(), diffuse_maps.end());
-    std::vector<Texture2D> specular_maps = loadTextures(mat,
+    std::vector<Texture2D*> specular_maps = loadTextures(mat,
                                                       aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specular_maps.begin(), specular_maps.end());
 
@@ -125,16 +133,16 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   return model::Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture2D> Model::loadTextures(
+std::vector<Texture2D*> Model::loadTextures(
         aiMaterial *mat, aiTextureType ai_type, std::string type_name) {
-  std::vector<Texture2D> texs;
+  std::vector<Texture2D*> texs;
   size_t count = mat->GetTextureCount(ai_type);
   texs.reserve(count);
   for (size_t i = 0; i < count; i++) {
     aiString tex_str;
     mat->GetTexture(ai_type, static_cast<unsigned int>(i), &tex_str);
     for (auto const &t : loaded_textures) {
-      if (t.getPath() == std::string(tex_str.C_Str())) {
+      if (t->getPath() == std::string(tex_str.C_Str())) {
         texs.push_back(t);
       }
     }
@@ -145,19 +153,19 @@ std::vector<Texture2D> Model::loadTextures(
     } else if (ai_type == aiTextureType_SPECULAR) {
       type = Texture2D::Type::SPECULAR;
     }
-    Texture2D texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
+    Texture2D* texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
 
     aiColor3D ambient(0.f, 0.f, 0.f);
-    mat->Get(AI_MATKEY_COLOR_DIFFUSE, texture.diffuse_);
-    mat->Get(AI_MATKEY_COLOR_AMBIENT, texture.ambient_);
-    mat->Get(AI_MATKEY_COLOR_SPECULAR, texture.specular_);
-    mat->Get(AI_MATKEY_SHININESS, texture.shininess_);
+    mat->Get(AI_MATKEY_COLOR_DIFFUSE, texture->diffuse_);
+    mat->Get(AI_MATKEY_COLOR_AMBIENT, texture->ambient_);
+    mat->Get(AI_MATKEY_COLOR_SPECULAR, texture->specular_);
+    mat->Get(AI_MATKEY_SHININESS, texture->shininess_);
     texs.push_back(texture);
   }
   return texs;
 }
 
-Texture2D Model::loadTexture(const char *file, const char *directory, Texture2D::Type type) {
+Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D::Type type) {
   int width = 0, height = 0;
   unsigned char *image = nullptr;
   std::string path(directory);
@@ -166,14 +174,11 @@ Texture2D Model::loadTexture(const char *file, const char *directory, Texture2D:
                           &width, &height, 0, SOIL_LOAD_RGB);
   if (image == nullptr) {
     std::cerr << "Failed to load texture\n";
-    return {Texture2D::Type::UNKNOWN, nullptr, 0, 0};
+    return nullptr;
   }
 
-  Texture2D texture(type, image, width, height, path);
+  Texture2D* texture = new Texture2D(type, image, width, height, path);
   SOIL_free_image_data(image);
-
-
-  // handle textures
 
   return texture;
 }
