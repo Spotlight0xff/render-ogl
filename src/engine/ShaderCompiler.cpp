@@ -48,6 +48,8 @@ Shader::Shader(std::string const &shader_name)
   shaders.push_back(fragment_shader);
   linkShaders(shaders, shader_prog, error);
 
+
+
   for (auto shader: shaders) {
     glDeleteShader(shader);
   }
@@ -110,7 +112,16 @@ bool Shader::linkShaders(std::vector<GLuint> const &shaders, GLuint &shaderProg,
   glGetProgramiv(shaderProg, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProg, 512, nullptr, error_log);
-    error = error_log;
+    error = "Linking: " + std::string(error_log);
+    return false;
+  }
+
+  glValidateProgram(shader_prog);
+
+  glGetProgramiv(shader_prog, GL_VALIDATE_STATUS, &success);
+  if(!success) {
+    glGetProgramInfoLog(shader_prog, 512, nullptr, error_log);
+    error = "Validating: " + std::string(error_log);
     return false;
   }
 
