@@ -1,16 +1,25 @@
-language: cpp
+language: generic # travis-ci has outdated compilers :(
 sudo: required
 dist: trusty
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.6
-    packages:
-    - gcc-5
-    - g++-5
-    - clang-3.6
-    - cmake
+
+matrix:
+  include:
+    - os: linux
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+          sources: &sources
+            - llvm-toolchain-precise-3.8
+            - ubuntu-toolchain-r-test
+    - os: linux
+      env: COMPILER_NAME=clang CXX=clang++-3.8 CC=clang-3.8
+      addons:
+        apt:
+          packages:
+            - clang-3.8
+          sources: *sources
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install xorg-dev libsoil-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev
