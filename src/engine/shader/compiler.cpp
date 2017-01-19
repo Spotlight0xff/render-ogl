@@ -25,9 +25,9 @@ Compiler::Compiler(std::string const &shader_name, bool compile_link, Stages sta
 }
 
 Compiler::~Compiler() {
-  if (shader_prog_) {
-    // TODO check if deleted with glGetProgamiv
-    glDeleteProgram(shader_prog_);
+  glDeleteProgram(shader_prog_);
+  for (auto shader: shaders_) {
+    glDeleteShader(shader);
   }
 }
 
@@ -91,6 +91,7 @@ bool Compiler::finalize() {
   for (auto shader: shaders_) {
     glDeleteShader(shader);
   }
+  shaders_.clear();
 
   std::cout << "[Shader::" << name_ << "] Compilation and linking process complete\n";
   return true;

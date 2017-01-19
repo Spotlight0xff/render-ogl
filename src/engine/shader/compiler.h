@@ -96,7 +96,7 @@ class Compiler {
     GLuint getId() const { return shader_prog_; }
 
   private:
-    GLuint shader_prog_;
+    GLuint shader_prog_ = 0;
     std::string name_;
     Stages stages_;
 
