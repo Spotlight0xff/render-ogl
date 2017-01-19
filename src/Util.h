@@ -9,6 +9,8 @@
 namespace util {
 size_t split(const std::string& s, char delimiter, std::vector<std::string>& splits);
 
+bool fileExists(std::string const& s);
+
 void printVertices(size_t count_elements, size_t count_vertices, GLfloat const* flat_vertices, GLushort const* flat_elements);
 
 void APIENTRY glDebugOutput(GLenum source,

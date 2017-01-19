@@ -3,10 +3,13 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <unistd.h>
+
 #include <string>
 #include <sstream>
 #include <vector>
 #include <iostream>
+
 
 
 namespace util {
@@ -17,6 +20,10 @@ size_t split(const std::string& s, char delimiter, std::vector<std::string>& spl
     splits.push_back(item);
   }
   return splits.size();
+}
+
+bool fileExists(std::string const& s) {
+  return ( access( s.c_str(), F_OK ) != -1 );
 }
 
 // Return some paths for two different paths

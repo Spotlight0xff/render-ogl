@@ -1,35 +1,37 @@
 #include "glmock.hpp"
-#include <pthread.h>
-#include <map>
+//#include <pthread.h>
+//#include <map>
 
-static std::map<pthread_t, GLMock* > gMap;
-static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
+//static std::map<pthread_t, GLMock* > gMap;
+//static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
+static GLMock* mock = new GLMock;
 
-GLMock::GLMock()
-{
-    pthread_mutex_lock(&gMutex);
-    gMap.insert(std::pair<pthread_t, GLMock* >(pthread_self(), this));
-    pthread_mutex_unlock(&gMutex);
-}
+//GLMock::GLMock()
+//{
+    //pthread_mutex_lock(&gMutex);
+    //gMap.insert(std::pair<pthread_t, GLMock* >(pthread_self(), this));
+    //pthread_mutex_unlock(&gMutex);
+//}
 
-GLMock::~GLMock()
-{
-    pthread_mutex_lock(&gMutex);
-    gMap.erase(pthread_self());
-    pthread_mutex_unlock(&gMutex);
-}
+//GLMock::~GLMock()
+//{
+    //pthread_mutex_lock(&gMutex);
+    //gMap.erase(pthread_self());
+    //pthread_mutex_unlock(&gMutex);
+//}
 
 static GLMock* getMock()
 {
-    pthread_mutex_lock(&gMutex);
-    std::map<pthread_t, GLMock*>::iterator it = gMap.find(pthread_self());
-    if (it == gMap.end()) {
-        std::cerr << "Initialize Mock first" << std::endl;
-        pthread_mutex_unlock(&gMutex);
-        std::abort();
-    }
-    pthread_mutex_unlock(&gMutex);
-    return it->second;
+  return mock;
+    //pthread_mutex_lock(&gMutex);
+    //std::map<pthread_t, GLMock*>::iterator it = gMap.find(pthread_self());
+    //if (it == gMap.end()) {
+        //std::cerr << "Initialize Mock first" << std::endl;
+        //pthread_mutex_unlock(&gMutex);
+        //std::abort();
+    //}
+    //pthread_mutex_unlock(&gMutex);
+    //return it->second;
 }
 
 void glAccum(GLenum op, GLfloat value)
