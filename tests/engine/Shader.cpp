@@ -32,7 +32,7 @@ TEST(Shader, Load) {
   EXPECT_CALL(mock, gl_AttachShader(_, _)).Times(2);
   EXPECT_CALL(mock, gl_DeleteShader(_)).Times(2);
   EXPECT_CALL(mock, gl_GetProgramiv(_, _, _)).Times(1);
-  Shader shader("light_simple");
+  ::engine::shader::Compiler shader("light_simple");
 }
 
 
@@ -61,7 +61,7 @@ TEST(Shader, NegativeLoad) {
   EXPECT_CALL(mock, gl_GetShaderiv(_, _, _)).Times(1);
 
 
-  Shader shader("light_simple");
+  ::engine::shader::Compiler shader("light_simple");
 }
 
 } // end namespace engine
