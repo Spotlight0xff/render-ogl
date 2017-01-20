@@ -34,6 +34,7 @@ install:
   - pushd assimp-3.3.1 && mkdir build && cd build && cmake .. && make -j4 && sudo make install && popd
 
 script:
+  - $CXX --version
   - mkdir glfw_git
   - cd glfw_git
   - git clone https://github.com/glfw/glfw.git
@@ -49,7 +50,7 @@ script:
   - mkdir build
   - cd build
   - cmake ..
-  - make
+  - make VERBOSE=1
   - ./unit_tests
 
 after_success:
