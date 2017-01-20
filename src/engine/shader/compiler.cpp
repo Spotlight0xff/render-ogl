@@ -1,5 +1,5 @@
 #include "compiler.h"
-#include "stages.h"
+#include "stage.h"
 #include "Util.h"
 
 #include <GL/glew.h>
@@ -12,14 +12,17 @@
 namespace engine {
 namespace shader {
 
-
-Compiler::Compiler(std::string const &shader_name, bool compile_link, Stages stages)
+Compiler::Compiler(std::string const &shader_name, bool compile_link, std::vector<Stage> stages)
         : name_(shader_name),
           stages_(stages) {
   if (compile_link) {
-    bool success = setup();
-    if (success) {
-      finalize();
+    success_ = setup();
+    if (!success_) {
+      return;
+    }
+    success_ = finalize();
+    if (!success_) {
+      return;
     }
   }
 }
@@ -32,58 +35,65 @@ Compiler::~Compiler() {
 }
 
 bool Compiler::setup() {
-  bool success;
   std::string error;
-
   if (shaders_.size()) {
     return true; // already setup
   }
 
 
-  if (static_cast<int>(stages_ & Stages::GEOMETRY_SHADER) &&
-      util::fileExists(directory + name_ + ".geom")) {
-    GLuint geometry_shader;
-    success = compileShader(name_ + ".geom", GL_GEOMETRY_SHADER, geometry_shader, error);
-    if (!success) {
-      std::cout << "[Shader::" << name_ << "] Compilation of vertex shader failed:\n"
-                << error << std::endl;
+  // Compile all required shaders
+  for(auto const& stage : stages_) {
+    std::string extension;
+    std::string shader_name;
+    GLuint shader_type;
+
+    switch(stage) {
+      case Stage::GEOMETRY_SHADER:
+        extension = ".geom";
+        shader_name = "Geometry";
+        shader_type = GL_GEOMETRY_SHADER;
+        break;
+
+      case Stage::VERTEX_SHADER:
+        extension = ".vert";
+        shader_name = "Vertex";
+        shader_type = GL_VERTEX_SHADER;
+        break;
+
+      case Stage::FRAGMENT_SHADER:
+        extension = ".frag";
+        shader_name = "Fragment";
+        shader_type = GL_FRAGMENT_SHADER;
+        break;
+    }
+
+    std::string path = directory + name_ + extension;
+    success_ = util::fileExists(path);
+    if (!success_) {
+      error_str_ = "[Shader::" + name_ + "] " + shader_name
+              + " shader required but not found.";
       return false;
     }
-    shaders_.push_back(geometry_shader);
-  }
 
-  if (static_cast<int>(stages_ & Stages::VERTEX_SHADER) &&
-      util::fileExists(directory + name_ + ".vert")) {
-    GLuint vertex_shader;
-    success = compileShader(name_ + ".vert", GL_VERTEX_SHADER, vertex_shader, error);
-    if (!success) {
-      std::cout << "[Shader::" << name_ << "] Compilation of vertex shader failed:\n"
-                << error << std::endl;
+    GLuint shader_id;
+    std::string error;
+    success_ = compileShader(path, shader_type, shader_id, error);
+    if (!success_) {
+      error_str_ = "[Shader::" + name_ + "] Compilation of " + shader_name
+                   + " shader failed: " + error;
       return false;
     }
-    shaders_.push_back(vertex_shader);
+    shaders_.push_back(shader_id);
   }
-
-
-  if (static_cast<int>(stages_ & Stages::FRAGMENT_SHADER) &&
-      util::fileExists(directory + name_ + ".vert")) {
-    GLuint fragment_shader;
-    success = compileShader(name_ + ".frag", GL_FRAGMENT_SHADER, fragment_shader, error);
-    if (!success) {
-      std::cout << "[Shader::" << name_ << "] Compilation of fragment shader failed:\n"
-                << error << std::endl;
-      return false;
-    }
-    shaders_.push_back(fragment_shader);
-  }
-
+  success_ = true;
   return true;
 }
 
 bool Compiler::finalize() {
   std::string error;
-  bool success = linkShaders(shaders_, shader_prog_, error);
-  if (!success) {
+  success_ = linkShaders(shaders_, shader_prog_, error);
+  if (!success_) {
+    error_str_ = "[Shader::" + name_ + "] Linking process failed: " + error;
     return false;
   }
 
@@ -93,7 +103,7 @@ bool Compiler::finalize() {
   }
   shaders_.clear();
 
-  std::cout << "[Shader::" << name_ << "] Compilation and linking process complete\n";
+  success_ = true;
   return true;
 }
 
@@ -106,12 +116,10 @@ void Compiler::use() const {
   }
 }
 
-// TODO, just provide vertex & fragment path --> compile + link together
-// TODO: check if context is active --> null exception otherwise
-bool Compiler::compileShader(std::string file, GLuint type, GLuint &shader, std::string &error) {
+bool Compiler::compileShader(std::string path, GLuint type, GLuint &shader, std::string &error) {
   // first load from file
   std::string line, content;
-  std::ifstream f(directory + file);
+  std::ifstream f(path);
   if (!f.good()) {
     error = "File not found";
     return false;
@@ -165,7 +173,6 @@ bool Compiler::linkShaders(std::vector<GLuint> const &shaders, GLuint &shaderPro
     return false;
   }
 
-  std::cout << "Linked " << shaders.size() << " shaders successfully.\n";
   return true;
 }
 

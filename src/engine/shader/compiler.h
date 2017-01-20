@@ -1,7 +1,7 @@
 #ifndef SHADER_COMPILER_H
 #define SHADER_COMPILER_H
 
-#include "stages.h"
+#include "stage.h"
 #include "opengl.h"
 
 #include <string>
@@ -9,6 +9,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/vec3.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 
 namespace engine {
@@ -20,7 +21,7 @@ class Compiler {
     // TODO: Caching, RAII, more ctors, shader-compiler -> shader-instance
     Compiler() {}
     Compiler(std::string const &shader_name, bool compile_link = true,
-                       Stages stages = Stages::VERTEX_SHADER | Stages::FRAGMENT_SHADER);
+                       std::vector<Stage> stages = {Stage::VERTEX_SHADER, Stage::FRAGMENT_SHADER});
 
     ~Compiler();
 
@@ -95,10 +96,16 @@ class Compiler {
 
     GLuint getId() const { return shader_prog_; }
 
+    bool success() const { return success_; }
+
+    std::string getErrorStr() const { return error_str_; }
+
   private:
     GLuint shader_prog_ = 0;
     std::string name_;
-    Stages stages_;
+    std::vector<Stage> stages_;
+    bool success_;
+    std::string error_str_;
 
     static constexpr const char *directory = "resources/shaders/";
 
