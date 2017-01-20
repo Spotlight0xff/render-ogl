@@ -22,7 +22,7 @@ matrix:
           sources: *sources
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install xorg-dev libsoil-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev
+  - sudo apt-get install xorg-dev libsoil-dev libfreetype6-dev libbullet-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev libc++1 libc6 libc++-dev libc++-helpers libc++-test libc++abi-dev libc++abi-test libc++abi1
   - sudo pip install cpp-coveralls
 
 install:
