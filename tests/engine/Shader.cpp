@@ -15,9 +15,18 @@ using ::testing::SetArgPointee;
 
 namespace engine {
 
+
+// Test case shader loading, everything should work
+// Loads the simple_light
 TEST(Shader, Load) {
   GLMock mock;
+
+  // compilation should success with success=true
   ON_CALL(mock, gl_GetShaderiv(_, _, _))
+          .WillByDefault(SetArgPointee<2>(1));
+
+  // and with a valid shader program ;)
+  ON_CALL(mock, gl_GetProgramiv(_, _, _))
           .WillByDefault(SetArgPointee<2>(1));
 
   // vertex & fragment shader compilation
@@ -31,8 +40,20 @@ TEST(Shader, Load) {
   EXPECT_CALL(mock, gl_LinkProgram(_)).Times(1);
   EXPECT_CALL(mock, gl_AttachShader(_, _)).Times(2);
   EXPECT_CALL(mock, gl_DeleteShader(_)).Times(2);
-  EXPECT_CALL(mock, gl_GetProgramiv(_, _, _)).Times(1);
+
+  // once for compilation status, then for validation status
+  EXPECT_CALL(mock, gl_GetProgramiv(_, _, _)).Times(2);
+
+  // then validate it
+  EXPECT_CALL(mock, gl_ValidateProgram(_)).Times(1);
+
+  // then destroy it
+  EXPECT_CALL(mock, gl_DeleteProgram(_)).Times(1);
+
   ::engine::shader::Compiler shader("light_simple");
+
+  EXPECT_EQ(shader.success(), true);
+  EXPECT_EQ(shader.getErrorStr(), "");
 }
 
 
@@ -60,8 +81,12 @@ TEST(Shader, NegativeLoad) {
 
   EXPECT_CALL(mock, gl_GetShaderiv(_, _, _)).Times(1);
 
+  // then destroy it
+  EXPECT_CALL(mock, gl_DeleteProgram(_)).Times(1);
+
 
   ::engine::shader::Compiler shader("light_simple");
+  EXPECT_EQ(shader.success(), false);
 }
 
 } // end namespace engine
