@@ -10,7 +10,13 @@ void PhongLight::draw(Scene& scene) {
 }
 
 void PhongLight::drawModel() {
-  model.draw();
+  if (render_object_) {
+    model.draw();
+  }
+}
+
+void PhongLight::renderObject(bool render_object) {
+  render_object_ = render_object;
 }
 
 glm::mat4 PhongLight::getModelMatrix() {

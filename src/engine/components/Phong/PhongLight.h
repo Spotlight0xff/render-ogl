@@ -33,9 +33,13 @@ class PhongLight : public engine::scene::SceneObject {
 
     glm::mat4 getModelMatrix();
 
+    void renderObject(bool render_object);
+
   private:
     glm::vec3 position;
     Model model;
+
+    bool render_object_ = true;
 
 };
 
