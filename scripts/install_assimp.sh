@@ -23,4 +23,3 @@ popd
 
 # we're going to let the files there, to enable caching
 #rm -rf v${VERSION}.tar.gz assimp-${VERSION}
-1

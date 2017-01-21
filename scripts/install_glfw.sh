@@ -20,4 +20,3 @@ sudo make install
 popd
 
 #rm -rf glfw-${VERSION} ${VERSION}.tar.gz
-1
