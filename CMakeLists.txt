@@ -69,7 +69,7 @@ target_include_directories(render PUBLIC ${PROJECT_INCLUDE_DIRS})
 target_link_libraries(render PUBLIC ${PROJECT_LIBRARIES})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # for clang++
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     # dont use libc++ for now
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -stdlib=libc++")
     #target_link_libraries(render PUBLIC c++abi) # use libc++
