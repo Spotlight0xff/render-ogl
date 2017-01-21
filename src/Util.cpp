@@ -26,6 +26,29 @@ bool fileExists(std::string const& s) {
   return ( access( s.c_str(), F_OK ) != -1 );
 }
 
+void replaceAllOccurences( std::string& source, std::string const& from, std::string const& to )
+{
+  std::string new_str;
+  // We roughly need the same buffer size (avoid allocations)
+  new_str.reserve( source.length() );
+
+  std::string::size_type lastPos = 0;
+  std::string::size_type findPos;
+
+  while( std::string::npos != ( findPos = source.find( from, lastPos )))
+  {
+    new_str.append( source, lastPos, findPos - lastPos );
+    new_str += to;
+    lastPos = findPos + from.length();
+  }
+
+  // Care for the rest after last occurrence
+  new_str += source.substr( lastPos );
+
+  source.swap( new_str );
+}
+
+
 // Return some paths for two different paths
 std::vector<std::string> getEligiblePaths(const std::string& path1, const std::string& path2) {
   std::vector<std::string> paths;

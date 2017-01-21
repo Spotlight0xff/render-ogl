@@ -154,6 +154,11 @@ std::vector<Texture2D*> Model::loadTextures(
       type = Texture2D::Type::SPECULAR;
     }
     Texture2D* texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
+    if (texture == nullptr) {
+      std::cout << "Failed to load texture " << tex_str.C_Str() << "\n";
+      continue;
+    }
+
 
     aiColor3D ambient(0.f, 0.f, 0.f);
     mat->Get(AI_MATKEY_COLOR_DIFFUSE, texture->diffuse_);
@@ -167,11 +172,21 @@ std::vector<Texture2D*> Model::loadTextures(
 
 Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D::Type type) {
   int width = 0, height = 0;
+  int channels = 0;
   unsigned char *image = nullptr;
   std::string path(directory);
   path += file;
+
+  // window -> unix
+  util::replaceAllOccurences(path, "\\\\", "/");
+  util::replaceAllOccurences(path, "\\", "/");
+
+  if (!util::fileExists(path)) {
+    return nullptr;
+  }
+
   image = SOIL_load_image(path.c_str(),
-                          &width, &height, 0, SOIL_LOAD_RGB);
+                          &width, &height, &channels, SOIL_LOAD_RGB);
   if (image == nullptr) {
     std::cerr << "Failed to load texture\n";
     return nullptr;
