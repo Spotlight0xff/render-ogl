@@ -12,7 +12,7 @@ fi
 mkdir -p build && cd build
 
 wget -nc https://github.com/glfw/glfw/archive/${VERSION}.tar.gz
-tar -xzvf ${VERSION}.tar.gz
+tar -xzf ${VERSION}.tar.gz
 pushd glfw-${VERSION}
 cmake -G "Unix Makefiles" .
 make

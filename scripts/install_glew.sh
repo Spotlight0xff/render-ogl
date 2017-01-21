@@ -12,7 +12,7 @@ if [[ "$VERSION" == "$installed" ]]; then
 fi
 
 wget https://github.com/nigels-com/glew/releases/download/glew-${VERSION}/glew-${VERSION}.tgz
-tar -xzvf glew-${VERSION}.tgz
+tar -xzf glew-${VERSION}.tgz
 pushd glew-${VERSION}
 make
 sudo make install

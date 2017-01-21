@@ -12,7 +12,7 @@ fi
 mkdir -p build && cd build
 
 wget -nc https://github.com/assimp/assimp/archive/v3.3.1.tar.gz
-tar -xzvf v${VERSION}.tar.gz
+tar -xzf v${VERSION}.tar.gz
 pushd assimp-${VERSION}
 mkdir -p build && pushd build
 cmake ..
