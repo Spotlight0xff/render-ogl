@@ -4,6 +4,8 @@
 
 #include "RandomTexture.h"
 
+#include <cstdlib>
+
 namespace {
 
 float getRandomFloat()

@@ -2,14 +2,25 @@ language: generic # travis-ci has outdated compilers :(
 sudo: required
 dist: trusty
 
+# enable cache to allow faster installation of required packages
+cache:
+  directories:
+    - scripts/build
+addons:
+  apt:
+    packages:
+      - g++-6
+    sources:
+      - ubuntu-toolchain-r-test
+
 matrix:
   include:
     - os: linux
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+      env: COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
       addons:
         apt:
           packages:
-            - g++-5
+            - g++-6
           sources: &sources
             - llvm-toolchain-precise-3.8
             - ubuntu-toolchain-r-test
@@ -19,6 +30,7 @@ matrix:
         apt:
           packages:
             - clang-3.8
+            - g++-6
           sources: *sources
 before_install:
   - sudo apt-get update -qq
@@ -26,30 +38,15 @@ before_install:
   - sudo pip install cpp-coveralls
 
 install:
-  - wget https://github.com/nigels-com/glew/releases/download/glew-2.0.0/glew-2.0.0.tgz
-  - tar -xzvf glew-2.0.0.tgz
-  - pushd glew-2.0.0 && make && sudo make install && popd
-  - wget https://github.com/assimp/assimp/archive/v3.3.1.tar.gz
-  - tar -xzvf v3.3.1.tar.gz
-  - pushd assimp-3.3.1 && mkdir build && cd build && cmake .. && make -j4 && sudo make install && popd
+  - scripts/install_glew.sh
+  - scripts/install_assimp.sh
+  - scripts/install_glfw.sh
 
 script:
-  - mkdir glfw_git
-  - cd glfw_git
-  - git clone https://github.com/glfw/glfw.git
-  - cd glfw
-  - cmake -G "Unix Makefiles" .
-  - make
-  - sudo make install
-  - pkg-config --libs glfw3
-  - cat /usr/local/lib/pkgconfig/glfw3.pc
-  - pkg-config --list-all | grep "glf"
-  - cd ..
-  - cd ..
-  - mkdir build
-  - cd build
+  - $CXX --version
+  - mkdir -p build && cd build
   - cmake ..
-  - make
+  - make VERBOSE=1
   - ./unit_tests
 
 after_success:
