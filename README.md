@@ -9,6 +9,9 @@ Work in progress:
 * Instanced rendering
 * Particle system
 
+TODO:
+* Enable ASAN for unit tests, see [this page](https://github.com/google/sanitizers/wiki/MemorySanitizerLibcxxHowTo).
+
 Development:
 * Stick to the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
 * Don't overuse templates (bloats up compile times)
