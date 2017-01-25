@@ -93,16 +93,29 @@ void Engine::InitGL() {
     util::enableDebugOutput();
   }
 
+  // Set input options
   if (!options_.show_cursor) {
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }
-
-
   glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
+
+  glfwSetCursorPosCallback(window_, )
+
 
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND); // needed for text rendering
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+static void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+  auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
+  if (user_ptr) {
+      if (user_ptr->cursor_pos_func_) {
+        // TODO calculate delta_time
+        (*user_ptr->cursor_pos_func_)(user_ptr->delta_time_, xpos, ypos);
+      }
+
+  }
+
 }
 
 

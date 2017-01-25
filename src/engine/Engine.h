@@ -31,20 +31,30 @@ class Engine {
         FPS_MOVEMENT = 0
     };
 
+    using CursorPosCallbackFunc = std::function<void(float, int, int)>;
+    using KeyboardCallbackFunc = std::function<void(float, bool[1024])>;
+    using WindowSizeCallbackFunc = std::function<void(int, int)>;
+
     Engine();
     ~Engine();
 
 
     void SetOptions(struct Options& options);
 
-    void SetHandler(Handler type) {
-      switch(type) {
-        case Handler::FPS_MOVEMENT:
-          camera_ = std::make_unique(new ::engine::scene::EulerCamera);
-          handler_ = std::make_unique(new ::engine::handler::FpsMovement(camera_.get()));
-          break;
-      }
+    void SetCursorPosCallback(CursorPosCallbackFunc func) {
+        *cursor_pos_func_ = func;
     }
+
+    void SetKeyboardCallback(KeyboardCallbackFunc func) {
+        *keyboard_func_ = func;
+    }
+
+    void SetWindowSizeCallback(WindowSizeCallbackFunc func) {
+        *window_size_func_ = func;
+    }
+
+    // static callback funcs
+    static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
     // Initializes GL and all subsystems
     bool Init();
@@ -62,8 +72,9 @@ class Engine {
     GLFWwindow *window_ = nullptr;
 
     // Input handling
-    std::unique_ptr<::engine::handler::Handler> input_handler_{};
-    std::unique_ptr<::engine::scene::Camera> camera_{};
+    std::unique_ptr<CursorPosCallbackFunc> cursor_pos_func_{nullptr};
+    std::unique_ptr<KeyboardCallbackFunc> keyboard_func_{nullptr};
+    std::unique_ptr<WindowSizeCallbackFunc> window_size_func_{nullptr};
 
 
 

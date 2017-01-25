@@ -16,5 +16,4 @@ class CameraHandler {
 }
 }
 
-#endif //GRAPHICS_ENGINE_KEYBOARDHANDLER_H
 #endif //GRAPHICS_ENGINE_CAMERAHANDLER_H

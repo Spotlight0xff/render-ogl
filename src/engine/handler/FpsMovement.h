@@ -8,6 +8,7 @@
 #include "opengl.h"
 #include "MouseHandler.h"
 #include "KeyboardHandler.h"
+#include "CameraHandler.h"
 
 namespace engine {
 namespace handler {

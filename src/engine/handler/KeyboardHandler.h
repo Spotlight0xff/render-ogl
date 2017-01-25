@@ -10,10 +10,10 @@ namespace handler {
 
 class KeyboardHandler {
   public:
-    virtual static void Dispatcher(
-            GLFWwindow* window,
-            int key,
-            int scancode) = 0;
+    //virtual static void Dispatcher(
+    //        GLFWwindow* window,
+    //        int key,
+    //        int scancode) = 0;
     virtual ~KeyboardHandler();
 
 };

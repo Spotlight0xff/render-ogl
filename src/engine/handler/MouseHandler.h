@@ -1,17 +1,17 @@
 #ifndef GRAPHICS_ENGINE_MOUSEHANDLER_H
 #define GRAPHICS_ENGINE_MOUSEHANDLER_H
 
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 
 namespace engine {
 namespace handler {
 
 class MouseHandler {
   public:
-    virtual static void Dispatcher(
-            GLFWwindow* window,
-            int key,
-            int scancode) = 0;
+    //virtual static void Dispatcher(
+    //        GLFWwindow* window,
+    //        int key,
+    //        int scancode) = 0;
     virtual ~MouseHandler();
 
 };
