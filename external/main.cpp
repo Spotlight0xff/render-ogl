@@ -132,13 +132,19 @@ GLFWwindow* initGL() {
   glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 
-  GLFWwindow* window;
-  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
+  GLFWwindow *window;
+  bool fullscreen = false;
+  if (fullscreen) {
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", glfwGetPrimaryMonitor(), nullptr);
+  } else {
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Rendering", nullptr, nullptr);
+  }
   if (window == nullptr) {
     std::cerr << "Failed to open GLFW window. Maybe not OpenGL 4.3 compatible?\n";
     return nullptr;
   }
   glfwMakeContextCurrent(window);
+
   glewExperimental = true; // for core profile
   if (glewInit() != GLEW_OK) {
     std::cerr << "Failed to init GLEW\n";
@@ -149,11 +155,12 @@ GLFWwindow* initGL() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // disable vsync
-  glfwSwapInterval(0);
+  //glfwSwapInterval(1);
 
 
   glEnable(GL_BLEND); // needed for text rendering
   glEnable(GL_DEPTH_TEST);
+  //glCullFace(GL_BACK);
   //glEnable(GL_MULTISAMPLE);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -167,13 +174,11 @@ GLFWwindow* initGL() {
 
 int main() {
   using namespace engine;
-  GLFWwindow* window = initGL();
-  if (window == nullptr) {
-    return EXIT_FAILURE;
-  }
 
   Model model_nanosuit("resources/models/nanosuit2/nanosuit.obj");
   Model model_ground("resources/models/ground.obj");
+
+  Model model_sponza("resources/models/sponza/sponza.obj");
 
 
   // Setup camera and movement
@@ -206,7 +211,7 @@ int main() {
                        });*/
 
   // Nanosuit object
-  std::unique_ptr<components::PhongModel>& obj_nanosuit = phong_scene.addModel(model_nanosuit);
+  /*std::unique_ptr<components::PhongModel>& obj_nanosuit = phong_scene.addModel(model_nanosuit);
   if (!obj_nanosuit) {
     std::cerr << "Failed to add the nanosuit model to the scene.\n";
     return EXIT_FAILURE;
@@ -217,11 +222,21 @@ int main() {
   if (!light) {
     std::cerr << "Failed to add light to the scene.\n";
     return EXIT_FAILURE;
-  }
+  }*/
+  components::PhongModel *obj_nanosuit = nullptr;
+
+  std::unique_ptr<components::PhongLight>& cam_light = phong_scene.addLight();
+  cam_light->renderObject(false);
+
+  std::unique_ptr<components::PhongLight>& light2 = phong_scene.addLight();
+  light2->setPosition(glm::vec3(48.78104f, 12.00f, 14.341804f));
+
+  std::unique_ptr<components::PhongModel>& obj_sponza = phong_scene.addModel(model_sponza);
+  obj_sponza->setScale(glm::vec3(0.1, 0.1, 0.1));
 
 
   // Ground object
-  components::CustomShaderObject obj_ground(&model_ground, "checkerboard",
+  /*components::CustomShaderObject obj_ground(&model_ground, "checkerboard",
                                  [](Scene& s, components::ModelObject& obj, engine::shader::Compiler& shader) {
     shader.set("model", obj.getModelMatrix());
     shader.set("view", s.getCameraRef().getViewMatrix());
@@ -229,10 +244,11 @@ int main() {
   });
   obj_ground.setPosition({0.0, 0.0, 0.0});
   obj_ground.setScale({50.0, 1.0, 50.0});
+  scene.addObjectRef(&obj_ground);
+   */
 
 
   // Add our models to the scene
-  scene.addObjectRef(&obj_ground);
   //scene.addObjectRef(&obj_weapon);
   scene.addObjectRef(&phong_scene);
 
@@ -241,7 +257,7 @@ int main() {
 
   DemoMode mode = DemoMode::INTERACTIVE;
   if (mode == DemoMode::PERFORMANCE_TEST) {
-    std::unique_ptr<components::PhongLight> const&  light2 = phong_scene.addLight();
+    /*std::unique_ptr<components::PhongLight> const&  light2 = phong_scene.addLight();
     std::unique_ptr<components::PhongLight> const& light3 = phong_scene.addLight();
     std::unique_ptr<components::PhongLight> const& light4 = phong_scene.addLight();
     // add some more models ;)
@@ -257,13 +273,13 @@ int main() {
     ::engine::Timing timer;
     timer.Start();
     doPerformanceTest(window, scene, phong_scene, obj_nanosuit);
-    std::cout << "Time elapsed: " << timer.waitStop()/ 1000000.0 << " ms\n";
+    std::cout << "Time elapsed: " << timer.waitStop()/ 1000000.0 << " ms\n";*/
   } else if (mode == DemoMode::IDLE) {
-    std::unique_ptr<components::PhongLight> const& light2 = phong_scene.addLight();
+    /*std::unique_ptr<components::PhongLight> const& light2 = phong_scene.addLight();
     std::unique_ptr<components::PhongLight> const& light3 = phong_scene.addLight();
     std::unique_ptr<components::PhongLight> const& light4 = phong_scene.addLight();
     camera.setPosition({0.0, 15.0, 25.0});
-    doIdle(window, scene, phong_scene, obj_nanosuit, camera);
+    doIdle(window, scene, phong_scene, obj_nanosuit, camera);*/
   } else if (mode == DemoMode::INTERACTIVE) {
     camera.setPosition({0.0, 12.0, 25.0});
     scene.getInputRef().addMouseCallback(camera.do_mouse);
@@ -274,11 +290,13 @@ int main() {
       scene.draw();
       glfwSwapBuffers(window);
       glfwPollEvents();
-      GLfloat r = 6.0f;
+      /*GLfloat r = 20.0f;
       GLfloat speed = 3.0f;
       GLfloat light_x = sin(glfwGetTime() * speed) * r;
       GLfloat light_z = cos(glfwGetTime() * speed) * r;
       light->setPosition(obj_nanosuit->getPosition() + glm::vec3(light_x, 7.0, light_z));
+       */
+      cam_light->setPosition(camera.getPosition() - glm::vec3(0.0, 2.0, 0.0));
       scene.getInputRef().handleKeys([&camera]
                                              (bool keys[]) {
         camera.do_keyboard(keys);

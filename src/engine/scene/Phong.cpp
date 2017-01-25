@@ -63,10 +63,10 @@ void Phong::draw(Scene& scene) {
   for(auto const& l: lights) {
     std::string plight = "pointLights[" + std::to_string(i) + "].";
     shader_model.set(plight + "position", l->getPosition());
-    shader_model.set(plight + "constant", GLfloat(1.0));
-    shader_model.set(plight + "linear", GLfloat(0.09));
-    shader_model.set(plight + "quadratic", GLfloat(0.032));
-    shader_model.set(plight + "ambient", glm::vec3({0.2f, 0.2f, 0.2f}));
+    shader_model.set(plight + "constant", GLfloat(0.1));
+    shader_model.set(plight + "linear", GLfloat(0.05));
+    shader_model.set(plight + "quadratic", GLfloat(0.01));
+    shader_model.set(plight + "ambient", glm::vec3({0.7f, 0.7f, 0.7f}));
     shader_model.set(plight + "diffuse", glm::vec3({1.0, 1.0, 1.0}));
     shader_model.set(plight + "specular", glm::vec3({1.0, 1.0, 1.0}));
 

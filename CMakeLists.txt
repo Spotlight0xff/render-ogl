@@ -26,7 +26,7 @@ pkg_search_module(GLEW REQUIRED glew)
 # copy recourses into build dir
 add_custom_target(copy-runtime-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
-    DEPENDS render)
+    DEPENDS sponza)
 
 # compiler and linker options
 set(PROJECT_LIBRARIES
@@ -61,12 +61,12 @@ link_directories(${GLEW_LIBRARY_DIRS})
 
 
 # compile & link target
-add_executable(render ${SOURCES} src/main.cpp)
-SET_TARGET_PROPERTIES(render PROPERTIES
+add_executable(sponza ${SOURCES} src/demos/sponza.cpp)
+SET_TARGET_PROPERTIES(sponza PROPERTIES
   INSTALL_RPATH "${INSTALL_RPATH};${GLEW_LIBRARY_DIRS};${ASSIMP_LIBRARY_DIRS}"
   BUILD_WITH_INSTALL_RPATH TRUE)
-target_include_directories(render PUBLIC ${PROJECT_INCLUDE_DIRS})
-target_link_libraries(render PUBLIC ${PROJECT_LIBRARIES})
+target_include_directories(sponza PUBLIC ${PROJECT_INCLUDE_DIRS})
+target_link_libraries(sponza PUBLIC ${PROJECT_LIBRARIES})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # for clang++
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

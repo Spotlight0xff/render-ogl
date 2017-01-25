@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace engine {
-namespace scene {
+namespace handler {
 
 void FpsMovement::handleKeyboard(bool keys[]) {
   handleDelta();
@@ -23,6 +23,7 @@ void FpsMovement::handleKeyboard(bool keys[]) {
   if (keys[GLFW_KEY_D]) {
     camera->moveRight(delta_frame * speed);
   }
+  /*
   if (keys[GLFW_KEY_LEFT_SHIFT]) {
     // TODO: just apply the modifier
     speed = shift_modifier * default_speed;
@@ -59,7 +60,7 @@ void FpsMovement::handleKeyboard(bool keys[]) {
   if (camera->getPosition().y < eyelevel) {
     jump_speed = 0.0;
     camera->setY(eyelevel);
-  }
+  }*/
 }
 
 void FpsMovement::handleMouse(GLfloat x, GLfloat y) {
@@ -82,5 +83,5 @@ void FpsMovement::handleDelta() {
   last_frame = current_time;
 }
 
-} // end namespace engine::scene
+} // end namespace engine::handler
 }

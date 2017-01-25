@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <functional>
+#include <engine/handler/Camera.h>
 
 namespace engine {
 
@@ -53,8 +54,10 @@ class Scene {
 
   void draw();
 
+  void drawPos();
+
   glm::mat4 getProjectionMatrix() {
-    return glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 100.0f);
+    return glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 1000.0f);
   }
 
   Input & getInputRef() { return input; }

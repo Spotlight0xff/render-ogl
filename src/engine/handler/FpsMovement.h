@@ -6,18 +6,14 @@
 
 #include <glm/vec3.hpp>
 #include "opengl.h"
+#include "MouseHandler.h"
+#include "KeyboardHandler.h"
 
 namespace engine {
-namespace scene {
+namespace handler {
 
-class Camera;
-
-class FpsMovement {
+class FpsMovement : public MouseHandler, public KeyboardHandler, public CameraHandler {
   public:
-    FpsMovement(Camera *cam)
-            : camera(cam) {
-    }
-
     void handleKeyboard(bool keys[]);
 
     void handleMouse(GLfloat x, GLfloat y);
@@ -35,7 +31,7 @@ class FpsMovement {
 
   private:
     bool ignore_first = true;
-    Camera *camera;
+    EulerCamera *camera;
 
     // movement-related
     static constexpr GLfloat max_speed = 20.0f;

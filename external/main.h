@@ -14,7 +14,7 @@ bool loadObj(const char* path,
 void cbKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 
-#define WINDOW_WIDTH  1024
-#define WINDOW_HEIGHT 768
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 1024
 
 #endif
