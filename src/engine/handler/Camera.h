@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "FpsMovement.h"
+//#include "FpsMovement.h"
 
 #include "opengl.h"
 
@@ -39,7 +39,7 @@ class Camera {
 
     virtual void setPosition(glm::vec3) = 0;
 
-    virtual void setMovement(FpsMovement &movement) = 0;
+    //virtual void setMovement(engine::handler::FpsMovement &movement) = 0;
 };
 
 } // end namespace engine::scene

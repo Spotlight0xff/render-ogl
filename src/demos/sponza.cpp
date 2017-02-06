@@ -6,26 +6,41 @@ int main() {
   using namespace engine;
   Engine engine;
   Engine::Options engine_options;
-  engine.Init();
+  if (!engine.Init()) {
+    std::cerr << "Engine startup failed.\n";
+    return EXIT_FAILURE;
+  }
 
-  handler::FpsMovement fps_handler;
-  fps_handler.setEyelevel(12.0);
-  fps_handler.setSensitivity(0.1f);
-  fps_handler.setSpeed(20.0);
+  scene::EulerCamera camera;
+  handler::FpsMovement movement(&camera);
+
+  movement.setEyelevel(12.0);
+  movement.setSensitivity(0.1f);
+  movement.setSpeed(20.0f);
+
+  // Set input handlers
+  engine.SetKeyboardHandler(&movement);
+  engine.SetMouseHandler(&movement);
+  engine.SetFrameHandler(&movement);
+
+  // Indicate the engine where to get the camera information from
+  //engine.UseCameraHandler(&movement);
+
+  //Initialize scene
+  // Scene scene;
+
+  // Load the .obj models
+
+
+
+  // Load models
 
   // Scene initialization
-  Scene scene;
-  scene.useCamera(camera);
+  //Scene scene;
+  //scene.useCamera(camera);
 
-  std::unique_ptr<EulerCamera> camera{};
-  std::unique_ptr<FpsMovement> fps_movement(camera.get());
-  fps_movement.SetCamera(camera);
-  builder.SetCamera(std::move(camera));
-  builder.SetHandler(std::move(fps_movement));
-
-  auto scene = builder.createScene();
-
-  engine.LoadScene(std::move(scene));
+  // The engine will now handle all memory management about the scene.
+  //engine.LoadScene(std::move(scene));
 
   engine.Run();
 

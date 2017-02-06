@@ -12,7 +12,8 @@ class MouseHandler {
     //        GLFWwindow* window,
     //        int key,
     //        int scancode) = 0;
-    virtual ~MouseHandler();
+    virtual void CursorPosCallback(GLFWwindow* window, double xpos, double ypos) = 0;
+    virtual ~MouseHandler() {}
 
 };
 

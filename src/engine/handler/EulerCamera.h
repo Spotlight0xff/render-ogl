@@ -2,7 +2,7 @@
 #define EULERCAMERA_H
 
 #include "Camera.h"
-#include "FpsMovement.h"
+//#include "FpsMovement.h"
 
 #include "opengl.h"
 
@@ -33,7 +33,7 @@ class EulerCamera : public Camera {
 
     void setPosition(glm::vec3 p) override { pos = p; updateMatrices(); }
 
-    void setMovement(FpsMovement &movement) override;
+    //void setMovement(engine::handler::FpsMovement &movement);
 
     void lookAt(glm::vec3 pos);
 

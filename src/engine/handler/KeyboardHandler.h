@@ -14,7 +14,8 @@ class KeyboardHandler {
     //        GLFWwindow* window,
     //        int key,
     //        int scancode) = 0;
-    virtual ~KeyboardHandler();
+    virtual void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) = 0;
+    virtual ~KeyboardHandler() {}
 
 };
 }

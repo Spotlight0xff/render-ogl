@@ -5,16 +5,45 @@
 #define DEFAULT_MOVEMENT_SPEED 5.0f
 
 #include <glm/vec3.hpp>
+#include <iostream>
 #include "opengl.h"
 #include "MouseHandler.h"
 #include "KeyboardHandler.h"
-#include "CameraHandler.h"
+#include "FrameHandler.h"
+//#include "CameraHandler.h"
+#include "EulerCamera.h"
 
 namespace engine {
 namespace handler {
 
-class FpsMovement : public MouseHandler, public KeyboardHandler, public CameraHandler {
+class FpsMovement : public KeyboardHandler, public MouseHandler, public FrameHandler {// : public MouseHandler, public KeyboardHandler, public CameraHandler {
   public:
+
+    FpsMovement(engine::scene::EulerCamera* camera) {
+        this->camera = camera;
+    }
+
+    ~FpsMovement() {}
+
+    void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+      if(action == GLFW_PRESS)
+        keys_[key] = true;
+      else if(action == GLFW_RELEASE)
+        keys_[key] = false;
+    }
+
+    void FrameCallback(float delta_time) {
+      handleKeyboard(keys_);
+    }
+
+    void SetWindow(GLFWwindow* window) {
+      window_ = window;
+    }
+
+    void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)  {
+      handleMouse(xpos, ypos);
+    }
+
     void handleKeyboard(bool keys[]);
 
     void handleMouse(GLfloat x, GLfloat y);
@@ -30,9 +59,15 @@ class FpsMovement : public MouseHandler, public KeyboardHandler, public CameraHa
 
     void setSpeed(GLfloat sp) { default_speed = sp; }
 
+
   private:
     bool ignore_first = true;
-    EulerCamera *camera;
+    engine::scene::EulerCamera *camera;
+    GLFWwindow* window_ = nullptr;
+
+    // input
+    bool keys_[1024] = {};
+
 
     // movement-related
     static constexpr GLfloat max_speed = 20.0f;

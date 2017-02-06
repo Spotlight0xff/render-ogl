@@ -21,7 +21,7 @@ Engine::~Engine() {
  * Simple setter and getter functions for EngineOptions
  */
 
-void Engine::setOptions(struct Options& options) {
+void Engine::SetOptions(Engine::Options& options) {
   options_ = options;
 
   // TODO re-initialize the engine
@@ -46,18 +46,27 @@ bool Engine::Init() {
     return false;
   }
 
+  glfwSetWindowUserPointer(window_, this);
+  glfwSetKeyCallback(window_, Engine::KeyboardCallback);
+  glfwSetCursorPosCallback(window_, Engine::CursorPosCallback);
+  //glfwSetWindowSizeCallback(window_, Engine::WindowSizeCallback);
+
   initialized_ = true;
   return true;
 }
+void error_cb(int error, const char* err_msg) {
+  std::cerr << "Error: " << error << ", " << err_msg << "\n";
+}
 
 void Engine::InitGL() {
+  glfwSetErrorCallback(error_cb);
   if (!glfwInit()) {
     throw std::runtime_error("Failed to initialize GLFW.");
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, options_.opengl_major);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, options_.opengl_minor);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+  //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   if (options_.debug) {
@@ -99,25 +108,40 @@ void Engine::InitGL() {
   }
   glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
 
-  glfwSetCursorPosCallback(window_, )
+  //glfwSetCursorPosCallback(window_, )
 
 
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND); // needed for text rendering
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
-static void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+
+void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
   auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
   if (user_ptr) {
-      if (user_ptr->cursor_pos_func_) {
-        // TODO calculate delta_time
-        (*user_ptr->cursor_pos_func_)(user_ptr->delta_time_, xpos, ypos);
-      }
-
+    if(user_ptr->mouse_handler_) {
+      user_ptr->mouse_handler_->CursorPosCallback(window, xpos, ypos);
+    }
   }
-
 }
 
+void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+  auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
+  if (user_ptr) {
+    if(user_ptr->keyboard_handler_) {
+      user_ptr->keyboard_handler_->KeyboardCallback(window, key, scancode, action, mods);
+    }
+  }
+}
+
+/*void Engine::WindowSizeCallback(GLFWwindow* window, int width, int height) {
+  auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
+  if (user_ptr) {
+    if(user_ptr->window_size_handler_) {
+      user_ptr->window_size_handler_->CursorPosCallback(xpos, ypos);
+    }
+  }
+}*/
 
 void Engine::Render() {
 
@@ -136,6 +160,10 @@ void Engine::HandleTime() {
 void Engine::Run() {
   do {
     HandleTime();
+
+    if (frame_handler_) {
+      frame_handler_->FrameCallback(delta_time_);
+    }
 
     glfwPollEvents();
   } while(glfwWindowShouldClose(window_) == 0);

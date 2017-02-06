@@ -5,7 +5,7 @@
 #include "engine/shader/compiler.h"
 #include "engine/Scene.h"
 #include "engine/Model.h"
-#include "engine/scene/Camera.h"
+#include "engine/handler/Camera.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>

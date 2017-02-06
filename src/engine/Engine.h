@@ -21,15 +21,15 @@ class Engine {
       bool fullscreen = false;
       unsigned int default_width = 1280;
       unsigned int default_height = 1024;
-      unsigned int samples = 4;
-      unsigned int opengl_major = 4;
+      unsigned int samples = 1;
+      unsigned int opengl_major = 3;
       unsigned int opengl_minor = 3;
       std::string window_name = "Engine";
     };
 
-    enum class Handler {
-        FPS_MOVEMENT = 0
-    };
+    //enum class Handler {
+    //    FPS_MOVEMENT = 0
+    //};
 
     using CursorPosCallbackFunc = std::function<void(float, int, int)>;
     using KeyboardCallbackFunc = std::function<void(float, bool[1024])>;
@@ -39,7 +39,7 @@ class Engine {
     ~Engine();
 
 
-    void SetOptions(struct Options& options);
+    void SetOptions(Options& options);
 
     void SetCursorPosCallback(CursorPosCallbackFunc func) {
         *cursor_pos_func_ = func;
@@ -55,6 +55,25 @@ class Engine {
 
     // static callback funcs
     static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+    static void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    //static void WindowSizeCallback(GLFWwindow* window, int width, int height);
+
+    void SetKeyboardHandler(engine::handler::KeyboardHandler* handler) {
+        keyboard_handler_ = handler;
+    }
+
+    void SetMouseHandler(engine::handler::MouseHandler* handler) {
+        mouse_handler_ = handler;
+    }
+
+    void SetFrameHandler(engine::handler::FrameHandler* handler) {
+        frame_handler_ = handler;
+        frame_handler_->SetWindow(window_);
+    }
+
+    //void SetWindowHandler(engine::handler::WindowHandler handler) {
+    //    *window_handler_ = handler;
+    //}
 
     // Initializes GL and all subsystems
     bool Init();
@@ -75,6 +94,11 @@ class Engine {
     std::unique_ptr<CursorPosCallbackFunc> cursor_pos_func_{nullptr};
     std::unique_ptr<KeyboardCallbackFunc> keyboard_func_{nullptr};
     std::unique_ptr<WindowSizeCallbackFunc> window_size_func_{nullptr};
+
+    engine::handler::KeyboardHandler* keyboard_handler_ = nullptr;
+    engine::handler::MouseHandler* mouse_handler_ = nullptr;
+    engine::handler::FrameHandler* frame_handler_ = nullptr;
+    //engine::handler::WindowHandler* window_handler_ = nullptr;
 
 
 

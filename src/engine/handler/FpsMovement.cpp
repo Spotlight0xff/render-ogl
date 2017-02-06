@@ -11,6 +11,12 @@ namespace handler {
 
 void FpsMovement::handleKeyboard(bool keys[]) {
   handleDelta();
+
+  if (keys[GLFW_KEY_ESCAPE]) {
+    if (window_) {
+      glfwSetWindowShouldClose(window_, GLFW_TRUE);
+    }
+  }
   if (keys[GLFW_KEY_W]) {
     camera->moveForward(delta_frame * speed);
   }
