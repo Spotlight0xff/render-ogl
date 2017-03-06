@@ -12,8 +12,6 @@ friend class test_case_name##_##test_name##_Test
 #include "Texture2D.h"
 #include "engine/shader/compiler.h"
 
-#include "engine/scene/SceneObject.h"
-
 #include <vector>
 
 namespace engine {

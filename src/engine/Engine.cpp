@@ -144,8 +144,8 @@ void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int act
 }*/
 
 void Engine::Render() {
-  scene::SceneObject* current = scenes_.back().get();
-  current->draw();
+  //scene::SceneObject* current = scenes_.back().get();
+  //current->draw();
 }
 
 /*

@@ -5,9 +5,9 @@
 #include "engine/shader/compiler.h"
 #include "engine/handler/Camera.h"
 #include "engine/Input.h"
-#include "engine/scene/FontRender.h"
-#include "engine/scene/FpsCounter.h"
-#include "engine/scene/SceneObject.h"
+#include "engine/Manager.h"
+
+//#include "engine/scene/SceneObject.h"
 
 //#include "ModelObject.h"
 //#include "LightObject.h"
@@ -23,27 +23,31 @@
 
 namespace engine {
 
+template<typename T>
+class SceneObject {
+
+};
 //class components::ModelObject;
 //class LightObject;
 
-class Scene {
+class Scene : public ::engine::resource::Base {
  public:
   Scene() {}
   //void addLight(Light const& light);
   //void addModel(Model model, Shader shader) {
   //}
 
-  void addObjectRef(::engine::scene::SceneObject* object) {
-    objects.push_back(object);
-  }
+  //void addObjectRef(::engine::SceneObject* object) {
+  //  objects.push_back(object);
+  //}
 
   //void setLight(scene::SceneObject* l) {
   //  objects.push_back(l);
   //}
 
-  void UseCamera(scene::Camera* cam) { camera_ = cam; }
+  //void UseCamera(scene::Camera* cam) { camera_ = cam; }
 
-  void enableFpsCounter() { enabled_fps = true; }
+  //void enableFpsCounter() { enabled_fps = true; }
 
   //void useFont(const char* path) { font.load(path); }
 
@@ -60,19 +64,13 @@ class Scene {
 
   //Input & getInputRef() { return input; }
   //scene::FontRenderer& getFontRef() { return font; }
-  scene::Camera const& getCameraRef() const { return *camera_; }
+  //scene::Camera const& getCameraRef() const { return *camera_; }
   //SceneObject const& getLightRef() const { return *light; }
 
 
  private:
-  //Input input;
-  //scene::FpsCounter fps_counter;
   scene::Camera* camera_;
-  //GLFWwindow* window;
-  //scene::FontRenderer font;
-  bool enabled_fps = false;
-  std::vector<scene::SceneObject*> objects;
-  //std::vector<std::reference_wrapper<SceneObject>> components;
+  std::vector<Scene*> objects;
 };
 } // end namespace engine
 #endif

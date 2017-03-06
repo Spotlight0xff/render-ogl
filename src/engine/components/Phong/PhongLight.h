@@ -1,7 +1,6 @@
 #ifndef ENGINE_COMPONENTS_PHONGLIGHT_H
 #define ENGINE_COMPONENTS_PHONGLIGHT_H
 
-#include "engine/scene/SceneObject.h"
 #include "engine/shader/compiler.h"
 #include "engine/Scene.h"
 #include "engine/Model.h"
@@ -15,7 +14,7 @@
 namespace engine {
 namespace components {
 
-class PhongLight : public engine::scene::SceneObject {
+class PhongLight : public engine::SceneObject<PhongLight> {
   public:
     PhongLight()
       : model("resources/models/cube.obj") {

@@ -4,7 +4,6 @@
 #include "engine/Model.h"
 #include "engine/components/ModelObject.h"
 #include "engine/shader/compiler.h"
-#include "engine/scene/SceneObject.h"
 #include "PhongLight.h"
 #include "engine/Scene.h"
 

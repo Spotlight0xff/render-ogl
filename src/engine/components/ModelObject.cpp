@@ -1,5 +1,5 @@
 #include "ModelObject.h"
-#include "engine/scene/SceneObject.h"
+//#include "engine/scene/SceneObject.h"
 #include "engine/Scene.h"
 
 #include <glm/gtc/matrix_transform.hpp>

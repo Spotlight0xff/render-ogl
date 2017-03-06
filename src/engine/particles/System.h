@@ -1,11 +1,11 @@
 #ifndef GRAPHICS_ENGINE_PARTICLES_SYSTEM_H
 #define GRAPHICS_ENGINE_PARTICLES_SYSTEM_H
 
-#include "engine/scene/SceneObject.h"
 #include "RandomTexture.h"
 
 #include <opengl.h>
 #include <engine/shader/compiler.h>
+#include <engine/Scene.h>
 
 namespace engine {
 namespace particles {
@@ -27,7 +27,7 @@ struct Particle {
   GLfloat lifetime_ms;
 };
 
-class System : public engine::scene::SceneObject {
+class System { //: public engine::SceneObject {
   public:
     System();
     ~System();

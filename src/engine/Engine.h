@@ -5,12 +5,12 @@
 
 #include "opengl.h"
 #include "Scene.h"
+#include "Manager.h"
 
 #include <string>
 #include <engine/handler/FpsMovement.h>
 #include <engine/handler/EulerCamera.h>
 #include <memory>
-#include <engine/scene/Phong.h>
 
 
 namespace engine {
@@ -83,9 +83,13 @@ class Engine {
 
     void Render();
 
-    void LoadScene(std::unique_ptr<engine::scene::Phong>& scene) {
-      scenes_.push_back(std::move(scene));
+    Scene* CreateScene() {
+      return manager.make<Scene>();
     }
+
+    //void LoadScene(std::unique_ptr<Scene>& scene) {
+    //  scenes_.push_back(std::move(scene));
+    //}
 
 
     template<typename T>
@@ -99,6 +103,8 @@ class Engine {
     bool initialized_ = 0;
     GLFWwindow *window_ = nullptr;
 
+    engine::resource::Manager manager;
+
     // Input handling
     std::unique_ptr<CursorPosCallbackFunc> cursor_pos_func_{nullptr};
     std::unique_ptr<KeyboardCallbackFunc> keyboard_func_{nullptr};
@@ -108,8 +114,10 @@ class Engine {
     engine::handler::MouseHandler* mouse_handler_ = nullptr;
     engine::handler::FrameHandler* frame_handler_ = nullptr;
 
-    std::vector<std::unique_ptr<scene::Phong>> scenes_;
+    std::vector<std::unique_ptr<Scene>> scenes_;
     //engine::handler::WindowHandler* window_handler_ = nullptr;
+
+
 
 
 

@@ -2,7 +2,6 @@
 #include <engine/Scene.h>
 #include <engine/components/ModelObject.h>
 #include <engine/components/Phong/PhongModel.h>
-#include <engine/scene/Phong.h>
 #include "engine/Engine.h"
 
 int main() {
@@ -36,14 +35,16 @@ int main() {
   //std::unique_ptr<components::PhongModel> obj{new components::PhongModel(model.get())};
 
   //std::unique_ptr<Scene> scene{new Scene};
-  std::unique_ptr<scene::Phong> scene;
+  //std::unique_ptr<scene::Phong> scene;
   //scene->AddModel(model);
   //scene->AddLight(light);
+
+  engine::Scene* scene = engine.CreateScene();
 
 
 
   // The engine will now handle all memory management about the scene.
-  engine.LoadScene(std::move(scene));
+  //engine.LoadScene(scene);
 
   engine.Run();
 

@@ -3,7 +3,6 @@
 
 #include "engine/Model.h"
 #include "engine/shader/compiler.h"
-#include "engine/scene/SceneObject.h"
 #include "engine/Scene.h"
 
 #define GLM_FORCE_RADIANS
@@ -14,7 +13,7 @@ namespace components {
 
 
 
-class ModelObject : public engine::scene::SceneObject {
+class ModelObject {// : public engine::SceneObject {
   public:
     ModelObject(Model *m);
 
