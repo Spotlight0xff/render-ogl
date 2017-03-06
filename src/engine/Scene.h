@@ -28,11 +28,7 @@ namespace engine {
 
 class Scene {
  public:
-  Scene(GLFWwindow* w)
-  : input(w),
-    font(input.width, input.height),
-    fps_counter(font, input),
-    window(w) { }
+  Scene() {}
   //void addLight(Light const& light);
   //void addModel(Model model, Shader shader) {
   //}
@@ -45,11 +41,11 @@ class Scene {
   //  objects.push_back(l);
   //}
 
-  void useCamera(scene::Camera* cam) { camera = cam; }
+  void UseCamera(scene::Camera* cam) { camera_ = cam; }
 
   void enableFpsCounter() { enabled_fps = true; }
 
-  void useFont(const char* path) { font.load(path); }
+  //void useFont(const char* path) { font.load(path); }
 
 
   void draw();
@@ -57,21 +53,23 @@ class Scene {
   void drawPos();
 
   glm::mat4 getProjectionMatrix() {
-    return glm::perspective(45.0f, 1.0f*input.width/input.height, 0.1f, 1000.0f);
+    int width = 1280;
+    int height = 1024;
+    return glm::perspective(45.0f, 1.0f*width/height, 0.1f, 1000.0f);
   }
 
-  Input & getInputRef() { return input; }
-  scene::FontRenderer& getFontRef() { return font; }
-  scene::Camera const& getCameraRef() const { return *camera; }
+  //Input & getInputRef() { return input; }
+  //scene::FontRenderer& getFontRef() { return font; }
+  scene::Camera const& getCameraRef() const { return *camera_; }
   //SceneObject const& getLightRef() const { return *light; }
 
 
  private:
-  Input input;
-  scene::FpsCounter fps_counter;
-  scene::Camera* camera;
-  GLFWwindow* window;
-  scene::FontRenderer font;
+  //Input input;
+  //scene::FpsCounter fps_counter;
+  scene::Camera* camera_;
+  //GLFWwindow* window;
+  //scene::FontRenderer font;
   bool enabled_fps = false;
   std::vector<scene::SceneObject*> objects;
   //std::vector<std::reference_wrapper<SceneObject>> components;

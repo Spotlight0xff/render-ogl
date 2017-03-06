@@ -55,7 +55,7 @@ bool Engine::Init() {
   return true;
 }
 void error_cb(int error, const char* err_msg) {
-  std::cerr << "Error: " << error << ", " << err_msg << "\n";
+  std::cerr << "GLFW Error: " << error << ", " << err_msg << "\n";
 }
 
 void Engine::InitGL() {
@@ -144,7 +144,8 @@ void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int act
 }*/
 
 void Engine::Render() {
-
+  scene::SceneObject* current = scenes_.back().get();
+  current->draw();
 }
 
 /*
@@ -165,12 +166,11 @@ void Engine::Run() {
       frame_handler_->FrameCallback(delta_time_);
     }
 
+    Render();
+
     glfwPollEvents();
   } while(glfwWindowShouldClose(window_) == 0);
 }
-
-
-
 
 
 } // end namespace engine

@@ -21,7 +21,7 @@ class PhongLight : public engine::scene::SceneObject {
       : model("resources/models/cube.obj") {
     }
 
-    void draw(Scene& scene) override;
+    void draw(Scene& scene);
 
     void drawModel();
 

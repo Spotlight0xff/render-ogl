@@ -21,6 +21,10 @@ class PhongModel : public ModelObject {
 
     void drawModel(::engine::shader::Compiler& shader) { model->draw(shader); }
 
+    void draw(Scene&) override {
+      model->draw(shader);
+    }
+
   private:
 };
 

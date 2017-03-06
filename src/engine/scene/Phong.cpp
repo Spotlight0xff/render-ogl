@@ -71,7 +71,7 @@ void Phong::draw(Scene& scene) {
     shader_model.set(plight + "specular", glm::vec3({1.0, 1.0, 1.0}));
 
     shader_lights.set("projection", scene.getProjectionMatrix());
-    shader_lights.set("view", scene.getCameraRef().getViewMatrix());
+    //shader_lights.set("view", scene.getCameraRef().getViewMatrix());
     shader_lights.set("model", l->getModelMatrix());
     l->drawModel();
     i ++;

@@ -34,7 +34,7 @@ class System : public engine::scene::SceneObject {
 
     void initParticles(glm::vec3 const& pos);
 
-    void draw(::engine::Scene& scene) override;
+    void draw(::engine::Scene& scene);
 
     void updateParticles(GLfloat delta_time);
     void renderParticles(::engine::Scene& scene);

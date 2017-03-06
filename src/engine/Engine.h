@@ -4,11 +4,13 @@
 #include "engine/handler/InputHandler.h"
 
 #include "opengl.h"
+#include "Scene.h"
 
 #include <string>
 #include <engine/handler/FpsMovement.h>
 #include <engine/handler/EulerCamera.h>
 #include <memory>
+#include <engine/scene/Phong.h>
 
 
 namespace engine {
@@ -26,10 +28,6 @@ class Engine {
       unsigned int opengl_minor = 3;
       std::string window_name = "Engine";
     };
-
-    //enum class Handler {
-    //    FPS_MOVEMENT = 0
-    //};
 
     using CursorPosCallbackFunc = std::function<void(float, int, int)>;
     using KeyboardCallbackFunc = std::function<void(float, bool[1024])>;
@@ -85,6 +83,17 @@ class Engine {
 
     void Render();
 
+    void LoadScene(std::unique_ptr<engine::scene::Phong>& scene) {
+      scenes_.push_back(std::move(scene));
+    }
+
+
+    template<typename T>
+    void LoadObject(std::string const& path) {
+
+
+    }
+
   private:
     struct Options options_;
     bool initialized_ = 0;
@@ -98,6 +107,8 @@ class Engine {
     engine::handler::KeyboardHandler* keyboard_handler_ = nullptr;
     engine::handler::MouseHandler* mouse_handler_ = nullptr;
     engine::handler::FrameHandler* frame_handler_ = nullptr;
+
+    std::vector<std::unique_ptr<scene::Phong>> scenes_;
     //engine::handler::WindowHandler* window_handler_ = nullptr;
 
 

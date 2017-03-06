@@ -18,7 +18,7 @@ class ModelObject : public engine::scene::SceneObject {
   public:
     ModelObject(Model *m);
 
-    virtual void draw(Scene&) override;
+    virtual void draw(Scene&) = 0;
 
 
     void setPosition(glm::vec3 pos);
