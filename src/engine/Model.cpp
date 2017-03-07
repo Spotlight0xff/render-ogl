@@ -1,6 +1,7 @@
 #include <SOIL.h>
 
 #define GLM_FORCE_RADIANS
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
@@ -9,12 +10,14 @@
 #include "Util.h"
 #include "Model.h"
 #include "Texture2D.h"
+#include "engine/Manager.h"
 
 
 namespace engine {
 
-Model::Model(const char *p)
-        : path(p) {
+Model::Model(::engine::resource::Manager& m, std::string const& p)
+        : path(p),
+          manager(m){
   directory = path.substr(0, path.find_last_of('/'));
   directory += '/';
   loadModel();
@@ -35,19 +38,22 @@ Model::Model(const char *p)
 
 Model::~Model() {
   for(auto texture : loaded_textures) {
-    delete texture;
+    if (texture != nullptr)
+      delete texture;
   }
 
 }
 
+/*
+ * we shouldn't need this.
+ *
 void Model::draw(::engine::shader::Compiler &shader) const {
   for (auto const &m : meshes) {
     m.draw(shader);
   }
-}
+}*/
 
 
-// draw without shaders
 void Model::draw() const {
   for (auto const &m : meshes) {
     m.draw();
@@ -192,7 +198,8 @@ Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D
     return nullptr;
   }
 
-  Texture2D* texture = new Texture2D(type, image, width, height, path);
+  Texture2D* texture = manager.loadAsset<Texture2D>(type, image, width, height, path);
+  //Texture2D* texture = new Texture2D(type, image, width, height, path);
   SOIL_free_image_data(image);
 
   return texture;

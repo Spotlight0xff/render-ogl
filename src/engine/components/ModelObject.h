@@ -1,23 +1,24 @@
 #ifndef MODELOBJECT_H
 #define MODELOBJECT_H
 
-#include "engine/Model.h"
+//#include "engine/Model.h"
 #include "engine/shader/compiler.h"
-#include "engine/Scene.h"
+//#include "engine/Scene.h"
+#include "engine/SceneObject.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
+#include <engine/Model.h>
 
 namespace engine {
 namespace components {
 
 
-
-class ModelObject {// : public engine::SceneObject {
+class ModelObject : public ::engine::SceneObject {
   public:
     ModelObject(Model *m);
 
-    virtual void draw(Scene&) = 0;
+    virtual void draw(::engine::Scene&);
 
 
     void setPosition(glm::vec3 pos);

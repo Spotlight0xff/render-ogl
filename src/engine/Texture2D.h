@@ -2,6 +2,7 @@
 #define GRAPHICS_ENGINE_TEXTURE2D_H
 
 #include "engine/Texture.h"
+#include "Manager.h"
 
 namespace engine {
 
@@ -13,7 +14,18 @@ class Texture2D : public Texture {
         SPECULAR,
     };
 
-    Texture2D(Type type, unsigned char* image, int width, int height, std::string path = "")
+    constexpr static char const* id = "Tex2D";
+
+    static std::string getId(Type type, unsigned char* image, int width, int height, std::string const& path) {
+        return path;
+    }
+
+
+
+
+
+
+    Texture2D(::engine::resource::Manager& m, Type type, unsigned char* image, int width, int height, std::string const& path)
             : type_(type),
               path_(path),
               width_(width),
@@ -38,7 +50,7 @@ class Texture2D : public Texture {
     std::string getPath() const { return path_; }
     Type getType() const { return type_; }
 
-    float shininess_;
+    float shininess_ = 1.0;
     glm::vec3 diffuse_ = glm::vec3(0.5f);
     glm::vec3 ambient_ = glm::vec3(0.3f);
     glm::vec3 specular_ = glm::vec3(1.0f);

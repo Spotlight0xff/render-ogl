@@ -18,10 +18,10 @@ class PhongModel : public ModelObject {
     PhongModel(Model *m)
             : ModelObject(m) {}
 
-    void drawModel(::engine::shader::Compiler& shader) { model->draw(shader); }
+    //void drawModel(::engine::shader::Compiler& shader) { shader.use(); model->draw(); }
 
-    void draw(Scene&) override {
-      model->draw(shader);
+    void draw(Scene&) {
+      model->draw();
     }
 
   private:

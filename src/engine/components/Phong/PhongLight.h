@@ -14,13 +14,11 @@
 namespace engine {
 namespace components {
 
-class PhongLight : public engine::SceneObject<PhongLight> {
+class PhongLight : public engine::SceneObject {
   public:
-    PhongLight()
-      : model("resources/models/cube.obj") {
-    }
+    //PhongLight() {}
 
-    void draw(Scene& scene);
+    //void draw(Scene& scene);
 
     void drawModel();
 

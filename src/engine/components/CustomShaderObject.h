@@ -6,6 +6,8 @@
 #define GRAPHICS_ENGINE_CUSTOMSHADEROBJECT_H
 
 #include "ModelObject.h"
+#include "engine/Scene.h"
+
 
 
 namespace engine {
@@ -18,7 +20,7 @@ class CustomShaderObject : public ModelObject {
   public:
     CustomShaderObject(Model *m, std::string const &shader, ShaderSettingFunc func);
 
-    virtual void draw(Scene&) override;
+    virtual void draw(Scene&);
 
   private:
     ShaderSettingFunc settings_;

@@ -84,7 +84,7 @@ class Engine {
     void Render();
 
     Scene* CreateScene() {
-      return manager.make<Scene>();
+      return manager->make<Scene>();
     }
 
     //void LoadScene(std::unique_ptr<Scene>& scene) {
@@ -98,12 +98,18 @@ class Engine {
 
     }
 
+    engine::resource::Manager* getResourceManager();
+
+    void setScene(Scene*&& scene) {
+        current_scene = std::unique_ptr<Scene>(std::move(scene));
+    }
+
   private:
     struct Options options_;
     bool initialized_ = 0;
     GLFWwindow *window_ = nullptr;
 
-    engine::resource::Manager manager;
+    std::unique_ptr<resource::Manager> manager{new resource::Manager};
 
     // Input handling
     std::unique_ptr<CursorPosCallbackFunc> cursor_pos_func_{nullptr};
@@ -115,6 +121,7 @@ class Engine {
     engine::handler::FrameHandler* frame_handler_ = nullptr;
 
     std::vector<std::unique_ptr<Scene>> scenes_;
+    std::unique_ptr<Scene> current_scene;
     //engine::handler::WindowHandler* window_handler_ = nullptr;
 
 

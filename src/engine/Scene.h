@@ -1,13 +1,12 @@
 #ifndef ENGINE_SCENE_H
 #define ENGINE_SCENE_H
 
-#include "Model.h"
 #include "engine/shader/compiler.h"
 #include "engine/handler/Camera.h"
 #include "engine/Input.h"
 #include "engine/Manager.h"
 
-//#include "engine/scene/SceneObject.h"
+#include "engine/SceneObject.h"
 
 //#include "ModelObject.h"
 //#include "LightObject.h"
@@ -20,19 +19,20 @@
 #include <vector>
 #include <functional>
 #include <engine/handler/Camera.h>
+#include <engine/components/ModelObject.h>
 
 namespace engine {
 
-template<typename T>
-class SceneObject {
+class Model;
 
-};
-//class components::ModelObject;
-//class LightObject;
 
 class Scene : public ::engine::resource::Base {
  public:
   Scene() {}
+
+    SceneObject* addModel(::engine::Model* model);
+
+    // TODO: addAsset (which calls the resource manager directly)
   //void addLight(Light const& light);
   //void addModel(Model model, Shader shader) {
   //}
@@ -50,6 +50,7 @@ class Scene : public ::engine::resource::Base {
   //void enableFpsCounter() { enabled_fps = true; }
 
   //void useFont(const char* path) { font.load(path); }
+
 
 
   void draw();
@@ -70,7 +71,7 @@ class Scene : public ::engine::resource::Base {
 
  private:
   scene::Camera* camera_;
-  std::vector<Scene*> objects;
+  std::vector<SceneObject*> objects;
 };
 } // end namespace engine
 #endif

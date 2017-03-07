@@ -8,20 +8,31 @@
 #define FRIEND_TEST(test_case_name, test_name)\
 friend class test_case_name##_##test_name##_Test
 
+
 #include "engine/model/Mesh.h"
 #include "Texture2D.h"
 #include "engine/shader/compiler.h"
+#include "engine/Manager.h"
 
 #include <vector>
 
 namespace engine {
 
+namespace resource {
+class Manager;
+}
 class Model {
   public:
-    Model(const char *path);
+    constexpr static char const* id = "3d_Model";
+    static std::string getId(std::string const& path) {
+      return path;
+    }
+
+    Model(::engine::resource::Manager& m, std::string const& path);
+
     ~Model();
 
-    void draw(::engine::shader::Compiler& shader) const;
+    //void draw(::engine::shader::Compiler& shader) const;
 
     void draw() const;
 
@@ -30,6 +41,7 @@ class Model {
     FRIEND_TEST(Model, FailLoad);
     std::string directory;
     std::string path;
+    ::engine::resource::Manager& manager;
     std::vector<model::Mesh> meshes;
     std::vector<Texture2D*> loaded_textures;
 

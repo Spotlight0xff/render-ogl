@@ -15,7 +15,7 @@ class Texture {
     Texture(GLenum target = GL_TEXTURE_2D)
             : target_(target) {}
 
-    ~Texture() {
+    virtual ~Texture() {
       if (id_ != 0) {
         glDeleteTextures(1, &id_);
       }

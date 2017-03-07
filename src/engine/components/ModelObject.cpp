@@ -36,7 +36,7 @@ void ModelObject::draw(Scene& scene) {
   shader.use();
 
   // TODO: remove shader from draw()
-  model->draw(shader);
+  model->draw();
 }
 
 }  // namespace engine::components

@@ -5,9 +5,9 @@ namespace engine {
 namespace components {
 
 
-void PhongLight::draw(Scene& scene) {
+/*void PhongLight::draw(Scene& scene) {
   model.draw();
-}
+}*/
 
 void PhongLight::drawModel() {
   if (render_object_) {

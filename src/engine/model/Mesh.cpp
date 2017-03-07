@@ -86,6 +86,8 @@ bool Mesh::setup() {
 void Mesh::draw(::engine::shader::Compiler &shader) const {
   size_t i = 0;
   for (auto const &t : textures) {
+    if (t == nullptr)
+      continue; // this should *NOT* happen.
 
     glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t->shininess_);
 

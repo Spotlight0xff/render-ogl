@@ -46,6 +46,7 @@ bool Engine::Init() {
     return false;
   }
 
+
   glfwSetWindowUserPointer(window_, this);
   glfwSetKeyCallback(window_, Engine::KeyboardCallback);
   glfwSetCursorPosCallback(window_, Engine::CursorPosCallback);
@@ -144,6 +145,7 @@ void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int act
 }*/
 
 void Engine::Render() {
+  current_scene->draw();
   //scene::SceneObject* current = scenes_.back().get();
   //current->draw();
 }
@@ -171,6 +173,14 @@ void Engine::Run() {
     glfwPollEvents();
   } while(glfwWindowShouldClose(window_) == 0);
 }
+
+engine::resource::Manager* Engine::getResourceManager() {
+  return manager.get();
+}
+
+//void Engine::setScene(Scene*&& scene) {
+//  current_scene = std::move(scene);
+//}
 
 
 } // end namespace engine

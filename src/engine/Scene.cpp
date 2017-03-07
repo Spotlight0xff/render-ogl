@@ -7,11 +7,11 @@ void Scene::draw() {
   //  fps_counter.draw();
   //}
 
-  drawPos();
+  //drawPos();
 
-  //for (auto o : objects) {
-  //  o->draw(*this);
-  //}
+  for (auto o : objects) {
+    o->draw(*this);
+  }
 }
 
 void Scene::drawPos() {
@@ -24,6 +24,14 @@ void Scene::drawPos() {
   //font.render(str_pos_x, 20.0f, input.height - 120.0f, glm::vec3(0.5f, 0.8f, 0.2f));
   //font.render(str_pos_y, 20.0f, input.height - 160.0f, glm::vec3(0.5f, 0.8f, 0.2f));
   //font.render(str_pos_z, 20.0f, input.height - 200.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+}
+
+SceneObject *Scene::addModel(::engine::Model *model) {
+  //std::unique_ptr<components::ModelObject> ptr = std::make_unique<components::ModelObject>(model);
+  components::ModelObject* ptr = new components::ModelObject(model);
+  objects.push_back(static_cast<SceneObject*>(ptr));
+  return nullptr;
+  //return ptr.get();
 }
 
 } // end namespace engine

@@ -7,7 +7,10 @@
 int main() {
   using namespace engine;
   Engine engine;
+  engine::resource::Manager* manager = engine.getResourceManager();
   Engine::Options engine_options;
+  engine::Scene* scene;
+
   try {
     engine.Init();
   } catch (std::exception const& e) {
@@ -29,7 +32,7 @@ int main() {
   engine.SetFrameHandler(&movement);
 
   // Load the .obj models
-  //Model* model = engine.LoadResource<Model>("resources/models/nanosuit2/nanosuit.obj");
+  //Model* model = engine.LoadResource<Model>("resources/models/nanosuit2/nanosuit.ocj");
   //SimpleLight* light = engine.LoadResource<SimpleLight>();
 
   //std::unique_ptr<components::PhongModel> obj{new components::PhongModel(model.get())};
@@ -39,12 +42,18 @@ int main() {
   //scene->AddModel(model);
   //scene->AddLight(light);
 
-  engine::Scene* scene = engine.CreateScene();
+
+  scene = engine.CreateScene();
 
 
+  auto model = manager->loadAsset<Model>("resources/models/nanosuit2/nanosuit.obj");
 
-  // The engine will now handle all memory management about the scene.
-  //engine.LoadScene(scene);
+  // Model (loaded .obj file) becomes a rendering object
+  auto obj = scene->addModel(model);
+
+
+  // The engine will now handle all memory management related to the scene.
+  engine.setScene(std::move(scene));
 
   engine.Run();
 
