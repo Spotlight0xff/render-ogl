@@ -43,11 +43,13 @@ int main() {
   scene = engine.CreateScene();
   scene->useCamera(camera);
 
-  auto model = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
+  // Add nanosuit model and then generate an object from it
+  auto nanosuit = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
+  auto nomad = scene->addModel<::engine::components::PhongModel>(nanosuit);
+  nomad->setPosition({0.0, 0.0, 8.0});
+
+  // Also add the ground as an CustomShaderObject
   auto model_ground = manager->loadAsset<Model>(manager, "resources/models/ground.obj");
-
-  // Model (loaded .obj file) becomes a rendering object
-
   auto checkerboard = scene->addModel<::engine::components::CustomShaderObject>(model_ground, "checkerboard",
 
                                  [](Scene& s, components::ModelObject& obj, engine::shader::Compiler& shader) {
@@ -55,14 +57,9 @@ int main() {
     shader.set("view", s.getCameraRef().getViewMatrix());
     shader.set("projection", s.getProjectionMatrix());
     });
-
-
-
   checkerboard->setPosition({0.0, 0.0, 0.0});
   checkerboard->setScale({50.0, 1.0, 50.0});
 
-  auto obj = scene->addModel<::engine::components::PhongModel>(model);
-  obj->setPosition({0.0, 0.0, 8.0});
 
   // The engine will now handle all memory management related to the scene.
   engine.setScene(std::move(scene));
