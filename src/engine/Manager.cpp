@@ -9,9 +9,6 @@
 namespace engine {
 
 namespace resource {
-engine::resource::Manager::Manager() {
-}
-
 /*!
  * Generates a identifier for the resource `name` of type `type`.
  * @param type resource type

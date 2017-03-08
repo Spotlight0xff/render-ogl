@@ -23,12 +23,15 @@ class Manager;
 }
 class Model {
   public:
-    constexpr static char const* id = "3d_Model";
+    /*constexpr static char const* id = "3d_Model";
     static std::string getId(std::string const& path) {
       return path;
+    }*/
+    static std::string id() {
+        return "Model";
     }
 
-    Model(::engine::resource::Manager& m, std::string const& path);
+    Model(::engine::resource::Manager* m, std::string path);
 
     ~Model();
 
@@ -41,7 +44,7 @@ class Model {
     FRIEND_TEST(Model, FailLoad);
     std::string directory;
     std::string path;
-    ::engine::resource::Manager& manager;
+    ::engine::resource::Manager* manager;
     std::vector<model::Mesh> meshes;
     std::vector<Texture2D*> loaded_textures;
 

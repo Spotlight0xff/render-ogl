@@ -26,52 +26,63 @@ namespace engine {
 class Model;
 
 
-class Scene : public ::engine::resource::Base {
- public:
-  Scene() {}
+class Scene {
+  public:
 
+    Scene(resource::Manager* m)
+    :manager(m){}
+
+    /*!
+     * Adds the model as an object to the scene.
+     *
+     *
+     * @param model Model to be added
+     * @return
+     */
     SceneObject* addModel(::engine::Model* model);
 
     // TODO: addAsset (which calls the resource manager directly)
-  //void addLight(Light const& light);
-  //void addModel(Model model, Shader shader) {
-  //}
+    //void addLight(Light const& light);
+    //void addModel(Model model, Shader shader) {
+    //}
 
-  //void addObjectRef(::engine::SceneObject* object) {
-  //  objects.push_back(object);
-  //}
+    //void addObjectRef(::engine::SceneObject* object) {
+    //  objects.push_back(object);
+    //}
 
-  //void setLight(scene::SceneObject* l) {
-  //  objects.push_back(l);
-  //}
+    //void setLight(scene::SceneObject* l) {
+    //  objects.push_back(l);
+    //}
 
-  //void UseCamera(scene::Camera* cam) { camera_ = cam; }
+    //void UseCamera(scene::Camera* cam) { camera_ = cam; }
 
-  //void enableFpsCounter() { enabled_fps = true; }
+    //void enableFpsCounter() { enabled_fps = true; }
 
-  //void useFont(const char* path) { font.load(path); }
-
-
-
-  void draw();
-
-  void drawPos();
-
-  glm::mat4 getProjectionMatrix() {
-    int width = 1280;
-    int height = 1024;
-    return glm::perspective(45.0f, 1.0f*width/height, 0.1f, 1000.0f);
-  }
-
-  //Input & getInputRef() { return input; }
-  //scene::FontRenderer& getFontRef() { return font; }
-  //scene::Camera const& getCameraRef() const { return *camera_; }
-  //SceneObject const& getLightRef() const { return *light; }
+    //void useFont(const char* path) { font.load(path); }
 
 
- private:
-  scene::Camera* camera_;
-  std::vector<SceneObject*> objects;
+
+    void draw();
+
+    void drawPos();
+
+    glm::mat4 getProjectionMatrix() {
+      int width = 1280;
+      int height = 1024;
+      return glm::perspective(45.0f, 1.0f*width/height, 0.1f, 1000.0f);
+    }
+
+    //Input & getInputRef() { return input; }
+    //scene::FontRenderer& getFontRef() { return font; }
+    //scene::Camera const& getCameraRef() const { return *camera_; }
+    //SceneObject const& getLightRef() const { return *light; }
+
+
+  private:
+    scene::Camera* camera_{nullptr};
+    resource::Manager* manager{nullptr};
+
+    std::vector<SceneObject*> objects;
 };
 } // end namespace engine
 #endif

@@ -17,16 +17,17 @@ namespace engine {
 
 class Engine {
   public:
+    //! Engine options
     struct Options {
-      bool debug = true;
-      bool show_cursor = true;
-      bool fullscreen = false;
-      unsigned int default_width = 1280;
-      unsigned int default_height = 1024;
-      unsigned int samples = 1;
-      unsigned int opengl_major = 3;
-      unsigned int opengl_minor = 3;
-      std::string window_name = "Engine";
+      bool debug = true; //! enables verbose console output
+      bool show_cursor = true; //! show cursor in render window
+      bool fullscreen = false; // enable or disable fullscreen
+      unsigned int default_width = 1280; //! width of requested window in pixels
+      unsigned int default_height = 1024; //! height of requested window in pixels
+      unsigned int samples = 1; //! Multisampling samples
+      unsigned int opengl_major = 3; //! OpenGL major version, if less, startup fails
+      unsigned int opengl_minor = 3; //! OpenGL minor version
+      std::string window_name = "Engine"; //! name of the render window
     };
 
     using CursorPosCallbackFunc = std::function<void(float, int, int)>;
@@ -35,6 +36,9 @@ class Engine {
 
     Engine();
     ~Engine();
+
+    Engine(Engine const &other) = delete; // copy ctor
+    Engine &operator=(Engine const &other) = delete; // copy-assignment op
 
 
     void SetOptions(Options& options);
@@ -81,27 +85,16 @@ class Engine {
 
     void HandleTime();
 
-    void Render();
+    void Render() noexcept;
 
     Scene* CreateScene() {
-      return manager->make<Scene>();
-    }
-
-    //void LoadScene(std::unique_ptr<Scene>& scene) {
-    //  scenes_.push_back(std::move(scene));
-    //}
-
-
-    template<typename T>
-    void LoadObject(std::string const& path) {
-
-
+      return manager->loadAsset<Scene>(manager.get());
     }
 
     engine::resource::Manager* getResourceManager();
 
-    void setScene(Scene*&& scene) {
-        current_scene = std::unique_ptr<Scene>(std::move(scene));
+    void setScene(Scene* scene) {
+        current_scene = scene;
     }
 
   private:
@@ -109,28 +102,40 @@ class Engine {
     bool initialized_ = 0;
     GLFWwindow *window_ = nullptr;
 
-    std::unique_ptr<resource::Manager> manager{new resource::Manager};
+    std::unique_ptr<resource::Manager> manager{nullptr};
 
     // Input handling
     std::unique_ptr<CursorPosCallbackFunc> cursor_pos_func_{nullptr};
     std::unique_ptr<KeyboardCallbackFunc> keyboard_func_{nullptr};
     std::unique_ptr<WindowSizeCallbackFunc> window_size_func_{nullptr};
 
-    engine::handler::KeyboardHandler* keyboard_handler_ = nullptr;
-    engine::handler::MouseHandler* mouse_handler_ = nullptr;
-    engine::handler::FrameHandler* frame_handler_ = nullptr;
+    //! keyboard input handler
+    engine::handler::KeyboardHandler* keyboard_handler_{nullptr};
 
-    std::vector<std::unique_ptr<Scene>> scenes_;
-    std::unique_ptr<Scene> current_scene;
+    //! mouse input handler
+    engine::handler::MouseHandler* mouse_handler_{nullptr};
+
+    // frame handler (called for each frame)
+    engine::handler::FrameHandler* frame_handler_{nullptr};
+
+
+    //! window handler (for resize, window callback functions)
     //engine::handler::WindowHandler* window_handler_ = nullptr;
 
+    //! List of weak raw pointers to scenes
+    std::vector<Scene*> scenes_;
+
+    //! Currently active scene (weak raw pointer)
+    Scene* current_scene{nullptr};
 
 
 
 
-    // Camera handling
 
+    //! elapsed time since last call
     float delta_time_ = 0;
+
+    //! last time called (see `delta_time_`)
     float last_time_ = 0;
 
     void InitGL();

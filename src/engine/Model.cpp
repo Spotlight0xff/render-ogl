@@ -15,7 +15,7 @@
 
 namespace engine {
 
-Model::Model(::engine::resource::Manager& m, std::string const& p)
+Model::Model(::engine::resource::Manager* m, std::string p)
         : path(p),
           manager(m){
   directory = path.substr(0, path.find_last_of('/'));
@@ -24,10 +24,10 @@ Model::Model(::engine::resource::Manager& m, std::string const& p)
   size_t count_v = 0;
   size_t count_i = 0;
   size_t count_t = 0;
-  for (auto const &m : meshes) {
-    count_v += m.getVertices().size();
-    count_i += m.getIndices().size();
-    count_t += m.getTextures().size();
+  for (auto const &mesh : meshes) {
+    count_v += mesh.getVertices().size();
+    count_i += mesh.getIndices().size();
+    count_t += mesh.getTextures().size();
   }
   std::cout << "Imported " << meshes.size() << " meshes with a total of\n"
             << count_v << " vertices,\n"
@@ -37,10 +37,10 @@ Model::Model(::engine::resource::Manager& m, std::string const& p)
 
 
 Model::~Model() {
-  for(auto texture : loaded_textures) {
+  /*for(auto texture : loaded_textures) {
     if (texture != nullptr)
       delete texture;
-  }
+  }*/
 
 }
 
@@ -147,7 +147,7 @@ std::vector<Texture2D*> Model::loadTextures(
   for (size_t i = 0; i < count; i++) {
     aiString tex_str;
     mat->GetTexture(ai_type, static_cast<unsigned int>(i), &tex_str);
-    for (auto const &t : loaded_textures) {
+    for (auto& t : loaded_textures) {
       if (t->getPath() == std::string(tex_str.C_Str())) {
         texs.push_back(t);
       }
@@ -198,7 +198,7 @@ Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D
     return nullptr;
   }
 
-  Texture2D* texture = manager.loadAsset<Texture2D>(type, image, width, height, path);
+  Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
   //Texture2D* texture = new Texture2D(type, image, width, height, path);
   SOIL_free_image_data(image);
 

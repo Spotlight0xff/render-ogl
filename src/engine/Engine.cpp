@@ -9,12 +9,12 @@ namespace engine {
 
 // perform some initial allocations
 // Most initialization happens at init()
-Engine::Engine() {
-
+Engine::Engine()
+: manager(std::make_unique<resource::Manager>()){
 }
 
 Engine::~Engine() {
-
+  glfwTerminate();
 }
 
 /*
@@ -144,10 +144,14 @@ void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int act
   }
 }*/
 
-void Engine::Render() {
-  current_scene->draw();
-  //scene::SceneObject* current = scenes_.back().get();
-  //current->draw();
+void Engine::Render() noexcept {
+  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  // TODO(performance): rework to remove if-clause
+  if(current_scene) {
+    current_scene->draw();
+  }
+  glfwSwapBuffers(window_);
 }
 
 /*

@@ -19,8 +19,9 @@ int main() {
   }
 
   // TODO: camera should be on heap
-  std::unique_ptr<scene::EulerCamera> camera{new scene::EulerCamera};
-  handler::FpsMovement movement(camera.get());
+  //std::unique_ptr<scene::EulerCamera> camera{new scene::EulerCamera};
+  scene::EulerCamera* camera = manager->loadAsset<scene::EulerCamera>();
+  handler::FpsMovement movement(camera);
 
   movement.setEyelevel(12.0);
   movement.setSensitivity(0.1f);
@@ -45,12 +46,10 @@ int main() {
 
   scene = engine.CreateScene();
 
-
-  auto model = manager->loadAsset<Model>("resources/models/nanosuit2/nanosuit.obj");
+  auto model = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
 
   // Model (loaded .obj file) becomes a rendering object
   auto obj = scene->addModel(model);
-
 
   // The engine will now handle all memory management related to the scene.
   engine.setScene(std::move(scene));

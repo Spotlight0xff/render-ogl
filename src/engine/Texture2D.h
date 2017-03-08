@@ -14,18 +14,22 @@ class Texture2D : public Texture {
         SPECULAR,
     };
 
-    constexpr static char const* id = "Tex2D";
-
-    static std::string getId(Type type, unsigned char* image, int width, int height, std::string const& path) {
-        return path;
+    static std::string id() {
+        return "Tex2D";
     }
 
+    //constexpr static char const* id = "Tex2D";
+
+    /*static std::string getId(Type type, unsigned char* image, int width, int height, std::string const& path) {
+        return path;
+    }*/
 
 
 
 
 
-    Texture2D(::engine::resource::Manager& m, Type type, unsigned char* image, int width, int height, std::string const& path)
+
+    Texture2D(Type type, unsigned char* image, int width, int height, std::string path)
             : type_(type),
               path_(path),
               width_(width),

@@ -9,7 +9,7 @@ void Scene::draw() {
 
   //drawPos();
 
-  for (auto o : objects) {
+  for (auto const& o : objects) {
     o->draw(*this);
   }
 }
@@ -27,11 +27,9 @@ void Scene::drawPos() {
 }
 
 SceneObject *Scene::addModel(::engine::Model *model) {
-  //std::unique_ptr<components::ModelObject> ptr = std::make_unique<components::ModelObject>(model);
-  components::ModelObject* ptr = new components::ModelObject(model);
-  objects.push_back(static_cast<SceneObject*>(ptr));
-  return nullptr;
-  //return ptr.get();
+  components::ModelObject* ptr = manager->loadAsset<components::ModelObject>(model);
+  objects.emplace_back(static_cast<SceneObject*>(ptr));
+  return ptr;
 }
 
 } // end namespace engine
