@@ -32,16 +32,24 @@ class Scene {
     Scene(resource::Manager* m)
     :manager(m){}
 
-    /*!
-     * Adds the model as an object to the scene.
-     *
-     *
-     * @param model Model to be added
-     * @return
-     */
-    SceneObject* addModel(::engine::Model* model);
+    void useCamera(::engine::scene::Camera* camera) {
+      camera_ = camera;
+    }
 
-    // TODO: addAsset (which calls the resource manager directly)
+     /*!
+      * Add an arbitrary object to the scene.
+      * @tparam T object type
+      * @tparam Args constructor argument types
+      * @param args constructor arguments
+      * @return object of type `T`
+      */
+    template<typename T, typename... Args>
+    T* addModel(Args... args) {
+      T* ptr = manager->loadAsset<T>(std::forward<Args>(args)...);
+      objects.emplace_back(static_cast<SceneObject*>(ptr));
+      return ptr;
+    }
+
     //void addLight(Light const& light);
     //void addModel(Model model, Shader shader) {
     //}
@@ -59,6 +67,11 @@ class Scene {
     //void enableFpsCounter() { enabled_fps = true; }
 
     //void useFont(const char* path) { font.load(path); }
+
+    ::engine::scene::Camera& getCameraRef() const {
+      return *camera_;
+    }
+
 
 
 

@@ -38,7 +38,8 @@ void Engine::SetOptions(Engine::Options& options) {
  *  - window creation
  *  - subsystem initialization
  */
-bool Engine::Init() {
+bool Engine::Init(Engine::Options options) {
+  options_ = options;
   try {
     InitGL();
   } catch (std::runtime_error const& e) {
@@ -109,6 +110,10 @@ void Engine::InitGL() {
   }
   glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
 
+  if (options_.samples > 1) {
+    glEnable(GL_MULTISAMPLE);
+  }
+
   //glfwSetCursorPosCallback(window_, )
 
 
@@ -147,16 +152,17 @@ void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int act
 void Engine::Render() noexcept {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   // TODO(performance): rework to remove if-clause
   if(current_scene) {
     current_scene->draw();
   }
+
   glfwSwapBuffers(window_);
 }
 
-/*
- * Handles time management.
- * Mostly just computes the delta time.
+/*!
+ * Computes delta time.
  */
 void Engine::HandleTime() {
   float current_time = static_cast<float>(glfwGetTime());
@@ -164,6 +170,13 @@ void Engine::HandleTime() {
   last_time_ = current_time;
 }
 
+/*!
+ * Runs the main loop of the engine:
+ *  - time handling (delta time)
+ *  - rendering
+ *  - input polling
+ *  - callbacks (if used)
+ */
 void Engine::Run() {
   do {
     HandleTime();
@@ -182,9 +195,12 @@ engine::resource::Manager* Engine::getResourceManager() {
   return manager.get();
 }
 
-//void Engine::setScene(Scene*&& scene) {
-//  current_scene = std::move(scene);
-//}
+void Engine::setScene(Scene *scene) {
+  current_scene = scene;
+}
 
+Scene *Engine::CreateScene() {
+  return manager->loadAsset<Scene>(manager.get());
+}
 
 } // end namespace engine

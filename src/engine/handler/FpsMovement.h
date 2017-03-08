@@ -53,6 +53,7 @@ class FpsMovement : public KeyboardHandler, public MouseHandler, public FrameHan
     void setEyelevel(GLfloat el) {
       default_eyelevel = el;
       eyelevel = el;
+      camera->setY(eyelevel);
     }
 
     void setSensitivity(GLfloat sens) { sensitivity = sens; }

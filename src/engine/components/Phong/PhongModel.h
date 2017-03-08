@@ -16,15 +16,20 @@ namespace components {
 class PhongModel : public ModelObject {
   public:
     PhongModel(Model *m)
-            : ModelObject(m) {}
+    : shader("phong_model"),
+      ModelObject(m) {
+    }
 
-    //void drawModel(::engine::shader::Compiler& shader) { shader.use(); model->draw(); }
-
-    void draw(Scene&) {
+    void draw(Scene& s) {
+      shader.use();
+      shader.set("model", getModelMatrix());
+      shader.set("view", s.getCameraRef().getViewMatrix());
+      shader.set("projection", s.getProjectionMatrix());
       model->draw();
     }
 
   private:
+    ::engine::shader::Compiler shader;
 };
 
 } // end namespace engine::components

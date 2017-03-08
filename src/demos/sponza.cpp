@@ -2,7 +2,11 @@
 #include <engine/Scene.h>
 #include <engine/components/ModelObject.h>
 #include <engine/components/Phong/PhongModel.h>
+#include <engine/components/CustomShaderObject.h>
 #include "engine/Engine.h"
+
+//TODO(Debug) print matrices
+#include <glm/gtx/string_cast.hpp>
 
 int main() {
   using namespace engine;
@@ -11,15 +15,19 @@ int main() {
   Engine::Options engine_options;
   engine::Scene* scene;
 
+  engine_options.fullscreen = true;
+  engine_options.default_height = 1080;
+  engine_options.default_width = 1920;
+  engine_options.show_cursor = false;
+  engine_options.samples = 8;
+
   try {
-    engine.Init();
+    engine.Init(engine_options);
   } catch (std::exception const& e) {
     std::cerr << "Engine startup failed.\nError: " << e.what() << "\n";
     return EXIT_FAILURE;
   }
 
-  // TODO: camera should be on heap
-  //std::unique_ptr<scene::EulerCamera> camera{new scene::EulerCamera};
   scene::EulerCamera* camera = manager->loadAsset<scene::EulerCamera>();
   handler::FpsMovement movement(camera);
 
@@ -32,24 +40,29 @@ int main() {
   engine.SetMouseHandler(&movement);
   engine.SetFrameHandler(&movement);
 
-  // Load the .obj models
-  //Model* model = engine.LoadResource<Model>("resources/models/nanosuit2/nanosuit.ocj");
-  //SimpleLight* light = engine.LoadResource<SimpleLight>();
-
-  //std::unique_ptr<components::PhongModel> obj{new components::PhongModel(model.get())};
-
-  //std::unique_ptr<Scene> scene{new Scene};
-  //std::unique_ptr<scene::Phong> scene;
-  //scene->AddModel(model);
-  //scene->AddLight(light);
-
-
   scene = engine.CreateScene();
+  scene->useCamera(camera);
 
   auto model = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
+  auto model_ground = manager->loadAsset<Model>(manager, "resources/models/ground.obj");
 
   // Model (loaded .obj file) becomes a rendering object
-  auto obj = scene->addModel(model);
+
+  auto checkerboard = scene->addModel<::engine::components::CustomShaderObject>(model_ground, "checkerboard",
+
+                                 [](Scene& s, components::ModelObject& obj, engine::shader::Compiler& shader) {
+    shader.set("model", obj.getModelMatrix());
+    shader.set("view", s.getCameraRef().getViewMatrix());
+    shader.set("projection", s.getProjectionMatrix());
+    });
+
+
+
+  checkerboard->setPosition({0.0, 0.0, 0.0});
+  checkerboard->setScale({50.0, 1.0, 50.0});
+
+  auto obj = scene->addModel<::engine::components::PhongModel>(model);
+  obj->setPosition({0.0, 0.0, 8.0});
 
   // The engine will now handle all memory management related to the scene.
   engine.setScene(std::move(scene));

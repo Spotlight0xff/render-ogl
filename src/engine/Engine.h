@@ -78,7 +78,7 @@ class Engine {
     //}
 
     // Initializes GL and all subsystems
-    bool Init();
+    bool Init(Options options);
 
     // Runs the mainloop
     void Run();
@@ -87,15 +87,11 @@ class Engine {
 
     void Render() noexcept;
 
-    Scene* CreateScene() {
-      return manager->loadAsset<Scene>(manager.get());
-    }
+    Scene* CreateScene();
 
     engine::resource::Manager* getResourceManager();
 
-    void setScene(Scene* scene) {
-        current_scene = scene;
-    }
+    void setScene(Scene* scene);
 
   private:
     struct Options options_;

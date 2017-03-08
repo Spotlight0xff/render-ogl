@@ -14,7 +14,7 @@ void Scene::draw() {
   }
 }
 
-void Scene::drawPos() {
+//void Scene::drawPos() {
   //glm::vec3 camera_pos = camera->getPosition();
   //std::string str_pos_x = "X: " + std::to_string(camera_pos.x);
   //std::string str_pos_y = "Y: " + std::to_string(camera_pos.y);
@@ -24,12 +24,7 @@ void Scene::drawPos() {
   //font.render(str_pos_x, 20.0f, input.height - 120.0f, glm::vec3(0.5f, 0.8f, 0.2f));
   //font.render(str_pos_y, 20.0f, input.height - 160.0f, glm::vec3(0.5f, 0.8f, 0.2f));
   //font.render(str_pos_z, 20.0f, input.height - 200.0f, glm::vec3(0.5f, 0.8f, 0.2f));
-}
+//}
 
-SceneObject *Scene::addModel(::engine::Model *model) {
-  components::ModelObject* ptr = manager->loadAsset<components::ModelObject>(model);
-  objects.emplace_back(static_cast<SceneObject*>(ptr));
-  return ptr;
-}
 
 } // end namespace engine

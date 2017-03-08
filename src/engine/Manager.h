@@ -125,7 +125,7 @@ class Manager {
     template<typename T, typename... Args>
     T* loadAsset(Args... args) {
       std::string id = getId<T>(std::forward<Args>(args)...);
-      std::cerr << "Loading asset: " << id << "\n";
+      std::cerr << "Loading resource: " << id << "\n";
 
 
       // check if already loaded

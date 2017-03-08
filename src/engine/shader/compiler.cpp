@@ -18,7 +18,7 @@ Compiler::Compiler(std::string const &shader_name, bool compile_link, std::vecto
   if (compile_link) {
     success_ = setup();
     if (!success_) {
-      return;
+      throw std::runtime_error(error_str_);
     }
     success_ = finalize();
     if (!success_) {
