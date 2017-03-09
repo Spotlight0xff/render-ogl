@@ -89,7 +89,7 @@ class Resource : public Base {
   public:
     template<typename... Args>
     Resource(Args... args)
-    : ptr(std::make_unique<T>(std::forward<Args>(args)...)){
+    : ptr(std::make_unique<T>(std::forward<decltype(args)>(args)...)){
     }
 
     T* get() {
@@ -124,6 +124,7 @@ class Manager {
      */
     template<typename T, typename... Args>
     T* loadAsset(Args... args) {
+      return new T(std::forward<Args>(args)...);
       std::string id = getId<T>(std::forward<Args>(args)...);
       std::cerr << "Loading resource: " << id << "\n";
 
@@ -137,7 +138,7 @@ class Manager {
 
       // construct the smart pointer which holds Resource<T>
       // Resource<T> is a thin wrapper for unique_ptr allowing for more fine-grained control.
-      std::unique_ptr<Resource<T>> base_ptr = std::make_unique<Resource<T>>(std::forward<Args>(args)...);
+      std::unique_ptr<Resource<T>> base_ptr = std::make_unique<Resource<T>>(std::forward<decltype(args)>(args)...);
 
       // move the constructed pointer to the vector, but save the raw weak pointer first.
       Resource<T>* weak_ptr = base_ptr.get();

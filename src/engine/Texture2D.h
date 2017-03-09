@@ -14,26 +14,12 @@ class Texture2D : public Texture {
         SPECULAR,
     };
 
-    static std::string id() {
-        return "Tex2D";
-    }
-
-    //constexpr static char const* id = "Tex2D";
-
-    /*static std::string getId(Type type, unsigned char* image, int width, int height, std::string const& path) {
-        return path;
-    }*/
-
-
-
-
-
-
-    Texture2D(Type type, unsigned char* image, int width, int height, std::string path)
+    Texture2D(Type type, unsigned char* image, int width, int height, std::string const& path)
             : type_(type),
               path_(path),
               width_(width),
-              height_(height) {
+              height_(height),
+              shininess_(0.0f) {
 
         glGenTextures(1, &id_);
         glBindTexture(GL_TEXTURE_2D, id_);
@@ -49,6 +35,7 @@ class Texture2D : public Texture {
                      0, GL_RGB, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0); // unbind
+      std::cout << "got texture from path: " << path << "\n";
     }
 
     std::string getPath() const { return path_; }
@@ -56,7 +43,7 @@ class Texture2D : public Texture {
 
     float shininess_ = 1.0;
     glm::vec3 diffuse_ = glm::vec3(0.5f);
-    glm::vec3 ambient_ = glm::vec3(0.3f);
+    glm::vec3 ambient_ = glm::vec3(0.1f);
     glm::vec3 specular_ = glm::vec3(1.0f);
 
   private:

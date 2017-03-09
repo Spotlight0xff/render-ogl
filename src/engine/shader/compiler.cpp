@@ -22,7 +22,7 @@ Compiler::Compiler(std::string const &shader_name, bool compile_link, std::vecto
     }
     success_ = finalize();
     if (!success_) {
-      return;
+      throw std::runtime_error(error_str_);
     }
   }
 }

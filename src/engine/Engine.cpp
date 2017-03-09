@@ -30,6 +30,14 @@ void Engine::SetOptions(Engine::Options& options) {
 
 
 
+#define glGetDebugMessageLogARB pfnGetDebugMessageLog
+PFNGLGETDEBUGMESSAGELOGARBPROC pfnGetDebugMessageLog;
+
+
+// Flag indicating whether the extension is supported
+int has_ARB_debug_output = 0;
+
+
 
 
 // Window and subsystem initialization
@@ -102,6 +110,14 @@ void Engine::InitGL() {
 
   if (options_.debug) {
     util::enableDebugOutput();
+
+    if (glfwExtensionSupported("GL_ARB_debug_output"))
+    {
+      pfnGetDebugMessageLog = (PFNGLGETDEBUGMESSAGELOGARBPROC)
+              glfwGetProcAddress("glGetDebugMessageLogARB");
+      // The extension is supported by the current context
+      has_ARB_debug_output = 1;
+    }
   }
 
   // Set input options
@@ -118,8 +134,8 @@ void Engine::InitGL() {
 
 
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND); // needed for text rendering
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_BLEND); // needed for text rendering
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
@@ -158,6 +174,38 @@ void Engine::Render() noexcept {
     current_scene->draw();
   }
 
+
+  if (has_ARB_debug_output) {
+    // Now the extension function can be called as usual
+    unsigned int count = 10; // max. num. of messages that will be read from the log
+    int bufsize = 2048;
+
+    unsigned int *sources = new unsigned int[count];
+    unsigned int *types = new unsigned int[count];
+    unsigned int *ids = new unsigned int[count];
+    unsigned int *severities = new unsigned int[count];
+    int *lengths = new int[count];
+
+    char *messageLog = new char[bufsize];
+
+    unsigned int retVal = glGetDebugMessageLogARB(count, bufsize, sources, types, ids,
+                                                  severities, lengths, messageLog);
+    if (retVal > 0) {
+      unsigned int pos = 0;
+      for (unsigned int i = 0; i < retVal; i++) {
+        std::cerr << "Error: " << sources[i] << ": " << messageLog[pos] << "\n";
+        /*DebugOutputToFile(sources[i], types[i], ids[i], severities[i],
+                          &messageLog[pos]);
+        */pos += lengths[i];
+      }
+    }
+    delete[] sources;
+    delete[] types;
+    delete[] ids;
+    delete[] severities;
+    delete[] lengths;
+    delete[] messageLog;
+  }
   glfwSwapBuffers(window_);
 }
 

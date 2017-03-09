@@ -35,7 +35,7 @@ class Model {
 
     ~Model();
 
-    //void draw(::engine::shader::Compiler& shader) const;
+    void draw(::engine::shader::Compiler& shader) const;
 
     void draw() const;
 

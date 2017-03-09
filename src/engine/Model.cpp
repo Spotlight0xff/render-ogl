@@ -46,12 +46,12 @@ Model::~Model() {
 
 /*
  * we shouldn't need this.
- *
+ */
 void Model::draw(::engine::shader::Compiler &shader) const {
   for (auto const &m : meshes) {
     m.draw(shader);
   }
-}*/
+}
 
 
 void Model::draw() const {
@@ -166,7 +166,7 @@ std::vector<Texture2D*> Model::loadTextures(
     }
 
 
-    aiColor3D ambient(0.f, 0.f, 0.f);
+    aiColor3D ambient(0.5f, 0.5f, 0.5f);
     mat->Get(AI_MATKEY_COLOR_DIFFUSE, texture->diffuse_);
     mat->Get(AI_MATKEY_COLOR_AMBIENT, texture->ambient_);
     mat->Get(AI_MATKEY_COLOR_SPECULAR, texture->specular_);
@@ -198,8 +198,8 @@ Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D
     return nullptr;
   }
 
-  Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
-  //Texture2D* texture = new Texture2D(type, image, width, height, path);
+  //Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
+  Texture2D* texture = new Texture2D(type, image, width, height, path);
   SOIL_free_image_data(image);
 
   return texture;

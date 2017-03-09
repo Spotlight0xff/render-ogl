@@ -55,6 +55,8 @@ set(PROJECT_INCLUDE_DIRS
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
+add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+
 link_directories(${GLEW_LIBRARY_DIRS})
 
 

@@ -89,7 +89,8 @@ void Mesh::draw(::engine::shader::Compiler &shader) const {
     if (t == nullptr)
       continue; // this should *NOT* happen.
 
-    glUniform1f(glGetUniformLocation(shader.getId(), "material.shininess"), t->shininess_);
+    shader.set("material.shininess", GLfloat(t->shininess_));
+    //shader.set("material.ambientStrength", GLfloat(0.5));
 
     if (t->getType() == ::engine::Texture2D::Type::DIFFUSE) {
       shader.set("material.diffuse", GLint(i));
