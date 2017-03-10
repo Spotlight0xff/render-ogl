@@ -87,11 +87,19 @@ class Base {
 template<typename T>
 class Resource : public Base {
   public:
+    /*!
+     * Construct the resource from the given class.
+     *
+     * @tparam Args type of arguments
+     * @param args arguments
+     */
     template<typename... Args>
     Resource(Args&&... args)
-    : ptr(std::make_unique<T>(std::forward<decltype(args)>(args)...)){
+    : ptr(std::make_unique<T>(args...)){
     }
 
+    //! Get a raw pointer to the object of the resource.
+    //! \return raw pointer to the object
     T* get() {
       return ptr.get();
     }
@@ -105,6 +113,8 @@ class Resource : public Base {
 class Manager {
   public:
     Manager() = default;
+
+    // Deleted constructors
     Manager(Manager const &other) = delete; // copy ctor
     Manager &operator=(Manager const &other) = delete; // copy-assignment op
 
@@ -123,8 +133,16 @@ class Manager {
      * @return weak raw pointer to the asset
      */
     template<typename T, typename... Args>
-    T* loadAsset(Args&&... args) {
-      std::string id = getId<T>(std::forward<Args>(args)...);
+    T* loadAsset(Args... args) {
+      /*
+       * There is currently a workaround employed:
+       * No forward/universal references are used here, because if we do,
+       * we have to forward them further to the Resource<T> wrapper which complicates things.
+       * In short, we want to have universal references here in the variadic arguments,
+       * but I don't know how to make it work correctly in this case.
+       */
+
+      std::string id = getId<T>(args...);
       std::cerr << "Loading resource: " << id << "\n";
 
 
@@ -137,7 +155,7 @@ class Manager {
 
       // construct the smart pointer which holds Resource<T>
       // Resource<T> is a thin wrapper for unique_ptr allowing for more fine-grained control.
-      std::unique_ptr<Resource<T>> base_ptr = std::make_unique<Resource<T>>(std::forward<decltype(args)>(args)...);
+      std::unique_ptr<Resource<T>> base_ptr = std::make_unique<Resource<T>>(std::forward<Args>(args)...);
 
       // move the constructed pointer to the vector, but save the raw weak pointer first.
       Resource<T>* weak_ptr = base_ptr.get();
@@ -160,7 +178,7 @@ class Manager {
      * @return identifier for the object
      */
     template<typename T, typename... Args>
-    std::string getId(Args... args) {
+    std::string getId(Args&&... args) {
       static size_t counter = 0;
       // TODO: use boost/core/demangle to demand C++ class name
       // TODO: switch to a more robust implementation (e.g. .hash_code())
