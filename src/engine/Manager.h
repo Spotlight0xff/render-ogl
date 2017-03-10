@@ -88,7 +88,7 @@ template<typename T>
 class Resource : public Base {
   public:
     template<typename... Args>
-    Resource(Args... args)
+    Resource(Args&&... args)
     : ptr(std::make_unique<T>(std::forward<decltype(args)>(args)...)){
     }
 
@@ -123,8 +123,7 @@ class Manager {
      * @return weak raw pointer to the asset
      */
     template<typename T, typename... Args>
-    T* loadAsset(Args... args) {
-      return new T(std::forward<Args>(args)...);
+    T* loadAsset(Args&&... args) {
       std::string id = getId<T>(std::forward<Args>(args)...);
       std::cerr << "Loading resource: " << id << "\n";
 
