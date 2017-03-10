@@ -15,7 +15,7 @@ namespace components {
 
 
 /*!
- * Object in a scene using a custom shader.
+ * @brief Object in a scene using a custom shader.
  *
  * This object inherits from ModelObject, so it is created from a `Model`.
  *
@@ -31,7 +31,7 @@ class CustomShaderObject : public ModelObject {
      * @param shader shadername
      * @param func function to set shader settings
      */
-    CustomShaderObject(Model *m, std::string const &shader, ShaderSettingFunc func);
+    CustomShaderObject(::engine::model::Model *m, std::string const &shader, ShaderSettingFunc func);
 
     virtual void draw(Scene&);
 

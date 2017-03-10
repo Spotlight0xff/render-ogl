@@ -13,6 +13,7 @@
 namespace engine {
 namespace scene {
 
+//! @brief interface for classes implementing a camera.
 class Camera {
   public:
     virtual void look(GLfloat delta_x, GLfloat delta_y) = 0;

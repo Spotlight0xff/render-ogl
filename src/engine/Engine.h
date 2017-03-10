@@ -1,8 +1,6 @@
 #ifndef GRAPHICS_ENGINE_ENGINE_H
 #define GRAPHICS_ENGINE_ENGINE_H
 
-#include "engine/handler/InputHandler.h"
-
 #include "opengl.h"
 #include "Scene.h"
 #include "Manager.h"
@@ -15,9 +13,10 @@
 
 namespace engine {
 
+//! @brief Rendering engine
 class Engine {
   public:
-    //! Engine options
+    //! %Engine options
     struct Options {
       bool debug = true; //! enables verbose console output
       bool show_cursor = true; //! show cursor in render window

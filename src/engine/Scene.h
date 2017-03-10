@@ -3,13 +3,9 @@
 
 #include "engine/shader/compiler.h"
 #include "engine/handler/Camera.h"
-#include "engine/Input.h"
 #include "engine/Manager.h"
 
 #include "engine/SceneObject.h"
-
-//#include "ModelObject.h"
-//#include "LightObject.h"
 
 #include "opengl.h"
 
@@ -23,9 +19,7 @@
 
 namespace engine {
 
-class Model;
-
-
+//! @brief Manages the state of a scene including its objects
 class Scene {
   public:
 

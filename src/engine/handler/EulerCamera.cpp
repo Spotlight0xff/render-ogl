@@ -9,17 +9,6 @@
 namespace engine {
 namespace scene {
 
-/*void EulerCamera::setMovement(FpsMovement &movement) {
-  do_mouse = [&movement](GLfloat x, GLfloat y) {
-    movement.handleMouse(x, y);
-  };
-
-  do_keyboard = [&movement](bool keys[]) {
-    movement.handleKeyboard(keys);
-  };
-}
- */
-
 void EulerCamera::look(GLfloat delta_x, GLfloat delta_y) {
   yaw += delta_x;
   pitch += delta_y;

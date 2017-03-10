@@ -10,7 +10,7 @@ namespace engine {
 
 class Scene;
 
-
+//! @brief Drawable scene object
 class SceneObject {
   public:
     virtual ~SceneObject() {}

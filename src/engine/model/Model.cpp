@@ -9,15 +9,16 @@
 
 #include "Util.h"
 #include "Model.h"
-#include "Texture2D.h"
+#include "engine/Texture2D.h"
 #include "engine/Manager.h"
 
 
 namespace engine {
+namespace model {
 
-Model::Model(::engine::resource::Manager* m, std::string const& p)
+Model::Model(::engine::resource::Manager *m, std::string const &p)
         : path(p),
-          manager(m){
+          manager(m) {
   directory = path.substr(0, path.find_last_of('/'));
   directory += '/';
   loadModel();
@@ -61,7 +62,6 @@ void Model::draw() const {
 }
 
 
-
 void Model::loadModel() {
   Assimp::Importer importer;
   const aiScene *scene = importer.ReadFile(path,
@@ -93,7 +93,7 @@ void Model::processNode(aiNode const *node, const aiScene *scene) {
 model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   std::vector<model::Vertex> vertices;
   std::vector<GLuint> indices;
-  std::vector<Texture2D*> textures;
+  std::vector<Texture2D *> textures;
 
   const glm::vec3 zero_vec(0.0f);
   vertices.reserve(mesh->mNumVertices);
@@ -119,11 +119,11 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   }
   if (mesh->mMaterialIndex) {
     aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
-    std::vector<Texture2D*> diffuse_maps = loadTextures(mat,
-                                                     aiTextureType_DIFFUSE, "texture_diffuse");
+    std::vector<Texture2D *> diffuse_maps = loadTextures(mat,
+                                                         aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuse_maps.begin(), diffuse_maps.end());
-    std::vector<Texture2D*> specular_maps = loadTextures(mat,
-                                                      aiTextureType_SPECULAR, "texture_specular");
+    std::vector<Texture2D *> specular_maps = loadTextures(mat,
+                                                          aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specular_maps.begin(), specular_maps.end());
 
     loaded_textures.insert(loaded_textures.end(), textures.begin(), textures.end());
@@ -139,15 +139,15 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
   return model::Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture2D*> Model::loadTextures(
-        aiMaterial *mat, aiTextureType ai_type, std::string const& type_name) {
-  std::vector<Texture2D*> texs;
+std::vector<Texture2D *> Model::loadTextures(
+        aiMaterial *mat, aiTextureType ai_type, std::string const &type_name) {
+  std::vector<Texture2D *> texs;
   size_t count = mat->GetTextureCount(ai_type);
   texs.reserve(count);
   for (size_t i = 0; i < count; i++) {
     aiString tex_str;
     mat->GetTexture(ai_type, static_cast<unsigned int>(i), &tex_str);
-    for (auto& t : loaded_textures) {
+    for (auto &t : loaded_textures) {
       if (t->getPath() == std::string(tex_str.C_Str())) {
         texs.push_back(t);
       }
@@ -159,7 +159,7 @@ std::vector<Texture2D*> Model::loadTextures(
     } else if (ai_type == aiTextureType_SPECULAR) {
       type = Texture2D::Type::SPECULAR;
     }
-    Texture2D* texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
+    Texture2D *texture = loadTexture(tex_str.C_Str(), directory.c_str(), type);
     if (texture == nullptr) {
       std::cout << "Failed to load texture " << tex_str.C_Str() << "\n";
       continue;
@@ -176,7 +176,7 @@ std::vector<Texture2D*> Model::loadTextures(
   return texs;
 }
 
-Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D::Type type) {
+Texture2D *Model::loadTexture(const char *file, const char *directory, Texture2D::Type type) {
   int width = 0, height = 0;
   int channels = 0;
   unsigned char *image = nullptr;
@@ -198,10 +198,11 @@ Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D
     return nullptr;
   }
 
-  Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
+  Texture2D *texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
   SOIL_free_image_data(image);
 
   return texture;
 }
 
-} // end namespace engine
+} // end namespace engine::model
+}

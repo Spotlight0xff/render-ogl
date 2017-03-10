@@ -8,7 +8,7 @@ namespace engine {
 namespace components {
 
 
-CustomShaderObject::CustomShaderObject(Model* m, std::string const& shader, ShaderSettingFunc func)
+CustomShaderObject::CustomShaderObject(::engine::model::Model* m, std::string const& shader, ShaderSettingFunc func)
         : shader_(shader),
           settings_(func),
           ModelObject(m) {

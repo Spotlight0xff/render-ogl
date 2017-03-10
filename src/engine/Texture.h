@@ -10,6 +10,7 @@
 
 namespace engine {
 
+//! @brief Generic texture abstraction
 class Texture {
   public:
     Texture(GLenum target = GL_TEXTURE_2D)
@@ -21,6 +22,8 @@ class Texture {
       }
     }
 
+    //! Binds this particular texture to the texture unit.
+    //! \param unit texture unit
     void bind(GLenum unit) const{
       glActiveTexture(unit);
       glBindTexture(target_, id_);

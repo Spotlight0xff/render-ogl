@@ -3,7 +3,7 @@
 
 #include "engine/shader/compiler.h"
 #include "engine/Scene.h"
-#include "engine/Model.h"
+#include "engine/model/Model.h"
 #include "engine/handler/Camera.h"
 
 #define GLM_FORCE_RADIANS
@@ -14,6 +14,7 @@
 namespace engine {
 namespace components {
 
+//! @brief Stub class for object which provides light
 class PhongLight : public engine::SceneObject {
   public:
     //PhongLight() {}
@@ -34,7 +35,7 @@ class PhongLight : public engine::SceneObject {
 
   private:
     glm::vec3 position;
-    Model model;
+    ::engine::model::Model model;
 
     bool render_object_ = true;
 

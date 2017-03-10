@@ -1,7 +1,7 @@
 #ifndef ENGINE_COMPONENTS_PHONGMODEL_H
 #define ENGINE_COMPONENTS_PHONGMODEL_H
 
-#include "engine/Model.h"
+#include "engine/model/Model.h"
 #include "engine/components/ModelObject.h"
 #include "engine/shader/compiler.h"
 #include "PhongLight.h"
@@ -13,9 +13,10 @@
 namespace engine {
 namespace components {
 
+//! @brief %Scene object with Phong lighting
 class PhongModel : public ModelObject {
   public:
-    PhongModel(Model *m)
+    PhongModel(::engine::model::Model *m)
     : shader("phong_model"),
       ModelObject(m) {
     }

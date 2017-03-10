@@ -8,15 +8,16 @@
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
-#include <engine/Model.h>
+#include <engine/model/Model.h>
 
 namespace engine {
 namespace components {
 
 
+//! @brief Generic scene object from loaded model
 class ModelObject : public ::engine::SceneObject {
   public:
-    explicit ModelObject(Model *m);
+    explicit ModelObject(::engine::model::Model *m);
 
     virtual void draw(::engine::Scene&);
 
@@ -42,7 +43,7 @@ class ModelObject : public ::engine::SceneObject {
     std::vector<::engine::shader::Compiler> shaders;
 
 
-    Model *model;
+    ::engine::model::Model *model;
     ::engine::shader::Compiler shader;
 };
 

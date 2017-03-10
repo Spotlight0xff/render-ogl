@@ -4,6 +4,7 @@
 namespace engine {
 namespace particles {
 
+//! @brief Shader updating the particles information
 class ShaderUpdater {
   public:
     ShaderUpdater();

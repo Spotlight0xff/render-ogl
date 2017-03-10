@@ -10,7 +10,7 @@ friend class test_case_name##_##test_name##_Test
 
 
 #include "engine/model/Mesh.h"
-#include "Texture2D.h"
+#include "engine/Texture2D.h"
 #include "engine/shader/compiler.h"
 #include "engine/Manager.h"
 
@@ -21,6 +21,10 @@ namespace engine {
 namespace resource {
 class Manager;
 }
+
+namespace model {
+
+//! @brief Loads and manages 3D models
 class Model {
   public:
     Model(::engine::resource::Manager* m, std::string const& path);
@@ -91,5 +95,6 @@ class Model {
 
 };
 
-} // end namespace engine
+} // end namespace engine::model
+}
 #endif

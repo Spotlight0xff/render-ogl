@@ -8,12 +8,9 @@
 namespace engine {
 namespace handler {
 
+//! @brief interface for classes implementing a keyboard handler
 class KeyboardHandler {
   public:
-    //virtual static void Dispatcher(
-    //        GLFWwindow* window,
-    //        int key,
-    //        int scancode) = 0;
     virtual void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) = 0;
     virtual ~KeyboardHandler() {}
 

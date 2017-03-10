@@ -10,6 +10,8 @@
 
 int main() {
   using namespace engine;
+  using namespace engine::model;
+
   Engine engine;
   engine::resource::Manager* manager = engine.getResourceManager();
   Engine::Options engine_options;
@@ -44,7 +46,7 @@ int main() {
   scene->useCamera(camera);
 
   // Add nanosuit model and then generate an object from it
-  auto nanosuit = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
+  auto nanosuit = manager->loadAsset<model::Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
   auto nomad = scene->addModel<::engine::components::PhongModel>(nanosuit);
   nomad->setPosition({0.0, 0.0, 8.0});
 

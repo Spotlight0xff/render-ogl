@@ -6,6 +6,7 @@
 
 namespace engine {
 
+//! @brief 2D texture from file
 class Texture2D : public Texture {
   public:
     enum class Type {
@@ -14,31 +15,23 @@ class Texture2D : public Texture {
         SPECULAR,
     };
 
-    Texture2D(Type type, unsigned char* image, int width, int height, std::string const& path)
-            : type_(type),
-              path_(path),
-              width_(width),
-              height_(height),
-              shininess_(0.0f) {
+    /*!
+     * Constructs a new 2D texture from raw image data.
+     *
+     * @param type texture type
+     * @param image raw image data
+     * @param width width of texture
+     * @param height height of texture
+     * @param path path to texture
+     */
+    Texture2D(Type type, unsigned char* image, int width, int height, std::string const& path);
 
-        glGenTextures(1, &id_);
-        glBindTexture(GL_TEXTURE_2D, id_);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);  // Set texture wrapping to GL_REPEAT
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        // Set texture filtering
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        // TODO: support more colorspaces than RGB
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_,
-                     0, GL_RGB, GL_UNSIGNED_BYTE, image);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, 0); // unbind
-      std::cout << "got texture from path: " << path << "\n";
-    }
-
+    //! Getter of `path_`.
+    //! \return path of texture, of empty if none was provided
     std::string getPath() const { return path_; }
+
+    //! Getter of `type_`.
+    //! \return texture type
     Type getType() const { return type_; }
 
     float shininess_ = 1.0;
@@ -52,6 +45,7 @@ class Texture2D : public Texture {
     int width_;
     int height_;
 };
+
 
 } // end namespace engine
 #endif //GRAPHICS_ENGINE_TEXTURE2D_H

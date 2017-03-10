@@ -5,7 +5,7 @@
 #include <engine/Scene.h>
 #include "glmock.hpp"
 
-#include "engine/Model.h"
+#include "engine/model/Model.h"
 #include "engine/shader/compiler.h"
 #include "engine/components/ModelObject.h"
 

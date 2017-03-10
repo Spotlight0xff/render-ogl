@@ -1,6 +1,6 @@
 #include "glmock.hpp"
 
-#include "engine/Model.h"
+#include "engine/model/Model.h"
 
 #include <gtest/gtest.h>
 

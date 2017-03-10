@@ -71,6 +71,7 @@ constexpr static char const* type2str(Type type) {
 }
 } // end anonymous namespace
 
+//! @brief %Base class for templated resources
 class Base {
   public:
     virtual ~Base() {}
@@ -78,7 +79,7 @@ class Base {
 };
 
 /*!
- * Resource object holding instances of type `T`.
+ * @brief %Resource object holding instances of type `T`.
  *
  * Inherits from Base in order to be able to put into a vector.
  *
@@ -110,6 +111,7 @@ class Resource : public Base {
 };
 
 
+//! @brief Generic resource manager
 class Manager {
   public:
     Manager() = default;

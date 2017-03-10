@@ -8,7 +8,7 @@
 namespace engine {
 namespace components {
 
-ModelObject::ModelObject(Model *m)
+ModelObject::ModelObject(::engine::model::Model *m)
         : model(m),
           shader(){
 }

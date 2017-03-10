@@ -8,6 +8,7 @@
 namespace engine {
 namespace handler {
 
+//! @brief Interface for camera handling classes
 class CameraHandler {
   public:
     virtual ~CameraHandler();

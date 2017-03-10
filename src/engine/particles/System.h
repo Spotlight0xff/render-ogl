@@ -12,12 +12,14 @@ namespace particles {
 
 #define MAX_PARTICLES 5000
 
+//! @brief particle type (launcher, shell, etc.)
 enum class ParticleType {
     LAUNCHER = 0,
     SHELL,
     SECONDARY_SHELL,
 };
 
+//! @brief Structure to hold information about a single particle
 struct Particle {
   ParticleType type;
 
@@ -27,7 +29,8 @@ struct Particle {
   GLfloat lifetime_ms;
 };
 
-class System { //: public engine::SceneObject {
+//! @brief Simple particle system
+class System {
   public:
     System();
     ~System();
@@ -53,9 +56,6 @@ class System { //: public engine::SceneObject {
 
     // random texture
    RandomTexture random_tex_;
-
-
-
 };
 
 } // end namespace engine::particles

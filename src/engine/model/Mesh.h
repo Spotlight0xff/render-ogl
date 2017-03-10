@@ -17,6 +17,7 @@
 namespace engine {
 namespace model {
 
+//! @brief %Mesh handling class
 class Mesh {
   public:
     Mesh(std::vector<Vertex> vertices,

@@ -16,6 +16,7 @@ namespace engine {
 namespace shader {
 
 
+//! @brief Compiles and links shader programs
 class Compiler {
   public:
     // TODO: Caching, RAII, more ctors, shader-compiler -> shader-instance

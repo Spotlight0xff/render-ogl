@@ -14,7 +14,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include <engine/Model.h>
+#include <engine/model/Model.h>
 
 #include "Vertex.h"
 #include "engine/Texture.h"

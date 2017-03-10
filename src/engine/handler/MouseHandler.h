@@ -6,12 +6,9 @@
 namespace engine {
 namespace handler {
 
+//! @brief Interface for classes implementing a mouse handler
 class MouseHandler {
   public:
-    //virtual static void Dispatcher(
-    //        GLFWwindow* window,
-    //        int key,
-    //        int scancode) = 0;
     virtual void CursorPosCallback(GLFWwindow* window, double xpos, double ypos) = 0;
     virtual ~MouseHandler() {}
 

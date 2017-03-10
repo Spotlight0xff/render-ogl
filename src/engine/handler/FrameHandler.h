@@ -8,6 +8,7 @@
 namespace engine {
 namespace handler {
 
+//! @brief interface for classes, where a function needs to be called every frame.
 class FrameHandler {
 public:
     virtual void FrameCallback(float delta_time) = 0;

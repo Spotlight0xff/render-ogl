@@ -7,6 +7,7 @@
 namespace engine {
 namespace model {
 
+//! @brief Structure to hold information about a vertex
 struct Vertex {
   glm::vec3 position;
   glm::vec3 normal;

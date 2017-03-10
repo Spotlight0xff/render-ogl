@@ -16,7 +16,8 @@
 namespace engine {
 namespace handler {
 
-class FpsMovement : public KeyboardHandler, public MouseHandler, public FrameHandler {// : public MouseHandler, public KeyboardHandler, public CameraHandler {
+//! @brief movement class implementing a simple, classic FPS movement
+class FpsMovement : public KeyboardHandler, public MouseHandler, public FrameHandler {
   public:
 
     FpsMovement(engine::scene::EulerCamera* camera) {

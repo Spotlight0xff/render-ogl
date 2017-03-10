@@ -11,6 +11,7 @@
 namespace engine {
 namespace particles {
 
+//! @brief Texure containing random data to use in particle simulation
 class RandomTexture : public Texture {
   public:
     RandomTexture(size_t size);

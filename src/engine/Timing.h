@@ -10,6 +10,7 @@
 
 namespace engine {
 
+//! @brief OpenGL timing class
 class Timing {
   public:
 

@@ -3,7 +3,7 @@
 //
 
 #include "Manager.h"
-#include "Model.h"
+#include "engine/model/Model.h"
 
 
 namespace engine {
