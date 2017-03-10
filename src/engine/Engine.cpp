@@ -13,22 +13,14 @@ Engine::Engine()
 : manager(std::make_unique<resource::Manager>()){
 }
 
+Engine::Engine(Engine::Options const& o)
+        : options_(o) {
+  Engine();
+}
+
 Engine::~Engine() {
   glfwTerminate();
 }
-
-/*
- * Simple setter and getter functions for EngineOptions
- */
-
-void Engine::SetOptions(Engine::Options& options) {
-  options_ = options;
-
-  // TODO re-initialize the engine
-}
-
-
-
 
 #define glGetDebugMessageLogARB pfnGetDebugMessageLog
 PFNGLGETDEBUGMESSAGELOGARBPROC pfnGetDebugMessageLog;
@@ -46,7 +38,7 @@ int has_ARB_debug_output = 0;
  *  - window creation
  *  - subsystem initialization
  */
-bool Engine::Init(Engine::Options options) {
+bool Engine::Init(Engine::Options const& options) {
   options_ = options;
   try {
     InitGL();
@@ -139,7 +131,7 @@ void Engine::InitGL() {
 }
 
 void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
-  auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
+  auto user_ptr = reinterpret_cast<Engine*>(glfwGetWindowUserPointer(window));
   if (user_ptr) {
     if(user_ptr->mouse_handler_) {
       user_ptr->mouse_handler_->CursorPosCallback(window, xpos, ypos);
@@ -148,7 +140,7 @@ void Engine::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void Engine::KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  auto user_ptr = (Engine*)glfwGetWindowUserPointer(window);
+  auto user_ptr = reinterpret_cast<Engine*>(glfwGetWindowUserPointer(window));
   if (user_ptr) {
     if(user_ptr->keyboard_handler_) {
       user_ptr->keyboard_handler_->KeyboardCallback(window, key, scancode, action, mods);

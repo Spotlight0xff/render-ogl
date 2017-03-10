@@ -29,7 +29,7 @@ class Model;
 class Scene {
   public:
 
-    Scene(resource::Manager* m)
+    explicit Scene(resource::Manager* m)
     :manager(m){}
 
     void useCamera(::engine::scene::Camera* camera) {
@@ -76,8 +76,6 @@ class Scene {
 
 
     void draw();
-
-    void drawPos();
 
     glm::mat4 getProjectionMatrix() {
       int width = 1280;

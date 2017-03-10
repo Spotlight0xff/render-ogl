@@ -34,14 +34,19 @@ class Engine {
     using KeyboardCallbackFunc = std::function<void(float, bool[1024])>;
     using WindowSizeCallbackFunc = std::function<void(int, int)>;
 
+    //! Constructor with default engine options.
     Engine();
+
+    //! Constructor with the given engine options.
+    //! @param o engine options to use
+    explicit Engine(Options const& o);
+
     ~Engine();
 
+    // Deleted constructors
     Engine(Engine const &other) = delete; // copy ctor
     Engine &operator=(Engine const &other) = delete; // copy-assignment op
 
-
-    void SetOptions(Options& options);
 
     void SetCursorPosCallback(CursorPosCallbackFunc func) {
         *cursor_pos_func_ = func;
@@ -77,18 +82,22 @@ class Engine {
     //    *window_handler_ = handler;
     //}
 
-    // Initializes GL and all subsystems
-    bool Init(Options options);
+    //! Initializes GL including  all engine subsystems.
+    bool Init(Options const& options);
 
-    // Runs the mainloop
+    //! Runs the mainloop.
     void Run();
 
+    //! Updates time-related variables..
     void HandleTime();
 
+    //! Renders a single frame.
     void Render() noexcept;
 
     Scene* CreateScene();
 
+    //! Getter for resource manager.
+    //! \return reference to the resource manager
     engine::resource::Manager* getResourceManager();
 
     void setScene(Scene* scene);
@@ -111,7 +120,7 @@ class Engine {
     //! mouse input handler
     engine::handler::MouseHandler* mouse_handler_{nullptr};
 
-    // frame handler (called for each frame)
+    //! frame handler (called for each frame)
     engine::handler::FrameHandler* frame_handler_{nullptr};
 
 

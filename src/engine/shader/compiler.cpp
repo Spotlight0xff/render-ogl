@@ -12,7 +12,7 @@
 namespace engine {
 namespace shader {
 
-Compiler::Compiler(std::string const &shader_name, bool compile_link, std::vector<Stage> stages)
+Compiler::Compiler(std::string const &shader_name, bool compile_link, std::vector<Stage> const& stages)
         : name_(shader_name),
           stages_(stages) {
   if (compile_link) {
@@ -76,7 +76,6 @@ bool Compiler::setup() {
     }
 
     GLuint shader_id;
-    std::string error;
     success_ = compileShader(path, shader_type, shader_id, error);
     if (!success_) {
       error_str_ = "[Shader::" + name_ + "] Compilation of " + shader_name

@@ -23,15 +23,7 @@ class Manager;
 }
 class Model {
   public:
-    /*constexpr static char const* id = "3d_Model";
-    static std::string getId(std::string const& path) {
-      return path;
-    }*/
-    static std::string id() {
-        return "Model";
-    }
-
-    Model(::engine::resource::Manager* m, std::string path);
+    Model(::engine::resource::Manager* m, std::string const& path);
 
     ~Model();
 
@@ -49,15 +41,51 @@ class Model {
     std::vector<Texture2D*> loaded_textures;
 
 
+    //! Loads a 3D model using the Assimp importer.
     void loadModel();
 
+    /*!
+     * Processes model nodes recursively using Assimp.
+     *
+     * @param node Node to be processed
+     * @param scene Scene read from model
+     */
     void processNode(aiNode const *node, const aiScene *scene);
 
+    /*!
+     * Parses assimp meshes for various information.
+     *
+     * Currently supported:
+     * - vertices
+     * - indices
+     * - textures
+     *
+     * @param mesh processing mesh
+     * @param scene corresponding scene
+     * @return Object with information included
+     */
     model::Mesh processMesh(aiMesh const *mesh, const aiScene *scene);
 
+    /*!
+     * Loads textures from a given material.
+     *
+     * @param mat material to be parsed
+     * @param type texture type
+     * @param type_name texture type string representation
+     * @return vector of weak pointers to the textures
+     */
     std::vector<Texture2D*> loadTextures(
-            aiMaterial *mat, aiTextureType type, std::string type_name);
+            aiMaterial *mat, aiTextureType type, std::string const& type_name);
 
+    /*!
+     * Loads a texture from the filesystem.
+     *
+     * @param file filename of texture
+     * @param directory directory of texture
+     * @param type texture type
+     * @return weak pointer to the loaded texture on success,
+     *         or `nullptr` on error.
+     */
     Texture2D* loadTexture(const char *file, const char *directory,
                         Texture2D::Type type);
 

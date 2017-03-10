@@ -15,7 +15,7 @@
 
 namespace engine {
 
-Model::Model(::engine::resource::Manager* m, std::string p)
+Model::Model(::engine::resource::Manager* m, std::string const& p)
         : path(p),
           manager(m){
   directory = path.substr(0, path.find_last_of('/'));
@@ -140,7 +140,7 @@ model::Mesh Model::processMesh(aiMesh const *mesh, const aiScene *scene) {
 }
 
 std::vector<Texture2D*> Model::loadTextures(
-        aiMaterial *mat, aiTextureType ai_type, std::string type_name) {
+        aiMaterial *mat, aiTextureType ai_type, std::string const& type_name) {
   std::vector<Texture2D*> texs;
   size_t count = mat->GetTextureCount(ai_type);
   texs.reserve(count);
@@ -198,8 +198,7 @@ Texture2D* Model::loadTexture(const char *file, const char *directory, Texture2D
     return nullptr;
   }
 
-  //Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
-  Texture2D* texture = new Texture2D(type, image, width, height, path);
+  Texture2D* texture = manager->loadAsset<Texture2D>(type, image, width, height, path);
   SOIL_free_image_data(image);
 
   return texture;

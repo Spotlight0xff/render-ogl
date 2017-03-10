@@ -1,7 +1,7 @@
 #include <engine/handler/FpsMovement.h>
 #include <engine/Scene.h>
 #include <engine/components/ModelObject.h>
-#include <engine/components/Phong/PhongModel.h>
+#include <engine/components/PhongModel.h>
 #include <engine/components/CustomShaderObject.h>
 #include "engine/Engine.h"
 
@@ -46,8 +46,7 @@ int main() {
   // Add nanosuit model and then generate an object from it
   auto nanosuit = manager->loadAsset<Model>(manager, "resources/models/nanosuit2/nanosuit.obj");
   auto nomad = scene->addModel<::engine::components::PhongModel>(nanosuit);
-  //nomad->setPosition({0.0, 0.0, 8.0});
-  nomad->setPosition({0.0, 0.0, 15.0});
+  nomad->setPosition({0.0, 0.0, 8.0});
 
   // Also add the ground as an CustomShaderObject
   auto model_ground = manager->loadAsset<Model>(manager, "resources/models/ground.obj");

@@ -16,7 +16,7 @@ namespace components {
 
 class ModelObject : public ::engine::SceneObject {
   public:
-    ModelObject(Model *m);
+    explicit ModelObject(Model *m);
 
     virtual void draw(::engine::Scene&);
 

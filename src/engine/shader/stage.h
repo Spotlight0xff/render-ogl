@@ -7,8 +7,12 @@ namespace engine {
 namespace shader {
 
 
-// This enumeration class helps us to specify the needed shaders to load
-// Note: Tessellation and Compute shader are currently not supported
+/*!
+ * Stages of a shader program.
+ *
+ * This enumeration class helps us to specify the needed shaders to load
+ * Note: Tessellation and Compute shader are currently not supported
+ */
 enum class Stage : int {
     GEOMETRY_SHADER = 1 << 0,
     VERTEX_SHADER   = 1 << 1,

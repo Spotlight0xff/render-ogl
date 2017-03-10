@@ -106,7 +106,7 @@ class Resource : public Base {
 
   private:
     std::unique_ptr<T> ptr;
-    Type type;
+    //Type type;
 };
 
 
