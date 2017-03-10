@@ -143,7 +143,7 @@ bool enableDebugOutput() {
 }
 
 
-void printVertices(size_t count_elements, size_t count_vertices, GLfloat const* flat_vertices, GLushort const* flat_elements) {
+void printVertices(size_t count_elements, GLushort const* flat_elements, size_t count_vertices, GLfloat const* flat_vertices) {
   size_t count_triangles = count_elements / 3;
   std::cout << count_vertices << " Vertices:\n";
   for (size_t i=0; i < count_vertices; i ++) {
