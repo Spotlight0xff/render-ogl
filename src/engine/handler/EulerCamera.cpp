@@ -70,11 +70,6 @@ void EulerCamera::move(glm::vec3 delta) {
   updateMatrices();
 }
 
-
-inline glm::mat4 EulerCamera::getViewMatrix() const {
-  return view_matrix;
-}
-
 void EulerCamera::lookAt(glm::vec3 p) {
   view_matrix = glm::lookAt(pos, p + front, up);
 }

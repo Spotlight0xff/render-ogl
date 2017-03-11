@@ -3,7 +3,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#ifdef _WIN32
+#include <Shlwapi.h>
+#else
 #include <unistd.h>
+#endif
 
 #include <string>
 #include <sstream>
@@ -23,7 +27,11 @@ size_t split(const std::string& s, char delimiter, std::vector<std::string>& spl
 }
 
 bool fileExists(std::string const& s) {
+#ifdef _WIN32
+	return PathFileExists(s.c_str());
+#else
   return ( access( s.c_str(), F_OK ) != -1 );
+#endif
 }
 
 void replaceAllOccurences( std::string& source, std::string const& from, std::string const& to )

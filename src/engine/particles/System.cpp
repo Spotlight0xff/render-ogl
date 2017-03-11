@@ -23,12 +23,10 @@ void System::initParticles(glm::vec3 const& pos) {
 
   // first particle is the launcher,
   // its velocity determines the particles initial velocity
-  particles[0] = {
-          .type = ParticleType::LAUNCHER,
-          .position = pos,
-          .velocity = glm::vec3(0.0, 0.001, 0.0),
-          .lifetime_ms = 0.0f,
-  };
+particles[0].type = ParticleType::LAUNCHER,
+particles[0].position = pos,
+particles[0].velocity = glm::vec3(0.0, 0.001, 0.0),
+particles[0].lifetime_ms = 0.0f,
 
   glGenTransformFeedbacks(2, transform_feedbacks_);
   glGenBuffers(2, particle_buffers_);

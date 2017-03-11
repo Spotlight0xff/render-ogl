@@ -10,7 +10,7 @@ namespace {
 
 float getRandomFloat()
 {
-  return static_cast<float>(random() / (float) RAND_MAX);
+  return static_cast<float>(std::rand() / (float) RAND_MAX);
 }
 }
 

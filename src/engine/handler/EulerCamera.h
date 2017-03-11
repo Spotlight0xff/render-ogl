@@ -108,8 +108,8 @@ class EulerCamera : public Camera {
      *
      * @return view matrix
      */
-    glm::mat4 getViewMatrix() const override;
-
+	glm::mat4 getViewMatrix() const override { return view_matrix; }
+	
     /*!
      * returns the current positon of the camera.
      *
@@ -128,7 +128,7 @@ class EulerCamera : public Camera {
     glm::vec3 front = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    glm::mat4 view_matrix;
+	glm::mat4 view_matrix{ 0 };
 
     void updateMatrices();
 
