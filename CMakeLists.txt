@@ -11,45 +11,48 @@ file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
 
 
 # Find all required packages
-find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(Freetype REQUIRED)
+find_package(freetype REQUIRED)
 find_package(SOIL REQUIRED)
-find_package(Bullet)
-find_package(Threads)
-pkg_search_module(GLFW REQUIRED glfw3)
-pkg_search_module(ASSIMP REQUIRED assimp)
-pkg_search_module(GLEW REQUIRED glew)
+#find_package(Bullet)
+#find_package(Threads)
+find_package(assimp REQUIRED CONFIG)
+find_package(glew REQUIRED)
+find_package(glfw3 REQUIRED CONFIG)
 
-#
 
+message(glfw3: "${GLFW3_LIBRARIES};${GLFW3_LIBRARIES_STATIC};${GLFW3_STATIC_LIBRARIES};${GLFW3_STATIC}")
+message(assimp: "${ASSIMP_LIBRARIES}")
 # copy recourses into build dir
 add_custom_target(copy-runtime-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     DEPENDS sponza)
 
+
 # compiler and linker options
-set(PROJECT_LIBRARIES
-  ${OPENGL_LIBRARIES}
-  ${GLFW_LIBRARIES}
-  ${GLFW_STATIC_LIBRARIES}
-  ${GLEW_LIBRARIES}
-  ${FREETYPE_LIBRARIES}
-  ${ASSIMP_LIBRARIES}
-  ${SOIL_LIBRARIES}
-  ${BULLET_LIBRARIES}
-  ${THREADS_LIBRARIES}
-  )
+#set(PROJECT_LIBRARIES
+#  ${OPENGL_LIBRARIES}
+#  ${GLFW3_LIBRARIES}
+#  "C:/Users/spotlight/software/vcpkg/installed/x64-windows-static/lib/glfw3.lib"
+#  ${GLEW_LIBRARIES}
+#  ${FREETYPE_LIBRARIES}
+#  "${ASSIMP_LIBRARIES}.lib"
+#  ${SOIL_LIBRARIES}
+#  ${BULLET_LIBRARIES}
+#  ${THREADS_LIBRARIES}
+#  )
+
+link_libraries(${OPENGL_LIBRARIES} assimp-vc140-mtd glew32 glfw3dll)
+
+message("${PROJECT_LIBRARIES}")
 
 set(PROJECT_INCLUDE_DIRS
   "src"
   "src/include"
-  "/usr/include"
-  "/usr/include/freetype2"
-  "/usr/include/freetype2/freetype"
   ${FREETYPE_INCLUDE_DIRS}
   ${SOIL_INCLUDE_DIR}
-  ${BULLET_INCLUDE_DIRS}
+  #${BULLET_INCLUDE_DIRS}
+  ${GLEW_INCLUDE_DIRS}
   )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
@@ -57,18 +60,19 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
 add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 
-link_directories(${GLEW_LIBRARY_DIRS})
+#link_directories(${GLEW_LIBRARY_DIRS} ${ASSIMP_LIBRARY_DIRS})
 
 
 
 
 # compile & link target
 add_executable(sponza ${SOURCES} src/demos/sponza.cpp)
-SET_TARGET_PROPERTIES(sponza PROPERTIES
-  INSTALL_RPATH "${INSTALL_RPATH};${GLEW_LIBRARY_DIRS};${ASSIMP_LIBRARY_DIRS}"
-  BUILD_WITH_INSTALL_RPATH TRUE)
+#SET_TARGET_PROPERTIES(sponza PROPERTIES
+  #INSTALL_RPATH "${INSTALL_RPATH};${GLEW_LIBRARY_DIRS};${ASSIMP_LIBRARY_DIRS}"
+  #BUILD_WITH_INSTALL_RPATH TRUE)
 target_include_directories(sponza PUBLIC ${PROJECT_INCLUDE_DIRS})
 target_link_libraries(sponza PUBLIC ${PROJECT_LIBRARIES})
+
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # for clang++
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -103,7 +107,7 @@ target_include_directories(${PROJECT_TEST_NAME} PUBLIC
   )
 
 # removing some libraries, we are mocking them :)
-list(REMOVE_ITEM PROJECT_LIBRARIES   ${GLEW_LIBRARIES})
+#list(REMOVE_ITEM PROJECT_LIBRARIES   ${GLEW_LIBRARIES})
 
 # add google test and link that shit
 add_dependencies(${PROJECT_TEST_NAME} googletest)
