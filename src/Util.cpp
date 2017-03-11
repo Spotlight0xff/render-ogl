@@ -5,6 +5,7 @@
 
 #ifdef _WIN32
 #include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 #else
 #include <unistd.h>
 #endif
