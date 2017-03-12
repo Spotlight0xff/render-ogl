@@ -3,43 +3,49 @@ project(graphics-engine CXX C)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
+set(SOURCES src/engine/Timing.cpp src/engine/handler/FpsMovement.cpp src/engine/handler/EulerCamera.cpp src/engine/particles/RandomTexture.cpp src/engine/particles/ShaderUpdater.cpp src/engine/particles/System.cpp src/engine/Manager.cpp src/engine/components/PhongLight.cpp src/engine/components/CustomShaderObject.cpp src/engine/components/ModelObject.cpp src/engine/Engine.cpp src/engine/model/Model.cpp src/engine/model/Mesh.cpp src/engine/Scene.cpp src/engine/Texture2D.cpp src/engine/shader/compiler.cpp src/Util.cpp)
+set(SOURCES_TEST tests/performance/render.cpp tests/util/split.cpp tests/engine/Model.cpp tests/engine/Shader.cpp tests/glmock.cpp)
 
-file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
-list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/main.cpp)
-file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
+macro(use_package pkg)
+	find_package(${pkg})
+	string(TOUPPER "${pkg}" upper_pkg)
+	if(${${upper_pkg}_FOUND})
+		# default find_package succeeded
+		list(APPEND PROJECT_INCLUDE_DIRS "${${upper_pkg}_INCLUDE_DIRS}")
+		list(APPEND PROJECT_LIBRARIES "${${upper_pkg}_LIBRARIES}")
+	else()
+		message("Not found: ${pkg}, trying with Conan")
+		# find_package failed, maybe we're building with conan
+		# TODO: more extensive search with conan (and individual linking)
+		list(APPEND  PROJECT_LIBRARIES ${CONAN_LIBS})
+	endif()
+endmacro()
 
+
+# consume conan packages
+if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+	include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	conan_basic_setup()
+endif()
 
 
 # Find all required packages
-find_package(PkgConfig REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(Freetype REQUIRED)
-find_package(SOIL REQUIRED)
-find_package(Bullet)
-find_package(Threads)
-pkg_search_module(GLFW REQUIRED glfw3)
-pkg_search_module(ASSIMP REQUIRED assimp)
-pkg_search_module(GLEW REQUIRED glew)
+# if needed, import from conan
+use_package(OpenGL)
+use_package(Freetype)
+use_package(SOIL)
+use_package(GTest)
+use_package(GMock)
+use_package(GLEW)
+use_package(GLFW)
+use_package(assimp)
+use_package(Threads)
 
-#
 
 # copy recourses into build dir
 add_custom_target(copy-runtime-files ALL
     COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
     DEPENDS sponza)
-
-# compiler and linker options
-set(PROJECT_LIBRARIES
-  ${OPENGL_LIBRARIES}
-  ${GLFW_LIBRARIES}
-  ${GLFW_STATIC_LIBRARIES}
-  ${GLEW_LIBRARIES}
-  ${FREETYPE_LIBRARIES}
-  ${ASSIMP_LIBRARIES}
-  ${SOIL_LIBRARIES}
-  ${BULLET_LIBRARIES}
-  ${THREADS_LIBRARIES}
-  )
 
 set(PROJECT_INCLUDE_DIRS
   "src"
@@ -54,8 +60,6 @@ set(PROJECT_INCLUDE_DIRS
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-
-add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 
 link_directories(${GLEW_LIBRARY_DIRS})
 
@@ -73,10 +77,10 @@ target_link_libraries(sponza PUBLIC ${PROJECT_LIBRARIES})
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # for clang++
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     # dont use libc++ for now
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -stdlib=libc++")
-    #target_link_libraries(render PUBLIC c++abi) # use libc++
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -stdlib=libc++")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU") # for g++
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel") # for intel c++ compiler
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC") # for visual studio c++
 endif()
@@ -85,37 +89,29 @@ endif()
 ###
 ### Unit testing using Google test
 ###
-set(EXTERNAL_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/external)
 set(PROJECT_TEST_NAME unit_tests)
-add_subdirectory(${EXTERNAL_PROJECTS_DIR}/gtest)
-
 
 enable_testing()
 add_executable(${PROJECT_TEST_NAME} ${SOURCES_TEST} ${SOURCES})
 SET_TARGET_PROPERTIES(${PROJECT_TEST_NAME} PROPERTIES
   INSTALL_RPATH "${INSTALL_RPATH};${GLEW_LIBRARY_DIRS};${ASSIMP_LIBRARY_DIRS}"
   BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC
   ${PROJECT_INCLUDE_DIRS}
   ${GTEST_INCLUDE_DIRS}
   tests
   )
+target_compile_definitions(${PROJECT_TEST_NAME} PRIVATE UNIT_TESTING=1)
 
 # removing some libraries, we are mocking them :)
 list(REMOVE_ITEM PROJECT_LIBRARIES   ${GLEW_LIBRARIES})
 
 # add google test and link that shit
-add_dependencies(${PROJECT_TEST_NAME} googletest)
 target_link_libraries(${PROJECT_TEST_NAME}
   ${PROJECT_LIBRARIES}
-  ${GTEST_LIBRARIES}
-  ${GTEST_LIBS_DIR}/libgtest.a
-  ${GTEST_LIBS_DIR}/libgtest_main.a
-  ${GTEST_LIBS_DIR}/../libgmock.a
-  ${GTEST_LIBS_DIR}/../libgmock_main.a
+  ${GMOCK_BOTH_LIBRARIES}
+  ${GTEST_BOTH_LIBRARIES}
   )
 target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
 add_test(NAME ${PROJECT_TEST_NAME} COMMAND ${PROJECT_TEST_NAME})
-
-
