@@ -90,6 +90,12 @@ class Engine {
     //! Updates time-related variables..
     void HandleTime();
 
+	//! Handles GLFW input
+	void handleInput();
+
+	//! checks whether the engine wants to exit
+	bool wantsExit() noexcept;
+
     //! Renders a single frame.
     void Render() noexcept;
 

@@ -231,6 +231,18 @@ void Engine::Run() {
   } while(glfwWindowShouldClose(window_) == 0);
 }
 
+void Engine::handleInput() {
+	glfwPollEvents();
+
+	if (frame_handler_) {
+		frame_handler_->FrameCallback(delta_time_);
+	}
+}
+
+bool Engine::wantsExit() noexcept {
+	return (glfwWindowShouldClose(window_) != 0);
+}
+
 engine::resource::Manager* Engine::getResourceManager() {
   return manager.get();
 }

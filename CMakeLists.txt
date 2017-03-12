@@ -8,17 +8,24 @@ file(GLOB_RECURSE SOURCES src/*.cpp src/*.h)
 list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/main.cpp)
 file(GLOB_RECURSE SOURCES_TEST tests/*.cpp tests/*.h)
 
+# consume conan settings
+message("Binary dir: ${CMAKE_BINARY_DIR}")
+if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+	message("Consuming conan buildinfo")
+	include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	conan_basic_setup()
+endif()
 
 
 # Find all required packages
-find_package(OpenGL REQUIRED)
-find_package(freetype REQUIRED)
-find_package(SOIL REQUIRED)
+find_package(OpenGL)
+find_package(freetype)
+find_package(SOIL)
 #find_package(Bullet)
 #find_package(Threads)
-find_package(assimp REQUIRED CONFIG)
-find_package(glew REQUIRED)
-find_package(glfw3 REQUIRED CONFIG)
+find_package(assimp)
+find_package(glew)
+find_package(glfw3)
 
 
 message(glfw3: "${GLFW3_LIBRARIES};${GLFW3_LIBRARIES_STATIC};${GLFW3_STATIC_LIBRARIES};${GLFW3_STATIC}")
@@ -42,7 +49,7 @@ add_custom_target(copy-runtime-files ALL
 #  ${THREADS_LIBRARIES}
 #  )
 
-link_libraries(${OPENGL_LIBRARIES} assimp-vc140-mtd glew32 glfw3dll)
+link_libraries(${OPENGL_LIBRARIES} assimp-vc140-mtd glew32 glfw3dll ${CONAN_LIBS})
 
 message("${PROJECT_LIBRARIES}")
 
@@ -50,7 +57,7 @@ set(PROJECT_INCLUDE_DIRS
   "src"
   "src/include"
   ${FREETYPE_INCLUDE_DIRS}
-  ${SOIL_INCLUDE_DIR}
+  #${SOIL_INCLUDE_DIR}
   #${BULLET_INCLUDE_DIRS}
   ${GLEW_INCLUDE_DIRS}
   )

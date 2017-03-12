@@ -17,10 +17,10 @@ int main() {
   Engine::Options engine_options;
   engine::Scene* scene;
 
-  engine_options.fullscreen = false;
+  engine_options.fullscreen = true;
   engine_options.default_height = 1080;
   engine_options.default_width = 1920;
-  engine_options.show_cursor = true;
+  engine_options.show_cursor = false;
   engine_options.samples = 8;
 
   try {
@@ -66,7 +66,17 @@ int main() {
   // The engine will now handle all memory management related to the scene.
   engine.setScene(std::move(scene));
 
-  engine.Run();
+  int result = 0;
+  do
+  {
+	engine.HandleTime();
+
+
+
+	engine.Render();
+
+	engine.handleInput();
+  } while (!engine.wantsExit());
 
   return 0;
 }
